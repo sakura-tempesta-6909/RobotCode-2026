@@ -14,7 +14,7 @@ import frc.robot.auto.AutoCommandConfigure;
 import frc.robot.components.drive.infrastructure.BasicDrive;
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
-import frc.robot.components.template.infrastructure.Template;
+import frc.robot.components.template.infrastructure.Extender;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.repository.TemplateRepository;
 import frc.robot.mode.ClimbMode;
@@ -32,7 +32,7 @@ public class RobotContainer {
     return m_example;
   }
 
-  private static TemplateRepository m_template = new Template();
+  private static TemplateRepository m_template = new Extender();
   public static TemplateRepository getTemplateInstance() {
       return m_template;
   }
