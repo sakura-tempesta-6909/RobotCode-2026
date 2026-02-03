@@ -17,6 +17,8 @@
 例: 特になし
 
 
+## 参考にしたサイト・文献など
+例: [これ](https://docs.github.com/ja/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
 
 ## 備考
 <!-- レビュワーへの伝達事項や残しておきたい情報 -->
