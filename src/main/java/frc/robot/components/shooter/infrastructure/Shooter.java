@@ -1,4 +1,4 @@
-package frc.robot.components.template.infrastructure;
+package frc.robot.components.shooter.infrastructure;
 
 import frc.robot.domain.repository.TemplateRepository;
 

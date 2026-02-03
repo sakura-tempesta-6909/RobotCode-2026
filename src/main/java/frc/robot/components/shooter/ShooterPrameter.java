@@ -1,4 +1,4 @@
-package frc.robot.components.template;
+package frc.robot.components.shooter;
 
 public final class ShooterPrameter {
     

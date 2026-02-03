@@ -1,10 +1,10 @@
-package frc.robot.components.template.infrastructure;
+package frc.robot.components.vision.infrastructure;
 
 import frc.robot.domain.repository.TemplateRepository;
 
-public class Template implements TemplateRepository {
+public class Vision implements TemplateRepository {
 
-    public Template() {
+    public Vision() {
     }
 
     /**

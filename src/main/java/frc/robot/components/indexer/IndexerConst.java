@@ -1,4 +1,4 @@
-package frc.robot.components.template;
+package frc.robot.components.indexer;
 
 public final class IndexerConst {
     
