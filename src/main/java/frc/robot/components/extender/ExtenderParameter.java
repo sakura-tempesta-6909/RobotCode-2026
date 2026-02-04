@@ -1,5 +1,5 @@
 package frc.robot.components.extender;
 
-public final class ExtenderPrameter {
+public final class ExtenderParameter {
     
 }

@@ -1,5 +1,5 @@
 package frc.robot.components.intake;
 
-public final class IntakePrameter {
+public final class IntakeParameter {
     
 }

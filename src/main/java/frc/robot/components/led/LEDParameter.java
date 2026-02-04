@@ -1,5 +1,5 @@
 package frc.robot.components.led;
 
-public final class LEDPrameter {
+public final class LEDParameter {
     
 }
