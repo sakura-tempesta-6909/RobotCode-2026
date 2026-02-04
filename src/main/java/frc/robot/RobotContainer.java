@@ -5,6 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.components.extender.infrastructure.Extender;
+import frc.robot.components.indexer.infrastructure.Indexer;
+import frc.robot.components.intake.infrastructure.Intake;
+import frc.robot.components.led.infrastructure.LED;
+import frc.robot.components.shooter.infrastructure.Shooter;
+import frc.robot.components.vision.infrastructure.Vision;
+import frc.robot.domain.repository.*;
 import frc.robot.mode.Mode;
 import frc.robot.usecase.commands.DriveCommands;
 import frc.robot.usecase.commands.ExampleCommands;
@@ -15,8 +22,6 @@ import frc.robot.components.drive.infrastructure.BasicDrive;
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
 import frc.robot.components.template.infrastructure.Template;
-import frc.robot.domain.repository.DriveRepository;
-import frc.robot.domain.repository.TemplateRepository;
 import frc.robot.mode.ClimbMode;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.ExampleMode;
@@ -35,6 +40,36 @@ public class RobotContainer {
   private static TemplateRepository m_template = new Template();
   public static TemplateRepository getTemplateInstance() {
       return m_template;
+  }
+
+  private static ExtenderRepository m_extender = new Extender();
+  public static ExtenderRepository getExtenderInstance(){
+    return m_extender;
+  }
+
+  private static IndexerRepository m_indexer = new Indexer();
+  public  static IndexerRepository getIndexerInstance(){
+    return m_indexer;
+  }
+
+  private static IntakeRepository m_intake = new Intake();
+  public static IntakeRepository getIntakeInstance(){
+    return m_intake;
+  }
+
+  private static LEDRepository m_led = new LED();
+  public static  LEDRepository getLEDInstance(){
+    return m_led;
+  }
+
+  private static ShooterRepository m_shooter = new Shooter();
+  public static ShooterRepository getShooterInstance(){
+    return m_shooter;
+  }
+
+  private static VisionRepository m_vision = new Vision();
+  public static VisionRepository getVisionInstance(){
+    return m_vision;
   }
 
   public RobotContainer() {
