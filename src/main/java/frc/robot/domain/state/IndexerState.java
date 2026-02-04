@@ -1,7 +1,8 @@
 package frc.robot.domain.state;
 
-import edu.wpi.first.math.geometry.Pose2d;
-
 public class IndexerState {
-
+    //** indexerのモーターのスピード */
+    public static double MotorSpeed;
+    //** indexerのモーターのgが動作しているか*/
+    public static double isMotorActive;
 }
