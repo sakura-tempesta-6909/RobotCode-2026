@@ -13,9 +13,7 @@ import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.components.vision.infrastructure.Vision;
 import frc.robot.domain.repository.*;
 import frc.robot.mode.Mode;
-import frc.robot.usecase.commands.DriveCommands;
-import frc.robot.usecase.commands.ExampleCommands;
-import frc.robot.usecase.commands.TemplateCommands;
+import frc.robot.usecase.commands.*;
 import frc.robot.auto.AutoCommand;
 import frc.robot.auto.AutoCommandConfigure;
 import frc.robot.components.drive.infrastructure.BasicDrive;
@@ -77,6 +75,11 @@ public class RobotContainer {
     DriveCommands.init(m_drive);
     ExampleCommands.init(m_example);
     TemplateCommands.init(m_template);
+    ExtenderCommands.init(m_extender);
+    IndexerCommands.init(m_indexer);
+    IntakeCommands.init(m_intake);
+    ShooterCommands.init(m_shooter);
+    VisionCommands.init(m_vision);
 
     AutoCommandConfigure.registerCommands();
     

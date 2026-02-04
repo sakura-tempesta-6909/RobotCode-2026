@@ -1,16 +1,16 @@
 package frc.robot.usecase.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.domain.repository.TemplateRepository;
+import frc.robot.domain.repository.IntakeRepository;
 
 public class IntakeCommands {
-    private static TemplateRepository templateRepository;
+    private static IntakeRepository IntakeRepository;
 
-    public static void init(TemplateRepository tr) {
-        templateRepository = tr;
+    public static void init(IntakeRepository intake) {
+        IntakeRepository = intake;
     }
 
     public static Command templateCommand() {
-        return templateRepository.run(()->{});
+        return IntakeRepository.run(()->{});
     }
 }
