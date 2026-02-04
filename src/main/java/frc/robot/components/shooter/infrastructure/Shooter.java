@@ -1,8 +1,8 @@
 package frc.robot.components.shooter.infrastructure;
 
-import frc.robot.domain.repository.TemplateRepository;
+import frc.robot.domain.repository.ShooterRepository;
 
-public class Shooter implements TemplateRepository {
+public class Shooter implements ShooterRepository {
 
     public Shooter() {
     }

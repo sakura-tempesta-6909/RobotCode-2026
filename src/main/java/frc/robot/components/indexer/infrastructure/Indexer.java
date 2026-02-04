@@ -1,8 +1,8 @@
 package frc.robot.components.indexer.infrastructure;
 
-import frc.robot.domain.repository.TemplateRepository;
+import frc.robot.domain.repository.IndexerRepository;
 
-public class Indexer implements TemplateRepository {
+public class Indexer implements IndexerRepository {
 
     public Indexer() {
     }

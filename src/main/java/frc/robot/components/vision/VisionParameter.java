@@ -1,5 +1,5 @@
 package frc.robot.components.vision;
 
-public final class VisionPrameter {
+public final class VisionParameter {
     
 }

@@ -1,8 +1,8 @@
 package frc.robot.components.extender.infrastructure;
 
-import frc.robot.domain.repository.TemplateRepository;
+import frc.robot.domain.repository.ExtenderRepository;
 
-public class Extender implements TemplateRepository {
+public class Extender implements ExtenderRepository {
 
     public Extender() {
     }

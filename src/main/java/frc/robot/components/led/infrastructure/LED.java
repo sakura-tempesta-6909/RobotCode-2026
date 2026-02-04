@@ -1,8 +1,8 @@
 package frc.robot.components.led.infrastructure;
 
-import frc.robot.domain.repository.TemplateRepository;
+import frc.robot.domain.repository.LEDRepository;
 
-public class LED implements TemplateRepository {
+public class LED implements LEDRepository {
 
     public LED() {
     }

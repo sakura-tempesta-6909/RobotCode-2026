@@ -1,8 +1,8 @@
 package frc.robot.components.vision.infrastructure;
 
-import frc.robot.domain.repository.TemplateRepository;
+import frc.robot.domain.repository.VisionRepository;
 
-public class Vision implements TemplateRepository {
+public class Vision implements VisionRepository {
 
     public Vision() {
     }
