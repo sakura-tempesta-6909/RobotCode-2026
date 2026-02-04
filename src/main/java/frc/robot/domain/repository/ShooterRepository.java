@@ -4,4 +4,25 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public interface ShooterRepository extends Subsystem {
 
+    /** MaxRPMに割合をかけてVelocity制御で動かす */
+    void moveShooterSpecifiedSpeed(double targetSpeed);
+
+    /** PercentOutputでモーターを任意の速度で動かす */
+    void moveShooterSpecifedPower(double targetPower);
+
+    void resetPID();
+
+    void resetEncoder();
+
+    /** FuelをHubにShootする */
+    void shootToHub();
+
+    /** 自分のアライアンス側にFuelをShootする */
+    void feed();
+
+    /** Shooterを負の向きに回す
+     *  詰まったときのため
+     */
+    void reverseShooter();
+
 }
