@@ -5,12 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.components.extender.infrastructure.Extender;
-import frc.robot.components.indexer.infrastructure.Indexer;
-import frc.robot.components.intake.infrastructure.Intake;
 import frc.robot.components.led.infrastructure.LED;
-import frc.robot.components.shooter.infrastructure.Shooter;
-import frc.robot.components.vision.infrastructure.Vision;
 import frc.robot.domain.repository.*;
 import frc.robot.mode.Mode;
 import frc.robot.usecase.commands.*;
@@ -19,7 +14,12 @@ import frc.robot.auto.AutoCommandConfigure;
 import frc.robot.components.drive.infrastructure.BasicDrive;
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
+import frc.robot.components.extender.infrastructure.Extender;
+import frc.robot.components.indexer.infrastructure.Indexer;
+import frc.robot.components.intake.infrastructure.Intake;
 import frc.robot.components.template.infrastructure.Template;
+import frc.robot.components.shooter.infrastructure.Shooter;
+import frc.robot.components.vision.infrastructure.Vision;
 import frc.robot.mode.ClimbMode;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.ExampleMode;
