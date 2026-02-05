@@ -15,6 +15,7 @@ public class DriveState {
     public static double driveYSpeed;
     /** ロボットが回転していない時を0とした、ロボットの回転速度[rad/s] |フィールドを上から見て反時計回りが正 */
     public static double driveRotationSpeed;
-    /** ロボットがシュート可能な位置かどうか |可能->true,不可->true */
+    /** ロボットがシュート可能な位置かどうか |可能->true,不可->false */
     public static boolean isShootPosition;
 }
+
