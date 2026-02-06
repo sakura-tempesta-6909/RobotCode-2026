@@ -72,10 +72,10 @@ public final class DriveConst {
         };
 
         group
-            .fl(new SwerveModuleConst(10, 12, 11, false, driveConfigBase.get(), turningConfigBase.get()))
-            .fr(new SwerveModuleConst(7, 9, 8, false, driveConfigBase.get(), turningConfigBase.get()))
-            .bl(new SwerveModuleConst(1, 3, 2, false, driveConfigBase.get(), turningConfigBase.get()))
-            .br(new SwerveModuleConst(4, 6, 5, false, driveConfigBase.get(), turningConfigBase.get()));
+            .fl(new SwerveModuleConst(1, 3, 2, false, driveConfigBase.get(), turningConfigBase.get()))
+            .fr(new SwerveModuleConst(4, 6, 5, false, driveConfigBase.get(), turningConfigBase.get()))
+            .bl(new SwerveModuleConst(10, 12, 11, false, driveConfigBase.get(), turningConfigBase.get()))
+            .br(new SwerveModuleConst(7, 9, 8, false, driveConfigBase.get(), turningConfigBase.get()));
         return group;
     }
 
