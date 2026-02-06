@@ -7,6 +7,34 @@ public class Shooter implements ShooterRepository {
     public Shooter() {
     }
 
+    @Override
+    public void moveShooterSpecifedPower(double targetPower){
+    }
+
+    @Override
+    public void moveShooterSpecifiedSpeed(double targetSpeed){
+    }
+
+    @Override
+    public void resetPID(){
+    }
+
+    @Override
+    public void resetEncoder(){
+    }
+
+    @Override
+    public void shootToHub(){
+    }
+
+    @Override
+    public void feed(){
+    }
+
+    @Override
+    public void reverseShooter(){
+    }
+
     /**
      * Stateへの書き込みを行う
      */
