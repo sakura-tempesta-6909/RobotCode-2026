@@ -7,6 +7,9 @@ public class Indexer implements IndexerRepository {
     public Indexer() {
     }
 
+    @Override
+    public void moveIndexerSpecifiedSpeed(double targetSpeed){}
+
     /**
      * Stateへの書き込みを行う
      */
