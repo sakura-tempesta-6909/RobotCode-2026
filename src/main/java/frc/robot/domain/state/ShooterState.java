@@ -4,6 +4,7 @@ public class ShooterState {
     /** 
      * モーターのRPM
      * 回転数範囲：-5600RPMから5600RPMまで
+     * 正方向でシュート
      */
     public static double motorSpeedRPM;
 
@@ -16,6 +17,7 @@ public class ShooterState {
     /** 
      * シューターの目標RPM
      * 回転数範囲：-5600RPMから5600RPMまで
+     * 正方向でシュート
      */
     public static double targetMotorSpeedRPM;
 
