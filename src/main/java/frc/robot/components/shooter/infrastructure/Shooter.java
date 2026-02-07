@@ -20,10 +20,6 @@ public class Shooter implements ShooterRepository {
     }
 
     @Override
-    public void resetEncoder(){
-    }
-
-    @Override
     public void shootToHub(){
     }
 
