@@ -19,5 +19,14 @@ public class LED implements LEDRepository {
     @Override
     public void periodic() {
     }
+
+    @Override
+    public void changeLight(int red, int green, int blue) {
+    }
+
+    @Override
+    public void flashLight(int red, int green, int blue) {
+    }
+
     
 }
