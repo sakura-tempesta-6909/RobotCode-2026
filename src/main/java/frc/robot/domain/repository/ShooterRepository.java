@@ -20,10 +20,7 @@ public interface ShooterRepository extends Subsystem {
 
     /** PIDのリセット */
     void resetPID();
-
-    /** FuelをHubにShootする */
-    void shootToHub();
-
+    
     /** 
      * 自分のアライアンス側にFuelをShootする
      * PercentOutputで割合1の速度で回す
