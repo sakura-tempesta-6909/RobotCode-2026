@@ -11,8 +11,4 @@ public class ShooterCommands {
     public static void init(ShooterRepository sh) {
         ShooterRepository = sh;
     }
-
-    public static Command moveShooterSpecifiedSpeed(DoubleSupplier targetSupplier) {
-        return ShooterRepository.startEnd(() -> ShooterRepository.);
-    }
 }
