@@ -5,7 +5,7 @@ public class ShooterState {
      * シューターの表面速度（m/s）
      * 正回転でシュートする
      */
-    public static double motorSpeedRPM;
+    public static double motorSpeed;
 
     /** 
      * シューターのモーターが動作しているか 
@@ -17,7 +17,7 @@ public class ShooterState {
      * シューターの表面速度の目標（m/s）
      * 正方向でシュートする
      */
-    public static double targetMotorSpeedRPM;
+    public static double targetMotorSpeed;
 
     /** 
      * シューターのモーターが十分な回転数に達しているかどうか 
