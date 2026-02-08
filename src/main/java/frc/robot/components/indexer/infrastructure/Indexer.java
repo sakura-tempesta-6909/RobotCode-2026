@@ -38,7 +38,7 @@ public class Indexer implements IndexerRepository {
     @Override
     public void periodic() {
         IndexerState.motorSpeed = IndexerEncoder.getVelocity() / IndexerConst.maxRPM;
-        IndexerState.isMotorActive = IndexerEncoder.getVelocity() > 0;
+        IndexerState.isMotorActive = Math.abs(IndexerEncoder.getVelocity()) > 0;
     }
     
 }
