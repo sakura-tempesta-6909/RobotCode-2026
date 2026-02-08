@@ -6,5 +6,5 @@ public final class IndexerConst {
         public static final int IndexerMotor = 15;
     }
     /** モーターの最大RPM */
-    public static final double maxRPM = 1100;
+    public static final double maxRPM = 5676;
 }
