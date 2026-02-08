@@ -2,9 +2,8 @@ package frc.robot.domain.state;
 
 public class ShooterState {
     /** 
-     * モーターのRPM
-     * 回転数範囲：-5600RPMから5600RPMまで
-     * 正方向でシュート
+     * シューターの表面速度（m/s）
+     * 正回転でシュートする
      */
     public static double motorSpeedRPM;
 
@@ -15,9 +14,8 @@ public class ShooterState {
     public static boolean isMotorActive;
 
     /** 
-     * シューターの目標RPM
-     * 回転数範囲：-5600RPMから5600RPMまで
-     * 正方向でシュート
+     * シューターの表面速度の目標（m/s）
+     * 正方向でシュートする
      */
     public static double targetMotorSpeedRPM;
 
