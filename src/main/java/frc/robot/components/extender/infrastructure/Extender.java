@@ -13,5 +13,25 @@ public class Extender implements ExtenderRepository {
     @Override
     public void periodic() {
     }
+
+    @Override
+    public void moveExtenderSpecifiedAngle(double targetAngle) {
+
+    }
+
+    @Override
+    public void moveIndexerSpecifiedSpeed(double targetSpeed) {
+
+    }
+
+    @Override
+    public void resetPID() {
+
+    }
+
+    @Override
+    public void resetEncorder() {
+        
+    }
     
 }
