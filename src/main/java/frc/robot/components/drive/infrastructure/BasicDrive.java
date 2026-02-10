@@ -81,6 +81,7 @@ public class BasicDrive implements DriveRepository {
         gyro.reset();
     }
 
+
     @Override
     public void periodic(){
         odometer.update(getRotation2d(), 
@@ -128,5 +129,15 @@ public class BasicDrive implements DriveRepository {
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);
         backRight.setDesiredState(desiredStates[3]);
+    }
+
+    @Override
+    public void setAngle(double setAngle) {
+
+    }
+
+    @Override
+    public void moveToTargetPose(Pose2d targetPose) {
+        
     }
 }

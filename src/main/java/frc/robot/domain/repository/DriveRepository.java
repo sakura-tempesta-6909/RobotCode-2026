@@ -1,5 +1,6 @@
 package frc.robot.domain.repository;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -27,7 +28,7 @@ public interface DriveRepository extends Subsystem{
     void setAngle(double setAngle);
 
     /** 指定した座標まで移動する */
-    void moveToTargetPose(double targetPose);
+    void moveToTargetPose(Pose2d targetPose);
 
     void buildAuto();
 }
