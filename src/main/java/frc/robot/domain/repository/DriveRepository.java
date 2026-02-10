@@ -24,10 +24,10 @@ public interface DriveRepository extends Subsystem{
     /** ジャイロセンサーをリセットする */
     void resetGyroSensor();
 
-    /** ロボットを任意の角度に回転させる */
+    /** ロボットを任意の角度に回転させる |setAngle:フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法[-180~180]*/
     void setAngle(double setAngle);
 
-    /** 指定した座標まで移動する */
+    /** 指定した座標まで移動する |targetPose:目標の位置、基準はこれ参照https://sakuratempesta6909.sharepoint.com/:w:/r/sites/frc/_layouts/15/Doc.aspx?sourcedoc=%7BA6923B55-C0CE-43E6-A244-C8D7F0712BB0%7D&file=Repository.docx&action=default&mobileredirect=true*/
     void moveToTargetPose(Pose2d targetPose);
 
     void buildAuto();
