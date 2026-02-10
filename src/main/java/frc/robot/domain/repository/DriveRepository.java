@@ -23,5 +23,11 @@ public interface DriveRepository extends Subsystem{
     /** ジャイロセンサーをリセットする */
     void resetGyroSensor();
 
+    /** ロボットを任意の角度に回転させる */
+    void setAngle(double setAngle);
+
+    /** 指定した座標まで移動する */
+    void moveToTargetPose(double targetPose);
+
     void buildAuto();
 }
