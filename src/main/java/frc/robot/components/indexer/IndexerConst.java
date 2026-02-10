@@ -5,4 +5,6 @@ public final class IndexerConst {
         /** Indexerのモーターのポート番号*/
         public static final int IndexerMotor = 15;
     }
+    /** モーターの最大RPM */
+    public static final double maxRPM = 5676;
 }
