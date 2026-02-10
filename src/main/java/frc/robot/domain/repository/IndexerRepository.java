@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public interface IndexerRepository extends Subsystem {
     /**
      * Indexerを任意の速度で動かす(PercentOutput)
-     * @param targetSpeed Indexerを動かす速さ | shooterに送る方向が正 | [-1~1]((出力のパワーの割合)
+     * @param targetPower Indexerを動かす速さ | shooterに送る方向が正 | [-1~1]((出力のパワーの割合)
      */
-    void moveIndexerSpecifiedSpeed(double targetSpeed);
+    void moveIndexerSpecifiedPower(double targetPower);
 }
