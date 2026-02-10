@@ -33,7 +33,7 @@ public class Indexer implements IndexerRepository {
      */
     @Override
     public void moveIndexerSpecifiedPower(double targetPower){
-        IndexerMotor.set(targetSpeed);
+        IndexerMotor.set(targetPower);
     }
 
     /**
