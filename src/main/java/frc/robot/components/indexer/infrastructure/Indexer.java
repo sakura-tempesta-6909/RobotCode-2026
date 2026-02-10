@@ -29,7 +29,7 @@ public class Indexer implements IndexerRepository {
 
     /**
      * Indexerを任意の速度で動かす(PercentOutput)
-     * @param targetSpeed Indexerを動かす速さ | shooterに送る方向が正 | [-1~1](最大速度を基準とした割合です)
+     * @param targetSpeed Indexerを動かす速さ | shooterに送る方向が正 | [-1~1](出力のパワーの割合)
      */
     @Override
     public void moveIndexerSpecifiedSpeed(double targetSpeed){
