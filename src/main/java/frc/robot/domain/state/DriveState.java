@@ -7,10 +7,8 @@ public class DriveState {
     public static Pose2d drivePosition;
     /** 停止状態を0としたロボットの速度[m/s] */
     public static double driveSpeed;
-    /** ロボットの、x軸方向の運動が0の時を0とした、ロボットのX軸方向の速度[m/s] */
-    public static double driveXSpeed;
-    /** ロボットの、y軸方向の運動が0の時を0とした、ロボットのY軸方向の速度[m/s] */
-    public static double driveYSpeed;
+    /** ロボットの、x,y軸方向の運動が0の時を0とした、ロボットのX,Y軸方向の速度[m/s] */
+    public static double[] artifactPositions = {Double.NaN, Double.NaN};
     /** ロボットが回転していない時を0とした、ロボットの回転速度[rad/s] |フィールドを上から見て反時計回りが正 */
     public static double driveRotationSpeed;
     /** ロボットがシュート可能な位置かどうか |可能->true,不可->false */
