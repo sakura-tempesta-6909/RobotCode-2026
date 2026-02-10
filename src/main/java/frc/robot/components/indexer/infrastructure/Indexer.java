@@ -27,6 +27,10 @@ public class Indexer implements IndexerRepository {
         IndexerMotor.configure(IndexerMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
+    /**
+     * Indexerを任意の速度で動かす(PercentOutput)
+     * @param targetSpeed Indexerを動かす速さ | shooterに送る方向が正 | [-1~1](最大速度を基準とした割合です)
+     */
     @Override
     public void moveIndexerSpecifiedSpeed(double targetSpeed){
         IndexerMotor.set(targetSpeed);
@@ -38,7 +42,7 @@ public class Indexer implements IndexerRepository {
     @Override
     public void periodic() {
         IndexerState.motorSpeed = IndexerEncoder.getVelocity() / IndexerConst.maxRPM;
-        IndexerState.isMotorActive = Math.abs(IndexerEncoder.getVelocity()) > 0;
+        IndexerState.isMotorActive = Math.abs(IndexerEncoder.getVelocity()) > 0.1;
     }
     
 }
