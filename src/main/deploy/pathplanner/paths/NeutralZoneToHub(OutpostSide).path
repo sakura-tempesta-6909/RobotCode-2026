@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 7.802787398726853,
+        "y": 3.5672625144675925
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8706184895833324,
-        "y": 6.200549768518519
+        "x": 7.993504156529558,
+        "y": 4.052512855533935
+      },
+      "isLocked": false,
+      "linkedName": "OutpostSideNeutralZone"
+    },
+    {
+      "anchor": {
+        "x": 4.422926432291667,
+        "y": 0.5062031250000008
+      },
+      "prevControl": {
+        "x": 9.189828843253121,
+        "y": 0.6634381242142681
+      },
+      "nextControl": {
+        "x": 1.4491946614583338,
+        "y": 0.4081153790509252
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.8472283709490736,
-        "y": 5.2273173466435185
+        "x": 2.4504769965277777,
+        "y": 2.534749565972222
       },
       "prevControl": {
-        "x": 3.281911530671296,
-        "y": 5.874566695601852
+        "x": 2.4758466330872113,
+        "y": 2.7834589979221227
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef"
+      "linkedName": "OutpostSideHub"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -58.80697115588723
+    "rotation": 52.77460052838666
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 93.94090840274593
   },
   "useDefaultConstraints": true
 }
