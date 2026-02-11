@@ -20,7 +20,7 @@ public class Extender implements ExtenderRepository {
     }
 
     @Override
-    public void moveIndexerSpecifiedSpeed(double targetSpeed) {
+    public void moveIndexerSpecifiedPower(double targetPower) {
 
     }
 
