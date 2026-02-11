@@ -16,12 +16,13 @@ public class ShooterState {
     /** 
      * シューターの表面速度の目標（m/s）
      * 正方向でシュートする
+     * 0で停止
      */
     public static double targetMotorSpeed;
 
     /** 
      * シューターのモーターが十分な回転数に達しているかどうか 
-     * Boolean型 True達している False未達
+     * Boolean型 True:十分な回転数以上 False:十分な回転数未満
      */
     public static boolean isReadyToShoot;
 }
