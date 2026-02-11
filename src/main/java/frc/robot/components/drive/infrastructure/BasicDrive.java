@@ -92,7 +92,6 @@ public class BasicDrive implements DriveRepository {
         });
 
         DriveState.drivePosition = getPose();
-        ChassisSpeeds speeds = getChassisSpeeds();
     }
 
     private double getHeading(){
