@@ -133,11 +133,9 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void setAngle(double setAngle) {
+        /** PαthPlannerでいいけどとりあえず置いとく */
 
     }
 
-    @Override
-    public void moveToTargetPose(Pose2d targetPose) {
-        
-    }
+    
 }
