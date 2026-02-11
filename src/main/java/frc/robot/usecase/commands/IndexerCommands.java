@@ -24,4 +24,10 @@ public class IndexerCommands {
         },() ->
                 IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.Neutral));
     }
+
+    public static Command stopIndexer(){
+        return IndexerRepository.run(() -> {
+            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.Neutral);
+        });
+    }
 }
