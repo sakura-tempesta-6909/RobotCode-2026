@@ -19,14 +19,6 @@ public class Shooter implements ShooterRepository {
     public void resetPID(){
     }
 
-    @Override
-    public void feed(){
-    }
-
-    @Override
-    public void reverseShooter(){
-    }
-
     /**
      * Stateへの書き込みを行う
      */
