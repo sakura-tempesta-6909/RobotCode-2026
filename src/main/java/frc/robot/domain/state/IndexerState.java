@@ -1,7 +1,8 @@
 package frc.robot.domain.state;
 
-import edu.wpi.first.math.geometry.Pose2d;
-
 public class IndexerState {
-
+    /** モーターのスピード | shooterに送る方向が正 | [-1, 1] */
+    public static double motorSpeed;
+    /** モーターが動いているか | 動いてたらtrue*/
+    public static boolean isMotorActive;
 }
