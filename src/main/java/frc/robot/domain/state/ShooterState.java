@@ -4,6 +4,7 @@ public class ShooterState {
     /** 
      * シューターの表面速度（m/s）
      * 正回転でシュートする
+     * 0で停止
      */
     public static double motorSpeed;
 
