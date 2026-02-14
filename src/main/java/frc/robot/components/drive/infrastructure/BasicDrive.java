@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.SparkClosedLoopController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,12 +14,16 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveConst.DriveConstants;
+import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import edu.wpi.first.math.controller.PIDController;
+
 
 
 public class BasicDrive implements DriveRepository {
@@ -32,6 +37,8 @@ public class BasicDrive implements DriveRepository {
         
     private final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
+    public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
+
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
         frontLeft.getPosition(),
@@ -39,6 +46,10 @@ public class BasicDrive implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
     });
+
+    public BasicDrive() {
+        anglePID.enableContinuousInput(-180, 180);
+    }
 
     public void buildAuto() {
         RobotConfig config;
@@ -91,8 +102,13 @@ public class BasicDrive implements DriveRepository {
             backLeft.getPosition(),
             backRight.getPosition()
         });
+        DriveState.driveXYOmegaSpeed = getChassisSpeeds();
 
         DriveState.drivePosition = getPose();
+
+        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition); 
+
+        DriveState.targetPosition = DriveTools.culculateTargetPosition(getPose());
     }
 
     private double getHeading(){
@@ -133,8 +149,13 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void setAngle(double setAngle) {
-        /** PαthPlannerでいいけどとりあえず置いとく */
-
+        double output = anglePID.calculate(getHeading(),setAngle);
+        output *= DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
+        double xspeed = DriveState.driveXYOmegaSpeed.vxMetersPerSecond;
+        double yspeed = DriveState.driveXYOmegaSpeed.vyMetersPerSecond;
+        ChassisSpeeds speed = new  ChassisSpeeds(xspeed,yspeed,output);
+        setChassisSpeeds(speed);
+        
     }
 
     
