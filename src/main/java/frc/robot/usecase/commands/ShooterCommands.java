@@ -3,6 +3,7 @@ package frc.robot.usecase.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 
 public class ShooterCommands {
@@ -10,5 +11,33 @@ public class ShooterCommands {
 
     public static void init(ShooterRepository sh) {
         ShooterRepository = sh;
+    }
+
+    public static Command moveShooterSpecifiedSpeed(DoubleSupplier targetSupplier){
+        return ShooterRepository.startEnd(
+            () -> ShooterRepository.moveShooterSpecifedPower(targetSupplier.getAsDouble()),
+            () -> {
+                ShooterRepository.moveShooterSpecifedPower(0.0);
+                ShooterRepository.resetPID();
+            }
+        );
+    }
+
+    public static Command shootToHub(DoubleSupplier targetSupplier) {
+        return moveShooterSpecifiedSpeed(targetSupplier);
+    }
+
+    public static Command feed(DoubleSupplier targetSupplier) {
+        return moveShooterSpecifiedSpeed(targetSupplier);
+    }
+
+    public static Command reverseShooter(DoubleSupplier targetSupplier) {
+        return ShooterRepository.runEnd(
+            () -> ShooterRepository.moveShooterSpecifedPower(-0.4),
+            () -> {
+                ShooterRepository.moveShooterSpecifedPower(0.0);
+                ShooterRepository.resetPID();
+            }
+        );
     }
 }
