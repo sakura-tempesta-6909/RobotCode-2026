@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
@@ -106,7 +107,7 @@ public class BasicDrive implements DriveRepository {
 
         DriveState.drivePosition = getPose();
 
-        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition); 
+        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
 
         DriveState.targetPosition = DriveTools.culculateTargetPosition(getPose());
     }
@@ -148,12 +149,15 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
+    /** ロボットを任意の角度に回転させる 
+     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
+     * PathPlannerで良さそうだけど一応置いとく
+    */
     public void setAngle(double setAngle) {
         double output = anglePID.calculate(getHeading(),setAngle);
         output *= DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
-        double xspeed = DriveState.driveXYOmegaSpeed.vxMetersPerSecond;
-        double yspeed = DriveState.driveXYOmegaSpeed.vyMetersPerSecond;
-        ChassisSpeeds speed = new  ChassisSpeeds(xspeed,yspeed,output);
+        ChassisSpeeds driveXYOmegaSpeed = DriveState.driveXYOmegaSpeed;
+        ChassisSpeeds speed = new ChassisSpeeds(driveXYOmegaSpeed.vxMetersPerSecond,driveXYOmegaSpeed.vyMetersPerSecond,output);
         setChassisSpeeds(speed);
         
     }

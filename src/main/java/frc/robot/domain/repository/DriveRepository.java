@@ -24,7 +24,8 @@ public interface DriveRepository extends Subsystem{
     /** ジャイロセンサーをリセットする */
     void resetGyroSensor();
 
-    /** ロボットを任意の角度に回転させる |setAngle:フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
+    /** ロボットを任意の角度に回転させる 
+     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
      * PathPlannerで良さそうだけど一応置いとく
     */
     void setAngle(double setAngle);
