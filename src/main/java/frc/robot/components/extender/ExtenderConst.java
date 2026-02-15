@@ -1,5 +1,7 @@
 package frc.robot.components.extender;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 public final class ExtenderConst {
     public static final class Ports{
         /** extenderのモーターのCANID */
@@ -10,5 +12,14 @@ public final class ExtenderConst {
         
 
     }
+    public static final class Slot{
+        /** 上げる時のPIDのslot */
+        public static final ClosedLoopSlot ExtenderRaisingSlot = ClosedLoopSlot.kSlot0;
+        /** 下ろす時のPIDのslot */
+        public static final ClosedLoopSlot ExtenderLoweringSlot = ClosedLoopSlot.kSlot1;
+
+    }
+    public static final double GearRatio = 1;
+
     
 }
