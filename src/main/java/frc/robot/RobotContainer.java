@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.extender.infrastructure.Extender;
 import frc.robot.components.indexer.infrastructure.Indexer;
@@ -17,6 +18,7 @@ import frc.robot.usecase.commands.*;
 import frc.robot.auto.AutoCommand;
 import frc.robot.auto.AutoCommandConfigure;
 import frc.robot.components.drive.infrastructure.BasicDrive;
+import frc.robot.components.drive.infrastructure.BasicDriveSim;
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
 import frc.robot.components.template.infrastructure.Template;
@@ -25,7 +27,7 @@ import frc.robot.mode.DriveMode;
 import frc.robot.mode.ExampleMode;
 
 public class RobotContainer {
-  private static DriveRepository m_drive = new BasicDrive();
+  private static DriveRepository m_drive = RobotBase.isSimulation() ? new BasicDriveSim() : new BasicDrive();
   public static DriveRepository getDriveInstance() {
       return m_drive;
   }

@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class DriveConst {
+    public static final double LoopPeriod = 0.02;
     public static final class ModuleConstants{
         public static final double kWheelDiameterMeters = edu.wpi.first.math.util.Units.inchesToMeters(4);
         public static final double kDriveMotorGearRatio = 1/6.12; // NEO 1回転でdrive motor が 1/6.12 回転する | drive motor 1回転 : NEO 6.12回転
