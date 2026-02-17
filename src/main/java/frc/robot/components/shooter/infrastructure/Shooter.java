@@ -43,7 +43,7 @@ public class Shooter implements ShooterRepository {
 
     @Override
     public void resetPID() {
-        // 新APIではI積分リセットはconfig経由などになる
+        pid.setReference(0, SparkMax.ControlType.kVelocity);
     }
 
     /**
@@ -53,6 +53,8 @@ public class Shooter implements ShooterRepository {
     public void periodic() {
         double WheelRPM = motor.getEncoder().getVelocity();
         double WheelDiameter = 0.101;
-        ShooterState.motorSpeed = WheelRPM * WheelDiameter * 3.14;
+        
+        //RPMとウィールの直径から表面速度を計算する
+        ShooterState.motorSpeed = WheelRPM * WheelDiameter * 3.14 / 60;
     }
 }
