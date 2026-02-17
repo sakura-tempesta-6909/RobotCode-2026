@@ -23,14 +23,24 @@ public class ShooterCommands {
         );
     }
 
+    /**
+     *  ハブへシュート
+     */
     public static Command shootToHub(DoubleSupplier targetSupplier) {
         return moveShooterSpecifiedSpeed(targetSupplier);
     }
 
+    /**
+     *  自アライアンス側にフィードする
+     */
     public static Command feed(DoubleSupplier targetSupplier) {
         return moveShooterSpecifiedSpeed(targetSupplier);
     }
 
+    /** 
+     * 詰まり解消のための逆回転
+     * 負の数を入れる
+     */
     public static Command reverseShooter(DoubleSupplier targetSupplier) {
         return ShooterRepository.runEnd(
             () -> ShooterRepository.moveShooterSpecifedPower(-0.4),
