@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
+import frc.robot.domain.state.ShooterState;
 
 public class Shooter implements ShooterRepository {
 
@@ -20,14 +21,12 @@ public class Shooter implements ShooterRepository {
 
         SparkMaxConfig config = new SparkMaxConfig();
 
-        config.closedLoop
-            .p(0.0002)
-            .i(0.0)
-            .d(0.0)
-            .velocityFF(0.00018);
+        config.closedLoop.p(0);
+        config.closedLoop.i(0);
+        config.closedLoop.d(0);
+        config.closedLoop.velocityFF(0);
 
-        motor.configure(config, SparkMax.ResetMode.kResetSafeParameters,
-                               SparkMax.PersistMode.kPersistParameters);
+        motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
 
         pid = motor.getClosedLoopController();
     }
@@ -52,5 +51,8 @@ public class Shooter implements ShooterRepository {
      */
     @Override
     public void periodic() {
+        double WheelRPM = motor.getEncoder().getVelocity();
+        double WheelDiameter = 0.101;
+        ShooterState.motorSpeed = WheelRPM * WheelDiameter * 3.14;
     }
 }
