@@ -3,6 +3,7 @@ package frc.robot.usecase.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.domain.repository.ExtenderRepository;
 
 public class ExtenderCommands {
@@ -26,5 +27,13 @@ public class ExtenderCommands {
 
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         });
+    }
+    
+    public static Command moveToIntakeAngle(){
+        return moveExtenderSpecifiedAngle(()->(ExtenderParameter.IntakeAngle));
+    }
+
+    public static Command moveToInitialAngle(){
+        return moveExtenderSpecifiedAngle(()->(ExtenderParameter.InitialAngle));
     }
 }
