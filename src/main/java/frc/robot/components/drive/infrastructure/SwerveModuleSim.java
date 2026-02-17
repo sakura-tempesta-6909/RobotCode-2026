@@ -20,6 +20,7 @@ public class SwerveModuleSim {
     private final PIDController turningPidController;
 
     public SwerveModuleSim(SwerveModuleConst moduleConstant) {
+        // シュミレーション用のモーターの設定
         double driveGearRatio = 1.0 / ModuleConstants.kDriveMotorGearRatio;
         driveMotorSim = new DCMotorSim(
             LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), 0.025, driveGearRatio),
@@ -37,6 +38,7 @@ public class SwerveModuleSim {
     }
 
     public double getDrivePosition() {
+        // rad/sをm/sに変換
         return driveMotorSim.getAngularPositionRad() * (ModuleConstants.kWheelDiameterMeters / 2.0);
     }
 
@@ -45,6 +47,7 @@ public class SwerveModuleSim {
     }
 
     public double getDriveVelocity() {
+        // rad/sをm/sに変換
         return driveMotorSim.getAngularVelocityRadPerSec() * (ModuleConstants.kWheelDiameterMeters / 2.0);
     }
 
@@ -73,12 +76,14 @@ public class SwerveModuleSim {
 
         state.optimize(getState().angle);
 
-       double driveVoltage = (state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond) * 12.0;
-       driveMotorSim.setInput(driveVoltage);
+        // シュミレーション用のモーターに出力を設定
+       double driveOutput = (state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+       driveMotorSim.setInput(driveOutput * 12.0);
 
        double turnOutput = turningPidController.calculate(getTurningPosition(), state.angle.getRadians());
        turningMotorSim.setInput(turnOutput * 12.0);
 
+       // シュミレーションを更新する
         driveMotorSim.update(DriveConst.LoopPeriod);
         turningMotorSim.update(DriveConst.LoopPeriod);
     }

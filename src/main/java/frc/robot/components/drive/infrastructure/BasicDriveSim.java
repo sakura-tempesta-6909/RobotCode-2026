@@ -74,10 +74,7 @@ public class BasicDriveSim implements DriveRepository {
 
     @Override
     public void setChassisSpeeds(ChassisSpeeds speeds) {
-        double currentAngle = gyro.getAngle();
-        double deltaAngle = Math.toDegrees(speeds.omegaRadiansPerSecond * DriveConst.LoopPeriod);
-        gyroSim.setAngle(currentAngle + deltaAngle);
-
+        gyroSim.setAngle(gyro.getAngle() + Math.toDegrees(getChassisSpeeds().omegaRadiansPerSecond * DriveConst.LoopPeriod));
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
         this.setModuleStates(moduleStates);
     }
@@ -118,7 +115,7 @@ public class BasicDriveSim implements DriveRepository {
             states[3].angle.getRadians(), states[3].speedMetersPerSecond
         });
         Logger.recordOutput("Drive/States", states);
-        Logger.recordOutput("Drive/GyroAngle", getHeading());
+        Logger.recordOutput("Drive/GyroAngle", getRotation2d());
         Logger.recordOutput("Drive/Pose", getPose());
         Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
     }
