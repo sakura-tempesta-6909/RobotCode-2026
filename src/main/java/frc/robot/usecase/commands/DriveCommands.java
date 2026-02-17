@@ -72,14 +72,26 @@ public class DriveCommands{
         return AutoBuilder.pathfindThenFollowPath(path, UsecaseConst.PathPlannerConst.Unlimited);
     }
 
+    /** 目標の位置まで移動する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     */
     public static Command moveToTargetPose(Supplier<Pose2d> targetSupplier){
         return AutoBuilder.pathfindThenFollowPath(null,null);
     }
 
+    /** Hubまで移動する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     */
     public static Command moveToHub(){
         return moveToTargetPose (()->(DriveParameter.Poses.TargetPoseOfHub));
     }
 
+    /** 目標の角度まで回転する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     */
     public static Command setAngle(DoubleSupplier targetSupplier) {
         return driveRepository.startRun(()->{
             driveRepository.resetPID();
@@ -88,6 +100,10 @@ public class DriveCommands{
         });
     }
 
+    /** Hubに向かった角度まで回転する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     */
     public static Command faceToHub(){
         return setAngle(()->(DriveParameter.Poses.TargetAngleOfHub));
     }
