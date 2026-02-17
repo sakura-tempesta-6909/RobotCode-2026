@@ -36,7 +36,8 @@ public class DriveTools {
         }
     }
 
-    /** シュート位置に近づいているか計算する |targetPosition:これから向かうシュートする場所*/ 
+    /** シュート位置に近づいているか計算する 
+     * @targetPosition :これから向かうシュートする場所*/ 
     public static boolean isShootPosition(Pose2d targetPosition, Pose2d currentPosition){
         Pose2d pose = targetPosition;
         Pose2d current = currentPosition;
