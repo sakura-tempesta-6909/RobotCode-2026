@@ -31,4 +31,6 @@ public interface DriveRepository extends Subsystem{
 
 
     void buildAuto();
+
+    void resetPID();
 }

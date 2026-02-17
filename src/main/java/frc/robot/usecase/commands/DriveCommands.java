@@ -1,10 +1,12 @@
 package frc.robot.usecase.commands;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -70,5 +72,28 @@ public class DriveCommands{
         return AutoBuilder.pathfindThenFollowPath(path, UsecaseConst.PathPlannerConst.Unlimited);
     }
 
+    public static Command moveToTargetPose(Supplier<Pose2d> targetSupplier){
+        return AutoBuilder.pathfindThenFollowPath(null,null);
+    }
 
+    public static Command moveToHub(){
+        return moveToTargetPose (()->(DriveParameter.Poses.TargetPoseOfHub));
+    }
+
+    public static Command setAngle(DoubleSupplier targetSupplier) {
+        return driveRepository.startRun(()->{
+            driveRepository.resetPID();
+        },()->{
+            driveRepository.setAngle(targetSupplier.getAsDouble());
+        });
+    }
+
+    public static Command faceToHub(){
+        return setAngle(()->(DriveParameter.Poses.TargetAngleOfHub));
+    }
+
+    
 }
+
+
+

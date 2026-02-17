@@ -56,5 +56,10 @@ public class DriveParameter {
 
     public static final class Poses {
         public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
+        /** Hubへの目標地点 */
+        public static final Pose2d TargetPoseOfHub = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
+        /** Hubへの目標角度 */
+        public static final double TargetAngleOfHub = 0;
+
     }
 }
