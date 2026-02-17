@@ -52,8 +52,8 @@ public class Shooter implements ShooterRepository {
     @Override
     public void periodic() {
         double WheelRPM = motor.getEncoder().getVelocity();
-        double WheelDiameter = 0.101;
-        
+        double WheelDiameter = 0.1016;
+
         //RPMとウィールの直径から表面速度を計算する
         ShooterState.motorSpeed = WheelRPM * WheelDiameter * 3.14 / 60;
     }
