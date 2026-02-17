@@ -15,9 +15,9 @@ public class ShooterCommands {
 
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier targetSupplier){
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifedPower(targetSupplier.getAsDouble()),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(targetSupplier.getAsDouble()),
             () -> {
-                ShooterRepository.moveShooterSpecifedPower(0.0);
+                ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
             }
         );
