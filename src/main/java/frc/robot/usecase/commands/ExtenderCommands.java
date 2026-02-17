@@ -1,5 +1,7 @@
 package frc.robot.usecase.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.domain.repository.ExtenderRepository;
 
@@ -12,5 +14,17 @@ public class ExtenderCommands {
 
     public static Command templateCommand() {
         return ExtenderRepository.run(()->{});
+    }
+
+    /** Extenderを特定の角度に動かす
+     * 目標の角度に到達したら終了
+     */
+    public static Command moveExtenderSpecifiedAngle(DoubleSupplier targetSupplier) {
+        return ExtenderRepository.startRun(()->{
+            ExtenderRepository.resetPID();
+        },()->{
+
+            ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
+        });
     }
 }
