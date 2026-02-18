@@ -83,6 +83,7 @@ public class RobotContainer {
     VisionCommands.init(m_vision);
 
     AutoCommandConfigure.registerCommands();
+    AutoCommand.buildAutoChooser();
     
     Mode.setupMode();
     Mode.configureModeBindings();
