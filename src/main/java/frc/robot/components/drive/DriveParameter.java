@@ -57,21 +57,4 @@ public class DriveParameter {
     public static final class Poses {
         public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
     }
-
-    /** シミュレーション用のPIDパラメータ */
-    public static final class SimModule {
-        // ドライブモーターPID
-        public static final double kDriveP = 0.5;
-        public static final double kDriveI = 0.0;
-        public static final double kDriveD = 0.0;
-
-        // ターニングモーターPID
-        public static final double kTurningP = 0.5;
-        public static final double kTurningI = 0.0;
-        public static final double kTurningD = 0.0;
-
-        // モーター慣性モーメント (kg*m^2)
-        public static final double kDriveMotorMOI = 0.025;
-        public static final double kTurningMotorMOI = 0.004;
-    }
 }

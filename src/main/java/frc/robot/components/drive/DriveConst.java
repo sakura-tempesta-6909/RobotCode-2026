@@ -25,7 +25,6 @@ public final class DriveConst {
     public static final class DriveConstants {
         public static final double kTrackWidth = Units.inchesToMeters(21);
         public static final double kWheelBase = 0.65;
-        public static final double kWheelCircumference = ModuleConstants.kWheelDiameterMeters * Math.PI;
 
         // 機体の回転中心から見たwheelの (x座標 , y座標)
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
