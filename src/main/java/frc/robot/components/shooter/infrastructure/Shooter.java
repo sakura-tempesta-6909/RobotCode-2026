@@ -24,7 +24,8 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.p(0);
         config.closedLoop.i(0);
         config.closedLoop.d(0);
-        config.closedLoop.velocityFF(0);
+        config.closedLoop.feedForward.kS(0);
+        config.closedLoop.feedForward.kV(0);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
 
