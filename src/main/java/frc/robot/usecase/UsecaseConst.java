@@ -16,4 +16,11 @@ public class UsecaseConst {
     public static final class RobotStructure {
         public static final double DistanceToArm = -10;
     }
+
+    public static final class SpeedAndPower {
+        public static final double MaxPowerToIntakePosition = 1;
+        public static final double MaxPowerToInitialPosition = -1;
+    }
+
+    
 }

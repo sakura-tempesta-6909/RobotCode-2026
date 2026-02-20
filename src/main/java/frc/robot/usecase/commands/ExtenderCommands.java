@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.domain.repository.ExtenderRepository;
+import frc.robot.usecase.UsecaseConst;
 
 public class ExtenderCommands {
     private static ExtenderRepository ExtenderRepository;
@@ -19,20 +20,46 @@ public class ExtenderCommands {
 
     /** Extenderを特定の角度に動かす
      * 目標の角度に到達したら終了
+     * @param targetSupplier 目標の角度
      */
     public static Command moveExtenderSpecifiedAngle(DoubleSupplier targetSupplier) {
         return ExtenderRepository.startRun(()->{
             ExtenderRepository.resetPID();
         },()->{
-
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         });
     }
+    /** Extenderを一定の力で動かす
+     * @param targetPower 目標の力
+     */
+    public static Command moveExtenderSpecifiedPower(double targetPower) {
+        return ExtenderRepository.runEnd(()->{
+
+        },()->{
+            ExtenderRepository.moveIndexerSpecifiedPower(targetPower);
+        });
+    }
+
+    /** ExtenderをIntake位置方向に一定の力で動かす */
+    public static Command moveExtenderMaxPowerToIntakePosition() {
+        return moveExtenderSpecifiedPower(UsecaseConst.SpeedAndPower.MaxPowerToIntakePosition);
+    }
+
+    /** ExtenderをInitial位置方向に一定の力で動かす */
+    public static Command moveExtenderMaxPowerToInitialPosition() {
+        return moveExtenderSpecifiedPower(UsecaseConst.SpeedAndPower.MaxPowerToInitialPosition);
+    }
     
+    /** ExtenderをIntakeの角度に動かす
+     * 目標の角度に到達したら終了
+     */
     public static Command moveToIntakeAngle(){
         return moveExtenderSpecifiedAngle(()->(ExtenderParameter.IntakeAngle));
     }
 
+    /** Extenderをデフォルトの角度に動かす
+     * 目標の角度に到達したら終了
+     */
     public static Command moveToInitialAngle(){
         return moveExtenderSpecifiedAngle(()->(ExtenderParameter.InitialAngle));
     }
