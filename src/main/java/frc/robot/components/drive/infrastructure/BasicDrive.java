@@ -153,11 +153,10 @@ public class BasicDrive implements DriveRepository {
      * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
      * PathPlannerで良さそうだけど一応置いとく
     */
-    public void setAngle(double setAngle) {
+    public void setAngle(double setAngle, double currentXSpeed, double currentYSpeed) {
         double output = anglePID.calculate(getHeading(),setAngle);
         output *= DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
-        ChassisSpeeds driveXYOmegaSpeed = DriveState.driveXYOmegaSpeed;
-        ChassisSpeeds speed = new ChassisSpeeds(driveXYOmegaSpeed.vxMetersPerSecond,driveXYOmegaSpeed.vyMetersPerSecond,output);
+        ChassisSpeeds speed = new ChassisSpeeds(currentXSpeed,currentYSpeed,output);
         setChassisSpeeds(speed);
         
     }

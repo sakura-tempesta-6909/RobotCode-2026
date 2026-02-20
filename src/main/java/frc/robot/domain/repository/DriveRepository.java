@@ -28,7 +28,7 @@ public interface DriveRepository extends Subsystem{
      * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
      * PathPlannerで良さそうだけど一応置いとく
     */
-    void setAngle(double setAngle);
+    void setAngle(double setAngle ,double currentXSpeed, double currentYSpeed);
 
 
     void buildAuto();
