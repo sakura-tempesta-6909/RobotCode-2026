@@ -7,4 +7,7 @@ public class UsecaseUtil {
     public static double calcArmPosition(double targetPosition) {
         return targetPosition + UsecaseConst.RobotStructure.DistanceToArm;
     }
+    public static double calcurateTargetAngle(double targetPosition) {
+        return targetPosition + UsecaseConst.RobotStructure.DistanceToArm;
+    }
 }

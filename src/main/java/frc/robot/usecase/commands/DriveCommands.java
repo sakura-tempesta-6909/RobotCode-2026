@@ -1,5 +1,6 @@
 package frc.robot.usecase.commands;
 
+import java.lang.annotation.Target;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -16,6 +17,7 @@ import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.usecase.UsecaseConst;
+import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
 
 public class DriveCommands{
@@ -72,12 +74,14 @@ public class DriveCommands{
         return AutoBuilder.pathfindThenFollowPath(path, UsecaseConst.PathPlannerConst.Unlimited);
     }
 
-    /** 目標の位置まで移動する
-     * 目標値まで到達したら終了
-     * 初期化処理:PIDのリセット
+
+    /**
+     * 目標値に対してのPathを現在地を元に自動生成して動く
+     * ただし、WaypointはGUIの方で設定したものを利用できないので、注意は必要
+     * @return
      */
-    public static Command moveToTargetPose(Supplier<Pose2d> targetSupplier){
-        return AutoBuilder.pathfindThenFollowPath(null,null);
+    public static Command moveToTargetPose(Pose2d targetPose) {
+        return AutoBuilder.pathfindToPose(targetPose, UsecaseConst.PathPlannerConst.Unlimited);
     }
 
     /** Hubまで移動する
@@ -85,7 +89,8 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose (()->(DriveParameter.Poses.TargetPoseOfHub));
+        return moveToTargetPose ((DriveParameter.Poses.TargetPoseOfHub));
+
     }
 
     /** 目標の角度まで回転する
