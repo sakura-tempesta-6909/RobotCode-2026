@@ -2,6 +2,10 @@ package frc.robot.usecase;
 
 import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+
 /**
  * Usecaseで使うような定数
  */
@@ -15,5 +19,15 @@ public class UsecaseConst {
      */
     public static final class RobotStructure {
         public static final double DistanceToArm = -10;
+    }
+
+    public static final class Poses{
+        public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
+        /** Hubへの目標地点 */
+        public static final Pose2d TargetPoseToHub = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
+        /** Hubへの目標角度 */
+        public static final double TargetAngleOfHub = 0;
+        /** Hubの中心の座標 */
+        public static final Pose2d HubPosition = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
     }
 }

@@ -56,7 +56,7 @@ public class DriveCommands{
      * @return
      */
     public static Command GoToGoal() {
-        return AutoBuilder.pathfindToPose(DriveParameter.Poses.inFrontOfGoal, UsecaseConst.PathPlannerConst.Unlimited);
+        return AutoBuilder.pathfindToPose(UsecaseConst.Poses.inFrontOfGoal, UsecaseConst.PathPlannerConst.Unlimited);
     }
 
     /**
@@ -89,7 +89,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose ((DriveParameter.Poses.TargetPoseOfHub));
+        return moveToTargetPose ((UsecaseConst.Poses.TargetPoseToHub));
 
     }
 
@@ -97,11 +97,11 @@ public class DriveCommands{
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
      */
-    public static Command setAngle(DoubleSupplier targetSupplier) {
+    public static Command setAngle(double targetAngle) {
         return driveRepository.startRun(()->{
             driveRepository.resetPID();
         },()->{
-            driveRepository.setAngle(targetSupplier.getAsDouble());
+            driveRepository.setAngle(targetAngle);
         });
     }
 
@@ -110,7 +110,8 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command faceToHub(){
-        return setAngle(()->(DriveParameter.Poses.TargetAngleOfHub));
+        /** DriveInfraが来てから現在の角度書く */
+        return setAngle(UsecaseUtil.calcurateTargetAngle(null));
     }
 
     
