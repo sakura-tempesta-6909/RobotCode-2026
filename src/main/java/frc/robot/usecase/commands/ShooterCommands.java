@@ -13,9 +13,9 @@ public class ShooterCommands {
         ShooterRepository = sh;
     }
 
-    public static Command moveShooterSpecifiedSpeed(DoubleSupplier targetSupplier){
+    public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(targetSupplier.getAsDouble()),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble()),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
@@ -26,27 +26,26 @@ public class ShooterCommands {
     /**
      *  ハブへシュート
      */
-    public static Command shootToHub(DoubleSupplier targetSupplier) {
-        return moveShooterSpecifiedSpeed(targetSupplier);
+    public static Command shootToHub() {
+        return moveShooterSpecifiedSpeed(() -> 1.0);
     }
 
     /**
      *  自アライアンス側にフィードする
      */
-    public static Command feed(DoubleSupplier targetSupplier) {
-        return moveShooterSpecifiedSpeed(targetSupplier);
+    public static Command feed() {
+        return moveShooterSpecifiedSpeed(() -> 0.7);
     }
 
     /** 
      * 詰まり解消のための逆回転
      * 負の数を入れる
      */
-    public static Command reverseShooter(DoubleSupplier targetSupplier) {
+    public static Command reverseShooter() {
         return ShooterRepository.runEnd(
-            () -> ShooterRepository.moveShooterSpecifedPower(-0.4),
+            () -> ShooterRepository.moveShooterSpecifedPower(-0.7),
             () -> {
                 ShooterRepository.moveShooterSpecifedPower(0.0);
-                ShooterRepository.resetPID();
             }
         );
     }

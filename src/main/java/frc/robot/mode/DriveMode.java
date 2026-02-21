@@ -1,5 +1,8 @@
 package frc.robot.mode;
 
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 import frc.robot.RobotContainer;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.option.DriveOption.DriveOriented;
@@ -27,17 +30,15 @@ public class DriveMode extends Mode {
         configureDefault();
 
         driveController.rightBumper().whileTrue(DriveOption.driveOriented.set(DriveOriented.s_robotOriented));
-
                 
-        operateController.a().onTrue(ShooterCommands.shootToHub(() -> 1.0));
-        operateController.b().onTrue(ShooterCommands.feed(() -> 0.8));
-        operateController.x().onTrue(ShooterCommands.reverseShooter(() -> -0.4));
-        operateController.y().onTrue(ShooterCommands.moveShooterSpecifiedSpeed(() -> 0.5));
+     /**
+       *operateController.a().onTrue(ShooterCommands.shootToHub());
+        operateController.b().onTrue(ShooterCommands.feed());
+        operateController.x().onTrue(ShooterCommands.reverseShooter());
 
         //実験用に
-        operateController.leftBumper().onTrue(ShooterCommands.moveShooterSpecifiedSpeed(() -> 0.3));
-        operateController.rightBumper().onTrue(ShooterCommands.moveShooterSpecifiedSpeed(() -> 0.7));
-        operateController.leftTrigger().whileTrue(ShooterCommands.reverseShooter(() -> -0.4));
-        operateController.rightTrigger().whileTrue(ShooterCommands.shootToHub(() -> 1.0));
+        operateController.leftTrigger().whileTrue(ShooterCommands.reverseShooter());
+        operateController.rightTrigger().whileTrue(ShooterCommands.shootToHub());
+       */
     }
 }
