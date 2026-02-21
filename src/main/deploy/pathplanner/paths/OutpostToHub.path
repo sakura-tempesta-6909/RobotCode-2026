@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4202246817129633,
-        "y": 0.6463472222222215
+        "x": 0.9383863372428776,
+        "y": 0.3172558018462577
       },
       "isLocked": false,
       "linkedName": "Outpost"
@@ -20,8 +20,8 @@
         "y": 2.534749565972222
       },
       "prevControl": {
-        "x": 1.4504769965277777,
-        "y": 2.534749565972222
+        "x": 2.7256823563217294,
+        "y": 2.922231820357657
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 52.77460052838666
+    "rotation": 35.79628581170271
   },
   "reversed": false,
   "folder": null,

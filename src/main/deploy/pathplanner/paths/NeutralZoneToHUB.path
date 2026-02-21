@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "DepotSideHub"
+      "linkedName": "DepoSideHub"
     }
   ],
   "rotationTargets": [],
@@ -74,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -53.27385090259393
+    "rotation": -44.35159197020918
   },
   "reversed": false,
   "folder": null,
