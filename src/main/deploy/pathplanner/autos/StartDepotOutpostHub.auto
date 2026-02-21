@@ -7,26 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartToReef"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "ReefToLeftStation"
-                }
-              }
-            ]
+            "pathName": "StartToDepot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "LeftStationToReef"
+            "pathName": "DepotToOutpost"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToHub"
           }
         }
       ]
