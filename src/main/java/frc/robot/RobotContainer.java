@@ -17,6 +17,7 @@ import frc.robot.usecase.commands.*;
 import frc.robot.auto.AutoCommand;
 import frc.robot.auto.AutoCommandConfigure;
 import frc.robot.components.drive.infrastructure.BasicDrive;
+
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
 import frc.robot.components.template.infrastructure.Template;
@@ -82,6 +83,7 @@ public class RobotContainer {
     VisionCommands.init(m_vision);
 
     AutoCommandConfigure.registerCommands();
+    AutoCommand.buildAutoChooser();
     
     Mode.setupMode();
     Mode.configureModeBindings();

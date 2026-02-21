@@ -1,14 +1,13 @@
 package frc.robot.components.drive;
 
-import java.util.function.Supplier;
-
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+
+import java.util.function.Supplier;
 
 public final class DriveConst {
     public static final class ModuleConstants{
