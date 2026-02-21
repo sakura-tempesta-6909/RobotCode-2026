@@ -5,6 +5,9 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
@@ -39,6 +43,21 @@ public class BasicDrive implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
     });
+
+    private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
+            DriveConst.DriveConstants.kDriveKinematics,
+            gyro.getRotation2d(),
+            new SwerveModulePosition[] {
+                    frontLeft.getPosition(),
+                    frontRight.getPosition(),
+                    backLeft.getPosition(),
+                    backRight.getPosition()
+            },
+            new Pose2d(),
+            VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+            VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+
+    public final Vision vision = new Vision();
 
     public void buildAuto() {
         RobotConfig config;
@@ -84,6 +103,8 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void periodic(){
+        vision.periodic();
+
         odometer.update(getRotation2d(), 
         new SwerveModulePosition[]{
             frontLeft.getPosition(),
@@ -91,6 +112,17 @@ public class BasicDrive implements DriveRepository {
             backLeft.getPosition(),
             backRight.getPosition()
         });
+
+        m_poseEstimator.update(getRotation2d(),
+                new SwerveModulePosition[]{
+                        frontLeft.getPosition(),
+                        frontRight.getPosition(),
+                        backLeft.getPosition(),
+                        backRight.getPosition()
+                });
+
+        m_poseEstimator.addVisionMeasurement(vision.leftCameraPose,vision.leftCameraTimestamp);
+        m_poseEstimator.addVisionMeasurement(vision.rightCameraPose,vision.rightCameraTimestamp);
 
         DriveState.drivePosition = getPose();
     }
@@ -103,7 +135,8 @@ public class BasicDrive implements DriveRepository {
     }
 
     private Pose2d getPose(){
-        return odometer.getPoseMeters();
+        //return odometer.getPoseMeters();
+        return m_poseEstimator.getEstimatedPosition();
     }
 
     private ChassisSpeeds getChassisSpeeds() {
