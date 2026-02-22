@@ -2,7 +2,7 @@ package frc.robot.components.extender;
 
 public final class ExtenderParameter {
     public static final class SoftLimit{
-        /** Liftのソフトリミット(リミットスイッチが壊れるかもしれないからね！)[degree] */
+        /** Extenderのソフトリミット(リミットスイッチが壊れるかもしれないからね！)[degree] */
         public static final double ForwardSoftLimit = 90;
         public static final double ReverseSoftLimit = 0;
     }
