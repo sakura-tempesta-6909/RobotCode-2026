@@ -56,12 +56,4 @@ public class DriveParameter {
         public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
     }
 
-    public static final class Vision{
-        /** ロボットの中心から見た左カメラの位置 */
-        public static final Transform3d kRobotToLeftCamera =
-                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-        /** ロボットの中心から見た右カメラの位置 */
-        public static final Transform3d kRobotToRightCamera =
-                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    }
 }

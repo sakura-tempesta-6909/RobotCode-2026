@@ -1,7 +1,6 @@
 package frc.robot.components.drive.infrastructure;
 
 import frc.robot.components.drive.DriveConst;
-import frc.robot.components.drive.DriveParameter;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import org.photonvision.EstimatedRobotPose;
@@ -9,7 +8,6 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 
-import java.awt.*;
 import java.util.Optional;
 
 public class Vision {
@@ -26,8 +24,8 @@ public class Vision {
     public final PhotonCamera rightCamera;
 
     public  Vision(){
-        leftEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout,DriveParameter.Vision.kRobotToLeftCamera);
-        rightEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout,DriveParameter.Vision.kRobotToRightCamera);
+        leftEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout,DriveConst.Vision.kRobotToLeftCamera);
+        rightEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout,DriveConst.Vision.kRobotToRightCamera);
 
         leftCamera = new PhotonCamera("leftCamera");
         rightCamera = new PhotonCamera("rightCamera");

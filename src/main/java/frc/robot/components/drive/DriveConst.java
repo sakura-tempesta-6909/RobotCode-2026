@@ -6,7 +6,10 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -122,6 +125,12 @@ public final class DriveConst {
 
     public static final class Vision{
         public static final AprilTagFieldLayout kTagLayout =
-                AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+                AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
+        /** ロボットの中心から見た左カメラの位置 */
+        public static final Transform3d kRobotToLeftCamera =
+                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+        /** ロボットの中心から見た右カメラの位置 */
+        public static final Transform3d kRobotToRightCamera =
+                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     }
 }
