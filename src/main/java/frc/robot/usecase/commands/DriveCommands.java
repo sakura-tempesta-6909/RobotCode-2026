@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
+import frc.robot.domain.state.DriveState;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
-import frc.robot.domain.state.*;
 import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
@@ -113,7 +113,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command faceToHub(){
-        return setAngle(() -> UsecaseUtil.calcurateTargetAngle());
+        return setAngle(() -> UsecaseUtil.calcurateTargetAngle(DriveState.drivePosition));
     }
 
     

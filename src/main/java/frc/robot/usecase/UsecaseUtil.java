@@ -42,10 +42,8 @@ public class UsecaseUtil {
     /** Hubに向くときの目標の角度を計算する
      * @return theta 目標に向かった角度[degree]
     */
-    public static double calcurateTargetAngle() {
-        Pose2d current = DriveState.drivePosition;
+    public static double calcurateTargetAngle(Pose2d current) {
         Pose2d relativePose = current.relativeTo(getHubPosition());
-        
         double Xdifference = relativePose.getX();
         double Ydifference = relativePose.getY();
         Rotation2d theta = new Rotation2d(Xdifference, Ydifference);
