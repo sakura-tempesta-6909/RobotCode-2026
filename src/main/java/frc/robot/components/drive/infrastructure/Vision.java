@@ -14,8 +14,8 @@ public class Vision {
     double leftCameraTimestamp;
     double rightCameraTimestamp;
 
-    Pose2d leftCameraPose;
-    Pose2d rightCameraPose;
+    Optional<Pose2d> leftCameraPose = Optional.empty();
+    Optional<Pose2d> rightCameraPose = Optional.empty();
 
     public final PhotonPoseEstimator leftEstimator;
     public final PhotonPoseEstimator rightEstimator;
@@ -32,6 +32,10 @@ public class Vision {
     }
 
     private  void updateLeftCamera(){
+        if (!leftCamera.isConnected()) {
+            leftCameraPose = Optional.empty();
+            return;
+        }
         for(PhotonPipelineResult result: leftCamera.getAllUnreadResults()){
             Optional<EstimatedRobotPose> visionEst = leftEstimator.estimateCoprocMultiTagPose(result);
             if (visionEst.isEmpty()) {
@@ -39,7 +43,7 @@ public class Vision {
             }
             visionEst.ifPresent(
                     est -> {
-                        leftCameraPose = est.estimatedPose.toPose2d();
+                        leftCameraPose = Optional.of(est.estimatedPose.toPose2d());
                         leftCameraTimestamp = est.timestampSeconds;
                     });
         }
@@ -53,7 +57,7 @@ public class Vision {
             }
             visionEst.ifPresent(
                     est -> {
-                        rightCameraPose = est.estimatedPose.toPose2d();
+                        rightCameraPose = Optional.of(est.estimatedPose.toPose2d());
                         rightCameraTimestamp = est.timestampSeconds;
                     });
         }

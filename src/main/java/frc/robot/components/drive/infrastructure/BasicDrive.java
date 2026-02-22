@@ -121,8 +121,12 @@ public class BasicDrive implements DriveRepository {
                         backRight.getPosition()
                 });
 
-        m_poseEstimator.addVisionMeasurement(vision.leftCameraPose,vision.leftCameraTimestamp);
-        m_poseEstimator.addVisionMeasurement(vision.rightCameraPose,vision.rightCameraTimestamp);
+        vision.leftCameraPose.ifPresent(pose -> {
+            m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
+        });
+        vision.rightCameraPose.ifPresent(pose -> {
+            m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
+        });
 
         DriveState.drivePosition = getPose();
     }
