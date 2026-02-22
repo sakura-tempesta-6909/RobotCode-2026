@@ -1,6 +1,7 @@
 package frc.robot.usecase;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.components.drive.DriveParameter;
 
@@ -15,16 +16,16 @@ public class UsecaseUtil {
 
     /** Hubに向くときの目標の角度を計算する 
      * @param currentPosition 現在の位置
+     * @return theta 目標に向かった角度[rotation2d]
     */
-    public static double calcurateTargetAngle(Pose2d currentPosition) {
+    public static Rotation2d calcurateTargetAngle(Pose2d currentPosition) {
         Pose2d hub = UsecaseConst.Poses.HubPosition;
         Pose2d current = currentPosition;
         Pose2d relativePose = current.relativeTo(hub);
         
         double Xdifference = relativePose.getX();
         double Ydifference = relativePose.getY();
-        double tangentTheta = Xdifference/Ydifference;
-        double theta = Math.atan(tangentTheta);
+        Rotation2d theta = new Rotation2d(Xdifference, Ydifference);
         return theta;
     }
 }
