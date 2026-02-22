@@ -150,17 +150,16 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
-    
+    /** ロボットを任意の角度に回転させる 
+     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
+     * @param currentXSpeed X軸方向のスピード xは実行中もchassisSpeedから最新のものを入れる。
+     * @param currentYSpeed Y軸方向のスピード yは実行中もchassisSpeedから最新のものを入れる。*/
+     
     public void setAngle(double setAngle, double currentXSpeed, double currentYSpeed) {
-
-        double PIDoutput = anglePID.calculate(getHeading(),setAngle);
-        double output = MathUtil.clamp(PIDoutput, -1, 1);
-        output *= DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
+        double output = anglePID.calculate(getHeading(),setAngle);
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(currentXSpeed,currentYSpeed,targetAngularSpeed);
         setChassisSpeeds(speed);
-        
-        
     }
 
     
