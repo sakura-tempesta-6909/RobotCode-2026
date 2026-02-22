@@ -23,6 +23,7 @@ import frc.robot.components.drive.DriveConst.DriveConstants;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
 
@@ -156,8 +157,10 @@ public class BasicDrive implements DriveRepository {
     public void setAngle(double setAngle, double currentXSpeed, double currentYSpeed) {
         double output = anglePID.calculate(getHeading(),setAngle);
         output *= DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
-        ChassisSpeeds speed = new ChassisSpeeds(currentXSpeed,currentYSpeed,output);
+        double targetAngularSpeed = MathUtil.clamp(output, -DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
+        ChassisSpeeds speed = new ChassisSpeeds(currentXSpeed,currentYSpeed,targetAngularSpeed);
         setChassisSpeeds(speed);
+        
         
     }
 
