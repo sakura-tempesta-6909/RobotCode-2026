@@ -3,8 +3,8 @@ package frc.robot.components.extender;
 public final class ExtenderParameter {
     public static final class SoftLimit{
         /** Liftのソフトリミット(リミットスイッチが壊れるかもしれないからね！)[degree] */
-        public static final double ForwardSoftLimit = 0;
-        public static final double ReverseSoftLimit = 90;
+        public static final double ForwardSoftLimit = 90;
+        public static final double ReverseSoftLimit = 0;
     }
 
     public  static final class PID{
@@ -21,6 +21,7 @@ public final class ExtenderParameter {
     /** 指定の位置に移動したか判断する時に許す誤差の範囲 | 単位は度(degree)*/
     public static final double allowableError = 2.5;
 
+    /** 初期位置の角度。地面とextenderの底が並行な時に0,垂直な時90度*/
     public static final double InitialAngle = 90;
 
     public static final double FFPower = 0.0;

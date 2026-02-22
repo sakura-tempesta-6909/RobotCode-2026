@@ -15,6 +15,6 @@ public interface ExtenderRepository extends Subsystem {
     void resetPID();
 
     /** encoderをリセットする */
-    void resetEncorder();
+    void resetEncorder(double resetPosition);
 
 }

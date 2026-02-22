@@ -69,9 +69,9 @@ public class Extender implements ExtenderRepository {
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
         ExtenderState.currentAngle = ExtenderTools.calcurateRotation(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
-        ExtenderState.isIntakeAngle = lowerExtenderLimitSwitch.get();
+        ExtenderState.isIntakePosition = lowerExtenderLimitSwitch.get();
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
-        ExtenderState.isInitialAngle = upperExtenderLimitSwitch.get();
+        ExtenderState.isInitialPosition = upperExtenderLimitSwitch.get();
     }
 
     @Override
@@ -79,14 +79,14 @@ public class Extender implements ExtenderRepository {
         /** 指定の距離移動するために必要な回転数を求める | rotation */
         double targetPosition = ExtenderTools.getRotationsForDistance(targetAngle);
         if (targetAngle > ExtenderState.currentAngle) {
-            while(ExtenderState.isInitialAngle == false){
+            if(ExtenderState.isInitialPosition == false){
                 /** 上昇する場合 */
                 extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
             }
             
                 
         } else {
-            while(ExtenderState.isIntakeAngle == false){
+            if(ExtenderState.isIntakePosition == false){
             /** 下降する場合 */  
             
             extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
@@ -107,8 +107,8 @@ public class Extender implements ExtenderRepository {
     }
 
     @Override
-    public void resetEncorder() {
-       extenderEncoder.setPosition(0);
+    public void resetEncorder(double resetPosition) {
+       extenderEncoder.setPosition(resetPosition);
     }
     
 }
