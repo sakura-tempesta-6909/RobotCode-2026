@@ -4,33 +4,33 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
-import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveConst.DriveConstants;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import org.littletonrobotics.junction.Logger;
 
 
-public class BasicDrive implements DriveRepository {
-    public final SwerveModule frontLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontLeft);
-    
-    public final SwerveModule frontRight = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontRight);
+public class BasicDriveSim implements DriveRepository {
+    public final SwerveModuleSim frontLeft = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.frontLeft);
+    public final SwerveModuleSim frontRight = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.frontRight);
+    public final SwerveModuleSim backLeft = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.backLeft);
+    public final SwerveModuleSim backRight = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.backRight);
 
-    public final SwerveModule backLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.backLeft);
+    private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    private final ADXRS450_GyroSim gyroSim = new ADXRS450_GyroSim(gyro);
 
-    public final SwerveModule backRight = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.backRight);
-        
-    private final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    private PPHolonomicDriveController driveController;
 
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
@@ -39,6 +39,10 @@ public class BasicDrive implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
     });
+
+    public BasicDriveSim() {
+        driveController = createDriveController();
+    }
 
     public void buildAuto() {
         RobotConfig config;
@@ -54,19 +58,23 @@ public class BasicDrive implements DriveRepository {
         this::resetOdometry,
         this::getChassisSpeeds,
         this::setChassisSpeeds,
-        new PPHolonomicDriveController(
-            new PIDConstants(DriveParameter.Auto.kPXYController, 0, 0),
-            new PIDConstants(DriveParameter.Auto.kPThetaController, 0, 0),
-            0.2
-        ),
+        driveController,
         config,
         () -> {
         return false;
         }, RobotContainer.getDriveInstance());
     }
 
+    private PPHolonomicDriveController createDriveController() {
+        return new PPHolonomicDriveController(
+            new PIDConstants(DriveParameter.Auto.kPXYController, 0, 0),
+            new PIDConstants(DriveParameter.Auto.kPThetaController, 0 ,0)
+        );
+    }
+
     @Override
     public void setChassisSpeeds(ChassisSpeeds speeds) {
+        gyroSim.setAngle(gyro.getAngle() + Math.toDegrees(getChassisSpeeds().omegaRadiansPerSecond * DriveConst.LoopPeriod));
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
         this.setModuleStates(moduleStates);
     }
@@ -81,10 +89,9 @@ public class BasicDrive implements DriveRepository {
         gyro.reset();
     }
 
-
     @Override
     public void periodic(){
-        odometer.update(getRotation2d(), 
+        odometer.update(getRotation2d(),
         new SwerveModulePosition[]{
             frontLeft.getPosition(),
             frontRight.getPosition(),
@@ -93,6 +100,24 @@ public class BasicDrive implements DriveRepository {
         });
 
         DriveState.drivePosition = getPose();
+
+        SwerveModuleState[] states = {
+            frontLeft.getState(),
+            frontRight.getState(),
+            backLeft.getState(),
+            backRight.getState()
+        };
+
+        Logger.recordOutput("Drive/Measured", new double[] {
+            states[0].angle.getRadians(), states[0].speedMetersPerSecond,
+            states[1].angle.getRadians(), states[1].speedMetersPerSecond,
+            states[2].angle.getRadians(), states[2].speedMetersPerSecond,
+            states[3].angle.getRadians(), states[3].speedMetersPerSecond
+        });
+        Logger.recordOutput("Drive/States", states);
+        Logger.recordOutput("Drive/GyroAngle", getRotation2d());
+        Logger.recordOutput("Drive/Pose", getPose());
+        Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
     }
 
     private double getHeading(){
@@ -133,9 +158,6 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void setAngle(double setAngle) {
-        /** PαthPlannerでいいけどとりあえず置いとく */
 
     }
-
-    
 }

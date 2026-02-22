@@ -1,5 +1,7 @@
 package frc.robot.usecase.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.domain.repository.ShooterRepository;
 
@@ -8,9 +10,5 @@ public class ShooterCommands {
 
     public static void init(ShooterRepository sh) {
         ShooterRepository = sh;
-    }
-
-    public static Command templateCommand() {
-        return ShooterRepository.run(()->{});
     }
 }
