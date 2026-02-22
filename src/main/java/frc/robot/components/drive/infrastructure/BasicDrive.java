@@ -155,7 +155,9 @@ public class BasicDrive implements DriveRepository {
      * PathPlannerで良さそうだけど一応置いとく
     */
     public void setAngle(double setAngle, double currentXSpeed, double currentYSpeed) {
-        double output = anglePID.calculate(getHeading(),setAngle);
+
+        double PIDoutput = anglePID.calculate(getHeading(),setAngle);
+        double output = MathUtil.clamp(PIDoutput, -1, 1);
         output *= DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond;
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(currentXSpeed,currentYSpeed,targetAngularSpeed);
