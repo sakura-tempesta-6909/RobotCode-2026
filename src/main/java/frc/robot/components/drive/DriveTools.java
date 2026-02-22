@@ -37,8 +37,8 @@ public class DriveTools {
     }
 
     /** シュート位置に近づいているか計算する 
-     * @param targetPosition :これから向かうシュートする場所
-     * @param currentPosition :現在の場所 
+     * @param targetPosition :これから向かうシュートする場所(x[m],y[m])
+     * @param currentPosition :現在の場所(x[m],y[m])
      * @return shoot可能な場所にいるか */ 
     public static boolean isShootPosition(Pose2d targetPosition, Pose2d currentPosition){
         Pose2d pose = targetPosition;
@@ -54,10 +54,12 @@ public class DriveTools {
     }
 
     /** 行くべき場所を計算する 
-     * @param currentPosition 今のポジション*/
+     * @param currentPosition 今のポジション(x[m],y[m])*/
     public static Pose2d calculateTargetPosition(Pose2d currentPosition){
-        /** 後で計算式を置くがとりあえずそのまま入れておく */
-        Pose2d targetPosition = currentPosition;
+        /*TODO
+         https://sakuratempesta6909.sharepoint.com/:w:/s/frc/IQCfFKi-SVNCSYFRP7-lMi7UAYWVTCfZH4Fo4sKpiDRmdCw?e=dUodWL
+         上のやつを用いてターゲットの座標を出す*/
+        Pose2d targetPosition = null;
         return targetPosition;
     }
 }
