@@ -4,6 +4,7 @@ import java.lang.annotation.Target;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix6.swerve.jni.SwerveJNI.DriveState;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -16,6 +17,7 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
+import frc.robot.domain.state.*;
 import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
@@ -97,11 +99,11 @@ public class DriveCommands{
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
      */
-    public static Command setAngle(double targetAngle) {
+    public static Command setAngle(DoubleSupplier targetAngle) {
         return driveRepository.startRun(()->{
             driveRepository.resetPID();
         },()->{
-            driveRepository.setAngle(targetAngle);
+            driveRepository.setAngle(targetAngle.getAsDouble());
         });
     }
 
@@ -111,7 +113,7 @@ public class DriveCommands{
      */
     public static Command faceToHub(){
         /** DriveInfraが来てから現在の角度書く */
-        return setAngle(UsecaseUtil.calcurateTargetAngle(null));
+        return setAngle(() -> UsecaseUtil.calcurateTargetAngle());
     }
 
     
