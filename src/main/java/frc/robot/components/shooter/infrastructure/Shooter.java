@@ -45,8 +45,8 @@ public class Shooter implements ShooterRepository {
 
     @Override
     /** 
-     * Velocity制御でモーターを任意の速度で動かす 
-     * 範囲：-1～1　（負方向の最大回転数割合―1～正方向の最大回転数割合1まで）
+     * Velocity制御でモーターを任意の表面速度m/sで動かす 
+     * 範囲：-30.17m/sから30.17m/sまで
      * 正回転でシュート
      * 0で停止
     */
