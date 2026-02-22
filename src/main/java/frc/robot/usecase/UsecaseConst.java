@@ -23,9 +23,14 @@ public class UsecaseConst {
 
     public static final class Poses{
         public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
-        /** Hubへの目標地点 */
+
+        /** Hubへの目標地点(x[m],y[m]) */
         public static final Pose2d TargetPoseToHub = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
-        /** Hubへの目標角度 */
+
+        /** Hubへの目標角度 [degree]
+         * 反時計回りが正
+         * 正面が0
+        */
         public static final double TargetAngleOfHub = 0;
         }
 

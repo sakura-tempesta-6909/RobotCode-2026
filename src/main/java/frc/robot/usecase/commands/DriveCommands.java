@@ -4,7 +4,7 @@ import java.lang.annotation.Target;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import com.ctre.phoenix6.swerve.jni.SwerveJNI.DriveState;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
+import frc.robot.components.drive.infrastructure.BasicDrive;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
@@ -98,13 +99,16 @@ public class DriveCommands{
     /** 目標の角度まで回転する
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
-     * @param targetAngle 目標の角度
+     * @param targetAngle 目標の角度[degree]
      */
     public static Command setAngle(DoubleSupplier targetAngle) {
         return driveRepository.startRun(()->{
             driveRepository.resetPID();
         },()->{
-            driveRepository.setAngle(targetAngle.getAsDouble());
+            ChassisSpeeds speed = DriveState.driveXYOmegaSpeed;
+            double Xspeed = speed.vxMetersPerSecond;
+            double Yspeed = speed.vxMetersPerSecond;
+            driveRepository.setAngle(targetAngle.getAsDouble(),Xspeed , Yspeed);
         });
     }
 
