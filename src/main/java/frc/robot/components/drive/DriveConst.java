@@ -6,11 +6,14 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 import java.util.function.Supplier;
@@ -132,5 +135,11 @@ public final class DriveConst {
         /** ロボットの中心から見た右カメラの位置 */
         public static final Transform3d kRobotToRightCamera =
                 new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+
+        /** ロボットの内部センサー（エンコーダ・ジャイロ）の推定精度。数値が小さいほど信頼する */
+        public static final Vector<N3> kStateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+
+        /** ビジョン（カメラ）による推定精度。数値が小さいほど信頼する */
+        public static final Vector<N3> kVisionStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
     }
 }

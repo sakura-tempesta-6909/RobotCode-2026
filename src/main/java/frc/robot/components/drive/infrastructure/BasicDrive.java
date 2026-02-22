@@ -54,8 +54,8 @@ public class BasicDrive implements DriveRepository {
                     backRight.getPosition()
             },
             new Pose2d(),
-            VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-            VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+            DriveConst.Vision.kStateStdDevs,
+            DriveConst.Vision.kVisionStdDevs);
 
     public final Vision vision = new Vision();
 
