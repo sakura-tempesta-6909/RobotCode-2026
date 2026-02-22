@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
+import frc.robot.components.shooter.ShooterConst;
 
 public class ShooterCommands {
     private static ShooterRepository ShooterRepository;
@@ -15,7 +16,7 @@ public class ShooterCommands {
 
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble()),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble() * 60 / 3.14 / ShooterConst.WheelDiameter),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
@@ -27,14 +28,20 @@ public class ShooterCommands {
      *  ハブへシュート
      */
     public static Command shootToHub() {
-        return moveShooterSpecifiedSpeed(() -> 1.0);
+        return moveShooterSpecifiedSpeed(() -> 20);
     }
 
     /**
-     *  自アライアンス側にフィードする
+     *  自アライアンス側エリアにボールを投げ入れる
      */
     public static Command feed() {
-        return moveShooterSpecifiedSpeed(() -> 0.7);
+        return ShooterRepository.startEnd(
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(0.7),
+            () -> {
+                ShooterRepository.moveShooterSpecifiedSpeed(0);
+                ShooterRepository.resetPID();
+            }
+        );
     }
 
     /** 
