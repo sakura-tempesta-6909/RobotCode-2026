@@ -16,10 +16,8 @@ public class Shooter implements ShooterRepository {
     private final SparkMax motor;
     private final SparkClosedLoopController pid;
 
-    private static final int MotorCAN_ID = ShooterConst.Ports.ShooterMotor;
-
     public Shooter() {
-        motor = new SparkMax(MotorCAN_ID, MotorType.kBrushless);
+        motor = new SparkMax(ShooterConst.Ports.ShooterMotor, MotorType.kBrushless);
 
         SparkMaxConfig config = new SparkMaxConfig();
 
@@ -35,16 +33,31 @@ public class Shooter implements ShooterRepository {
     }
 
     @Override
+    /** 
+     * PercentOutputでモーターを任意の速度で動かす
+     * 範囲：-1～1 （負方向の最大出力割合―1～正方向の最大出力割合1まで）
+     * 正回転でシュート
+     * 0で停止
+     */
     public void moveShooterSpecifedPower(double targetPower) {
         motor.set(targetPower);
     }
 
     @Override
+    /** 
+     * Velocity制御でモーターを任意の速度で動かす 
+     * 範囲：-1～1　（負方向の最大回転数割合―1～正方向の最大回転数割合1まで）
+     * 正回転でシュート
+     * 0で停止
+    */
     public void moveShooterSpecifiedSpeed(double targetSpeed) {
         pid.setReference(targetSpeed, SparkMax.ControlType.kVelocity);
     }
 
     @Override
+    /**
+     * PIDをリセット
+     */
     public void resetPID() {
         pid.setReference(0, SparkMax.ControlType.kVelocity);
     }
@@ -56,6 +69,7 @@ public class Shooter implements ShooterRepository {
     public void periodic() {
         double WheelRPM = motor.getEncoder().getVelocity();
 
-        ShooterState.motorSpeed = ShooterTools.rpmToSurfaceSpeed(WheelRPM, ShooterConst.WheelDiameter);
+        /** stateに現在の表面速度を書き込む（m/s）*/
+        ShooterState.motorSpeed = ShooterTools.rpmToSurfaceSpeed(WheelRPM);
     }
 }
