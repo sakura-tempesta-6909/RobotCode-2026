@@ -65,9 +65,9 @@ public class Extender implements ExtenderRepository {
     @Override
     public void periodic() {
         /** Extenderのモーターが動作しているか|動いている->true,停止->false*/
-        ExtenderState.isMotorActive = Math.abs(extenderEncoder.getVelocity()) > 0.1;
+        ExtenderState.isMotorActive = Math.abs(extenderEncoder.getVelocity()) > ExtenderConst.ExtenderMotorMinRotation;
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
-        ExtenderState.currentAngle = extenderEncoder.getPosition() + ExtenderParameter.InitialAngle;
+        ExtenderState.currentAngle = ExtenderTools.calcurateRotation(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.isIntakeAngle = lowerExtenderLimitSwitch.get();
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
@@ -77,16 +77,20 @@ public class Extender implements ExtenderRepository {
     @Override
     public void moveExtenderSpecifiedAngle(double targetAngle) {
         /** 指定の距離移動するために必要な回転数を求める | rotation */
-        double targetPosition = ExtenderTools.getRotationsForDistance(ExtenderTools.getDistanceToTarget(targetAngle));
+        double targetPosition = ExtenderTools.getRotationsForDistance(targetAngle);
         if (targetAngle > ExtenderState.currentAngle) {
-            /** 上昇する場合 */
-            extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
+            while(ExtenderState.isInitialAngle == false){
+                /** 上昇する場合 */
+                extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
+            }
             
                 
         } else {
+            while(ExtenderState.isIntakeAngle == false){
             /** 下降する場合 */  
             
             extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
+            }
         }
     }
 

@@ -19,7 +19,14 @@ public final class ExtenderConst {
         public static final ClosedLoopSlot ExtenderLoweringSlot = ClosedLoopSlot.kSlot1;
 
     }
+    /** extenderのモーターのギア比。モーターの軸に対するextenderの軸 */
     public static final double GearRatio = 1;
+
+    /** モーターを動かす最大のRPM
+     *  これをもとにパーセントで制御している| 単位はRPM*/
+    public static final double ExtenderMotorMaxRPM = 5676;
+    /** モーターを動かす最小のRPM（動いているとき）*/
+    public static final double ExtenderMotorMinRotation = 0.1;
 
     
 }
