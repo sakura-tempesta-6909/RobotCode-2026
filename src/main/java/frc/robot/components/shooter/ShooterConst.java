@@ -5,6 +5,6 @@ public final class ShooterConst {
         /** ShooterのCANID */
         public static final int ShooterMotor = 16;
     }
-    /** Wheelの直径 */
+    /** Wheelの直径　単位m */
     public static double WheelDiameter = 0.1016;
 }
