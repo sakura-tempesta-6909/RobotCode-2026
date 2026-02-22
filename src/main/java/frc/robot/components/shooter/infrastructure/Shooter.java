@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.domain.state.ShooterState;
+import frc.robot.components.shooter.ShooterParameter;
 
 public class Shooter implements ShooterRepository {
 
@@ -21,11 +22,11 @@ public class Shooter implements ShooterRepository {
 
         SparkMaxConfig config = new SparkMaxConfig();
 
-        config.closedLoop.p(0);
-        config.closedLoop.i(0);
-        config.closedLoop.d(0);
-        config.closedLoop.feedForward.kS(0);
-        config.closedLoop.feedForward.kV(0);
+        config.closedLoop.p(ShooterParameter.pGain);
+        config.closedLoop.i(ShooterParameter.iGain);
+        config.closedLoop.d(ShooterParameter.dGain);
+        config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
+        config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
 
@@ -53,9 +54,8 @@ public class Shooter implements ShooterRepository {
     @Override
     public void periodic() {
         double WheelRPM = motor.getEncoder().getVelocity();
-        double WheelDiameter = 0.1016;
 
         //RPMとウィールの直径から表面速度を計算する
-        ShooterState.motorSpeed = WheelRPM * WheelDiameter * 3.14 / 60;
+        ShooterState.motorSpeed = WheelRPM * ShooterConst.WheelDiameter * 3.14 / 60;
     }
 }
