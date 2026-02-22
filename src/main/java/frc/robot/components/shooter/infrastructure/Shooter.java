@@ -9,6 +9,7 @@ import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.domain.state.ShooterState;
 import frc.robot.components.shooter.ShooterParameter;
+import frc.robot.components.shooter.ShooterTools;
 
 public class Shooter implements ShooterRepository {
 
@@ -55,7 +56,6 @@ public class Shooter implements ShooterRepository {
     public void periodic() {
         double WheelRPM = motor.getEncoder().getVelocity();
 
-        //RPMとウィールの直径から表面速度を計算する
-        ShooterState.motorSpeed = WheelRPM * ShooterConst.WheelDiameter * 3.14 / 60;
+        ShooterState.motorSpeed = ShooterTools.rpmToSurfaceSpeed(WheelRPM, ShooterConst.WheelDiameter);
     }
 }
