@@ -127,6 +127,7 @@ public final class DriveConst {
     }
 
     public static final class Vision{
+        /** フィールドにあるAprilTagのレイアウト */
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
         /** ロボットの中心から見た左カメラの位置 */
