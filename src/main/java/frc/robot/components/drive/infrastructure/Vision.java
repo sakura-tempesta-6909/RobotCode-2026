@@ -31,6 +31,7 @@ public class Vision {
         rightCamera = new PhotonCamera("rightCamera");
     }
 
+    /** LeftCameraから値を取ってきてPoseを更新する */
     private  void updateLeftCamera(){
         if (!leftCamera.isConnected()) {
             leftCameraPose = Optional.empty();
@@ -49,6 +50,7 @@ public class Vision {
         }
     }
 
+    /** RightCameraから値を取ってきてPoseを更新する */
     private  void updateRightCamera(){
         for(PhotonPipelineResult result: rightCamera.getAllUnreadResults()){
             Optional<EstimatedRobotPose> visionEst = rightEstimator.estimateCoprocMultiTagPose(result);
@@ -63,6 +65,7 @@ public class Vision {
         }
     }
 
+    /** Drive preodicで毎回実行する */
     public void periodic(){
         updateLeftCamera();
         updateRightCamera();
