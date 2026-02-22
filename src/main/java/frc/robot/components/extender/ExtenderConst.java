@@ -25,7 +25,7 @@ public final class ExtenderConst {
     /** モーターを動かす最大のRPM
      *  これをもとにパーセントで制御している| 単位はRPM*/
     public static final double ExtenderMotorMaxRPM = 5676;
-    /** モーターを動かす最小の速度（動いているとき）*/
+    /** モーターを動いていると判定する最小の速度（動いているとき）*/
     public static final double ExtenderMotorMinRotation = 0.1;
 
     

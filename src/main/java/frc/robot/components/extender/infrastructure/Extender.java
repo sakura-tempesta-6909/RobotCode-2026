@@ -79,17 +79,17 @@ public class Extender implements ExtenderRepository {
         /** 指定の距離移動するために必要な回転数を求める | rotation */
         double targetPosition = ExtenderTools.getRotationsForDistance(targetAngle);
         if (targetAngle > ExtenderState.currentAngle) {
-            if(ExtenderState.isInitialPosition == false){
+            if(!ExtenderState.isInitialPosition){
                 /** 上昇する場合 */
-                extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
+                extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
             }
             
                 
         } else {
-            if(ExtenderState.isIntakePosition == false){
+            if(!ExtenderState.isIntakePosition){
             /** 下降する場合 */  
             
-            extenderPID.setReference(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
+            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
             }
         }
     }
