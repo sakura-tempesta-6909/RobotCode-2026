@@ -52,6 +52,10 @@ public class Vision {
 
     /** RightCameraから値を取ってきてPoseを更新する */
     private  void updateRightCamera(){
+        if (!rightCamera.isConnected()) {
+            rightCameraPose = Optional.empty();
+            return;
+        }
         for(PhotonPipelineResult result: rightCamera.getAllUnreadResults()){
             Optional<EstimatedRobotPose> visionEst = rightEstimator.estimateCoprocMultiTagPose(result);
             if (visionEst.isEmpty()) {
