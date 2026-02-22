@@ -56,4 +56,12 @@ public class DriveParameter {
         public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
     }
 
+    /** 許容される差 */
+    public static final class Differences{
+        /** TODO
+         * 必要になったら使う
+         *許容される誤差[m]
+         */
+        public static final double arrowedDifference = 0.0;
+    }
 }
