@@ -17,7 +17,7 @@ public class ShooterCommands {
 
     /**
      *  Repositoryを呼び出し、supplierの速度でモーターを動かす
-     *  SUPPLIERの単位はm/s
+     *  @param supplier シューターの目標値　単位はm/s
      */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
@@ -44,7 +44,8 @@ public class ShooterCommands {
      */
     public static Command feed() {
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(ShooterParameter.feedRPM),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(
+                ShooterParameter.feedSpeed * 60 / 3.14 / ShooterConst.WheelDiameter),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();

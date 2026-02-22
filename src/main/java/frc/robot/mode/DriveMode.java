@@ -1,8 +1,5 @@
 package frc.robot.mode;
 
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
-
 import frc.robot.RobotContainer;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.option.DriveOption.DriveOriented;
@@ -29,6 +26,5 @@ public class DriveMode extends Mode {
         configureDefault();
 
         driveController.rightBumper().whileTrue(DriveOption.driveOriented.set(DriveOriented.s_robotOriented));
-
     }
 }
