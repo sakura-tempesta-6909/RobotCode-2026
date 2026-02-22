@@ -98,6 +98,7 @@ public class DriveCommands{
     /** 目標の角度まで回転する
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
+     * @param targetAngle 目標の角度
      */
     public static Command setAngle(DoubleSupplier targetAngle) {
         return driveRepository.startRun(()->{
@@ -112,7 +113,6 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command faceToHub(){
-        /** DriveInfraが来てから現在の角度書く */
         return setAngle(() -> UsecaseUtil.calcurateTargetAngle());
     }
 

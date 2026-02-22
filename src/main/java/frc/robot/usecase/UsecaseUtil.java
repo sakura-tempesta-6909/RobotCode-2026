@@ -25,23 +25,22 @@ public class UsecaseUtil {
      */
     public static Pose2d getHubPosition() {
         Optional<Alliance> ally = DriverStation.getAlliance();
-        Pose2d hub = UsecaseConst.Poses.HubPositionForRed;
+        Pose2d hub = UsecaseConst.Hubs.HubPositionForRed;
         if(ally.isPresent()){
             if(ally.get() == Alliance.Red){
-                hub = UsecaseConst.Poses.HubPositionForRed;
+                hub = UsecaseConst.Hubs.HubPositionForRed;
             }
             if(ally.get() == Alliance.Blue){
-                hub = UsecaseConst.Poses.HubPositionForBlue;
+                hub = UsecaseConst.Hubs.HubPositionForBlue;
             }
         }else{
-            hub = UsecaseConst.Poses.HubPositionForRed;
+            hub = UsecaseConst.Hubs.HubPositionForRed;
         }
         return hub;
     }
 
-    /** Hubに向くときの目標の角度を計算する 
-     * @param currentPosition 現在の位置
-     * @return theta 目標に向かった角度[rotation2d]
+    /** Hubに向くときの目標の角度を計算する
+     * @return theta 目標に向かった角度[degree]
     */
     public static double calcurateTargetAngle() {
         Pose2d current = DriveState.drivePosition;

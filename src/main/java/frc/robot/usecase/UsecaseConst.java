@@ -27,9 +27,13 @@ public class UsecaseConst {
         public static final Pose2d TargetPoseToHub = new Pose2d(new Translation2d(0, 0), new Rotation2d(0));
         /** Hubへの目標角度 */
         public static final double TargetAngleOfHub = 0;
+        }
+
+    public static final class Hubs{
         /** Hubの中心の座標(red) */
         public static final Pose2d HubPositionForRed = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
         /** Hubの中心の座標(blue) */
         public static final Pose2d HubPositionForBlue = new Pose2d(new Translation2d(0,0),new Rotation2d(0));
+    
     }
 }
