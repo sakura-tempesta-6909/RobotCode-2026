@@ -110,7 +110,7 @@ public class BasicDrive implements DriveRepository {
 
         DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
 
-        DriveState.targetPosition = DriveTools.culculateTargetPosition(getPose());
+        DriveState.targetPosition = DriveTools.calculateTargetPosition(getPose());
     }
 
     private double getHeading(){
@@ -150,10 +150,7 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
-    /** ロボットを任意の角度に回転させる 
-     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
-     * PathPlannerで良さそうだけど一応置いとく
-    */
+    
     public void setAngle(double setAngle, double currentXSpeed, double currentYSpeed) {
 
         double PIDoutput = anglePID.calculate(getHeading(),setAngle);
