@@ -26,11 +26,11 @@ public interface DriveRepository extends Subsystem{
 
     /** ロボットを任意の角度に回転させる 
      * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法
-     * @param currentXSoeed x軸方向のスピード[m/s]
-     * @param currentYSpeed y軸方向のスピード[m/s]
+     * @param XSoeed x軸方向のスピード[m/s]
+     * @param YSpeed y軸方向のスピード[m/s]
      * PathPlannerで良さそうだけど一応置いとく
     */
-    void setAngle(double setAngle ,double currentXSpeed, double currentYSpeed);
+    void setAngle(double setAngle ,double XSpeed, double YSpeed);
 
     void buildAuto();
 }

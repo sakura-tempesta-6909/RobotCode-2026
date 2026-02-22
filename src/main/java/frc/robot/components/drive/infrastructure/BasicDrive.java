@@ -153,7 +153,7 @@ public class BasicDrive implements DriveRepository {
     /** ロボットを任意の角度に回転させる 
      * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法[degree]
      * @param XSpeed X軸方向のスピード[m/s] 
-     * @param YSpeed Y軸方向のスピード[m/s] yは実行中もchassisSpeedから最新のものを入れる。*/
+     * @param YSpeed Y軸方向のスピード[m/s] */
      
     public void setAngle(double setAngle, double XSpeed, double YSpeed) {
         double output = anglePID.calculate(getHeading(),setAngle);
