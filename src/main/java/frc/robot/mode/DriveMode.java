@@ -8,7 +8,6 @@ import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.option.DriveOption.DriveOriented;
 import frc.robot.domain.option.DriveOption.DriveSpeed;
 import frc.robot.usecase.commands.DriveCommands;
-import frc.robot.usecase.commands.ShooterCommands;
 
 
 public class DriveMode extends Mode {
@@ -30,15 +29,6 @@ public class DriveMode extends Mode {
         configureDefault();
 
         driveController.rightBumper().whileTrue(DriveOption.driveOriented.set(DriveOriented.s_robotOriented));
-                
-     /**
-       *operateController.a().onTrue(ShooterCommands.shootToHub());
-        operateController.b().onTrue(ShooterCommands.feed());
-        operateController.x().onTrue(ShooterCommands.reverseShooter());
 
-        //実験用に
-        operateController.leftTrigger().whileTrue(ShooterCommands.reverseShooter());
-        operateController.rightTrigger().whileTrue(ShooterCommands.shootToHub());
-       */
     }
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
+import frc.robot.components.shooter.ShooterParameter;
 
 public class ShooterCommands {
     private static ShooterRepository ShooterRepository;
@@ -14,9 +15,16 @@ public class ShooterCommands {
         ShooterRepository = sh;
     }
 
+    /**
+     *  Repositoryを呼び出し、supplierの速度でモーターを動かす
+     *  SUPPLIERの単位はm/s
+     */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble() * 60 / 3.14 / ShooterConst.WheelDiameter),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(
+                supplier.getAsDouble() * 60 / 3.14 / ShooterConst.WheelDiameter
+                //表面速度からRPMを割り出す
+                ),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
@@ -28,7 +36,7 @@ public class ShooterCommands {
      *  ハブへシュート
      */
     public static Command shootToHub() {
-        return moveShooterSpecifiedSpeed(() -> 20);
+        return moveShooterSpecifiedSpeed(() -> ShooterParameter.shootSpeed);
     }
 
     /**
@@ -36,7 +44,7 @@ public class ShooterCommands {
      */
     public static Command feed() {
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(0.7),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(ShooterParameter.feedRPM),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
@@ -46,7 +54,7 @@ public class ShooterCommands {
 
     /** 
      * 詰まり解消のための逆回転
-     * 負の数を入れる
+     * 適当な負の数を入れる（PercentOutput）
      */
     public static Command reverseShooter() {
         return ShooterRepository.runEnd(
