@@ -58,4 +58,13 @@ public class DriveParameter {
         
 
     }
+
+    /** 許容される差 */
+    public static final class Differences{
+        /** TODO
+         * 必要になったら使う
+         *許容される誤差[m]
+         */
+        public static final double arrowedDifference = 0.0;
+    }
 }

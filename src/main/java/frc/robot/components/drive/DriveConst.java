@@ -1,16 +1,16 @@
 package frc.robot.components.drive;
 
-import java.util.function.Supplier;
-
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
+import java.util.function.Supplier;
+
 public final class DriveConst {
+    public static final double LoopPeriod = 0.02;
     public static final class ModuleConstants{
         public static final double kWheelDiameterMeters = edu.wpi.first.math.util.Units.inchesToMeters(4);
         public static final double kDriveMotorGearRatio = 1/6.12; // NEO 1回転でdrive motor が 1/6.12 回転する | drive motor 1回転 : NEO 6.12回転
