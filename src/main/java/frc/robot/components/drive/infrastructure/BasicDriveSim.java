@@ -4,6 +4,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -156,8 +158,14 @@ public class BasicDriveSim implements DriveRepository {
         backRight.setDesiredState(desiredStates[3]);
     }
 
+
     @Override
-    public void setAngle(double setAngle) {
+    /** ロボットを任意の角度に回転させる 
+     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法[degree]
+     * @param XSpeed X軸方向のスピード[m/s] 
+     * @param YSpeed Y軸方向のスピード[m/s] */
+     
+    public void setAngle(double setAngle, double XSpeed, double YSpeed) {
 
     }
 }
