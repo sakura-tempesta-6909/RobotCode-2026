@@ -101,14 +101,11 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      * @param targetAngle 目標の角度[degree]
      */
-    public static Command setAngle(DoubleSupplier targetAngle) {
+    public static Command setAngle(DoubleSupplier targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
         return driveRepository.startRun(()->{
             driveRepository.resetPID();
         },()->{
-            ChassisSpeeds speed = DriveState.driveXYOmegaSpeed;
-            double Xspeed = speed.vxMetersPerSecond;
-            double Yspeed = speed.vxMetersPerSecond;
-            driveRepository.setAngle(targetAngle.getAsDouble(),Xspeed , Yspeed);
+            driveRepository.setAngle(targetAngle.getAsDouble(),Xspeed.getAsDouble() , Yspeed.getAsDouble());
         });
     }
 
@@ -117,7 +114,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command faceToHub(){
-        return setAngle(() -> UsecaseUtil.calcurateTargetAngle(DriveState.drivePosition));
+        return setAngle(() -> UsecaseUtil.calcurateTargetAngle(DriveState.drivePosition), ()-> DriveState.driveXYOmegaSpeed.vxMetersPerSecond, ()-> DriveState.driveXYOmegaSpeed.vyMetersPerSecond);
     }
 
     
