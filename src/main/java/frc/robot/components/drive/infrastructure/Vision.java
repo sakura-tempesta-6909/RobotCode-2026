@@ -10,11 +10,18 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import java.util.Optional;
 
+/**
+ * PhotonVisionを使用してロボットの自己位置推定を行うクラス
+ */
 public class Vision {
+    /** 左カメラの最新データ取得時のタイムスタンプ | [s] */
     double leftCameraTimestamp;
+    /** 右カメラの最新データ取得時のタイムスタンプ | [s] */
     double rightCameraTimestamp;
 
+    /** 左カメラから推定されたロボットの位置（値がない場合はEmpty） | フィールド座標系 */
     Optional<Pose2d> leftCameraPose = Optional.empty();
+    /** 右カメラから推定されたロボットの位置（値がない場合はEmpty） | フィールド座標系 */
     Optional<Pose2d> rightCameraPose = Optional.empty();
 
     public final PhotonPoseEstimator leftEstimator;
@@ -23,23 +30,30 @@ public class Vision {
     public final PhotonCamera leftCamera;
     public final PhotonCamera rightCamera;
 
-    public  Vision(){
-        leftEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout,DriveConst.Vision.kRobotToLeftCamera);
-        rightEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout,DriveConst.Vision.kRobotToRightCamera);
+    /**
+     * Visionクラスのコンストラクタ。カメラとEstimatorの初期化を行う
+     */
+    public Vision(){
+        leftEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout, DriveConst.Vision.kRobotToLeftCamera);
+        rightEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout, DriveConst.Vision.kRobotToRightCamera);
 
         leftCamera = new PhotonCamera("leftCamera");
         rightCamera = new PhotonCamera("rightCamera");
     }
 
-    /** LeftCameraから値を取ってきてPoseを更新する */
-    private  void updateLeftCamera(){
+    /**
+     * 左カメラの未読の結果を取得し、ロボットの位置（Pose）とタイムスタンプを更新する
+     */
+    private void updateLeftCamera(){
         if (!leftCamera.isConnected()) {
             leftCameraPose = Optional.empty();
             return;
         }
         for(PhotonPipelineResult result: leftCamera.getAllUnreadResults()){
+            // 複数のタグが見えている場合の推定
             Optional<EstimatedRobotPose> visionEst = leftEstimator.estimateCoprocMultiTagPose(result);
             if (visionEst.isEmpty()) {
+                // 単一タグのみの場合、最も信頼できるポーズを推定
                 visionEst = leftEstimator.estimateLowestAmbiguityPose(result);
             }
             visionEst.ifPresent(
@@ -50,15 +64,20 @@ public class Vision {
         }
     }
 
-    /** RightCameraから値を取ってきてPoseを更新する */
-    private  void updateRightCamera(){
+    /**
+     * 右カメラの未読の結果を取得し、ロボットの姿勢（Pose）とタイムスタンプを更新する
+     */
+    private void updateRightCamera(){
         if (!rightCamera.isConnected()) {
             rightCameraPose = Optional.empty();
             return;
         }
+        // 未読のパイプライン結果をすべて処理する
         for(PhotonPipelineResult result: rightCamera.getAllUnreadResults()){
+            // 複数のタグが見えている場合の推定
             Optional<EstimatedRobotPose> visionEst = rightEstimator.estimateCoprocMultiTagPose(result);
             if (visionEst.isEmpty()) {
+                // 単一タグのみの場合、最も信頼できるポーズを推定
                 visionEst = rightEstimator.estimateLowestAmbiguityPose(result);
             }
             visionEst.ifPresent(
@@ -69,7 +88,9 @@ public class Vision {
         }
     }
 
-    /** Drive preodicで毎回実行する */
+    /**
+     * 各カメラのデータを更新する。Driveのperiodicなどで毎回に実行する
+     */
     public void periodic(){
         updateLeftCamera();
         updateRightCamera();
