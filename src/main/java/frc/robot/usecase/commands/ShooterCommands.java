@@ -7,6 +7,7 @@ import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
+import frc.robot.components.shooter.ShooterTools;
 
 public class ShooterCommands {
     private static ShooterRepository ShooterRepository;
@@ -16,15 +17,13 @@ public class ShooterCommands {
     }
 
     /**
-     *  Repositoryを呼び出し、supplierの速度でモーターを動かす
+     *  指定した目標値（supplier）の速度でシューターを動かす
      *  @param supplier シューターの目標値　単位はm/s
      */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                supplier.getAsDouble() * 60 / 3.14 / ShooterConst.WheelDiameter
-                //表面速度からRPMを割り出す
-                ),
+                ShooterTools.MpsToRPM(supplier.getAsDouble())),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
@@ -45,7 +44,7 @@ public class ShooterCommands {
     public static Command feed() {
         return ShooterRepository.startEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                ShooterParameter.feedSpeed * 60 / 3.14 / ShooterConst.WheelDiameter),
+                (ShooterTools.MpsToRPM(ShooterParameter.feedSpeed))),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
