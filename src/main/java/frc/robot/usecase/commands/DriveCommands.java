@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -101,20 +102,26 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      * @param targetAngle 目標の角度[degree]
      */
-    public static Command setAngle(DoubleSupplier targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
+    public static Command setAngle(Rotation2d targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
         return driveRepository.startRun(()->{
             driveRepository.resetPID();
         },()->{
-            driveRepository.setAngle(targetAngle.getAsDouble(),Xspeed.getAsDouble() , Yspeed.getAsDouble());
+            driveRepository.setAngle(targetAngle.getDegrees(),Xspeed.getAsDouble() , Yspeed.getAsDouble());
         });
     }
 
     /** Hubに向かった角度まで回転する
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
+     * @param xSpeedPercentSupplier x軸のコントローラーの入力
+     * @param ySpeedPercentSupplier x軸のコントローラーの入力
      */
-    public static Command faceToHub(){
-        return setAngle(() -> UsecaseUtil.calcurateTargetAngle(DriveState.drivePosition), ()-> DriveState.driveXYOmegaSpeed.vxMetersPerSecond, ()-> DriveState.driveXYOmegaSpeed.vyMetersPerSecond);
+    public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
+        double xSupplier = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+        double ySupplier = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+            
+                    
+        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xSupplier, ()->ySupplier);
     }
 
     

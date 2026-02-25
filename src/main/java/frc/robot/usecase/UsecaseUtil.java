@@ -33,20 +33,18 @@ public class UsecaseUtil {
             if(ally.get() == Alliance.Blue){
                 hub = UsecaseConst.Hubs.HubPositionForBlue;
             }
-        }else{
-            hub = UsecaseConst.Hubs.HubPositionForRed;
         }
         return hub;
     }
 
     /** Hubに向くときの目標の角度を計算する
-     * @return theta 目標に向かった角度[degree]
+     * @return theta 目標に向かった角度[rotation2d]
     */
-    public static double calcurateTargetAngle(Pose2d current) {
+    public static Rotation2d calcurateTargetAngleToShoot(Pose2d current) {
         Pose2d relativePose = current.relativeTo(getHubPosition());
         double Xdifference = relativePose.getX();
         double Ydifference = relativePose.getY();
         Rotation2d theta = new Rotation2d(Xdifference, Ydifference);
-        return theta.getDegrees();
+        return theta;
     }
 }
