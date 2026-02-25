@@ -4,7 +4,11 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.SparkClosedLoopController;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,13 +16,20 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveConst.DriveConstants;
+import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+
 
 
 public class BasicDrive implements DriveRepository {
@@ -32,6 +43,8 @@ public class BasicDrive implements DriveRepository {
         
     private final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
+    public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
+
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
         frontLeft.getPosition(),
@@ -39,6 +52,24 @@ public class BasicDrive implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
     });
+
+    private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
+            DriveConst.DriveConstants.kDriveKinematics,
+            gyro.getRotation2d(),
+            new SwerveModulePosition[] {
+                    frontLeft.getPosition(),
+                    frontRight.getPosition(),
+                    backLeft.getPosition(),
+                    backRight.getPosition()
+            },
+            new Pose2d(),
+            DriveConst.Vision.kStateStdDevs,
+            DriveConst.Vision.kVisionStdDevs);
+
+    public final Vision vision = new Vision();
+    public BasicDrive() {
+        anglePID.enableContinuousInput(-180, 180);
+    }
 
     public void buildAuto() {
         RobotConfig config;
@@ -84,6 +115,8 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void periodic(){
+        vision.periodic();
+
         odometer.update(getRotation2d(), 
         new SwerveModulePosition[]{
             frontLeft.getPosition(),
@@ -91,8 +124,28 @@ public class BasicDrive implements DriveRepository {
             backLeft.getPosition(),
             backRight.getPosition()
         });
+        DriveState.driveXYOmegaSpeed = getChassisSpeeds();
+
+        m_poseEstimator.update(getRotation2d(),
+                new SwerveModulePosition[]{
+                        frontLeft.getPosition(),
+                        frontRight.getPosition(),
+                        backLeft.getPosition(),
+                        backRight.getPosition()
+                });
+
+        vision.leftCameraPose.ifPresent(pose -> {
+            m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
+        });
+        vision.rightCameraPose.ifPresent(pose -> {
+            m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
+        });
 
         DriveState.drivePosition = getPose();
+
+        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
+
+        DriveState.targetPosition = DriveTools.calculateTargetPosition(getPose());
     }
 
     private double getHeading(){
@@ -103,7 +156,8 @@ public class BasicDrive implements DriveRepository {
     }
 
     private Pose2d getPose(){
-        return odometer.getPoseMeters();
+        //return odometer.getPoseMeters();
+        return m_poseEstimator.getEstimatedPosition();
     }
 
     private ChassisSpeeds getChassisSpeeds() {
@@ -132,9 +186,16 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
-    public void setAngle(double setAngle) {
-        /** PαthPlannerでいいけどとりあえず置いとく */
-
+    /** ロボットを任意の角度に回転させる 
+     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法[degree]
+     * @param XSpeed X軸方向のスピード[m/s] 
+     * @param YSpeed Y軸方向のスピード[m/s] */
+     
+    public void setAngle(double setAngle, double XSpeed, double YSpeed) {
+        double output = anglePID.calculate(getHeading(),setAngle);
+        double targetAngularSpeed = MathUtil.clamp(output, -DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
+        ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
+        setChassisSpeedsFiledOriented(speed);
     }
 
     
