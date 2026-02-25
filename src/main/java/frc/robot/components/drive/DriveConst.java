@@ -137,10 +137,27 @@ public final class DriveConst {
         public static final Transform3d kRobotToRightCamera =
                 new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
-        /** ロボットの内部センサー（エンコーダ・ジャイロ）の推定精度。数値が小さいほど信頼する */
+        /** * ロボットの内部センサー（エンコーダ・ジャイロ）による推測航法の信頼度（標準偏差）。数値が小さいほどその値を強く反映する
+         * @param [0] X方向の推定誤差の標準偏差 | 前後方向 | [メートル]
+         * @param [1] Y方向の推定誤差の標準偏差 | 左右方向 | [メートル]
+         * @param [2] 旋回角の推定誤差の標準偏差 | 反時計回りが正 | [ラジアン]
+         * * これらの値はそれぞれの方向にどれくらいズレるもんだよてのを教えてあげる、
+         * ※ビジョン(Vision)よりも大幅に小さい値を設定する
+         * 詳細な設定方法は以下のドキュメントを参照：
+         * <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/estimator/SwerveDrivePoseEstimator.html">SwerveDrivePoseEstimator</a>
+         */
         public static final Vector<N3> kStateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
 
-        /** ビジョン（カメラ）による推定精度。数値が小さいほど信頼する */
+        /** * ビジョン（カメラ）による推定精度（標準偏差）。数値が小さいほどその値を信頼する。
+         * @param [0] X方向の推定誤差の標準偏差 | 正面方向 | [メートル]
+         * @param [1] Y方向の推定誤差の標準偏差 | 横方向 | [メートル]
+         * @param [2] 旋回角の推定誤差の標準偏差 | 時計回りが正 | [ラジアン]
+         * * これらの値はそれぞれの方向にどれくらいズレるもんだよてのを教えてあげる
+         * ※一般的に、StateStdDevsよりも大きな値（0.5〜1.0程度）を設定し、
+         * ビジョンによる急激な位置のジャンプ（テレポート）を抑制する。
+         * 詳細な設定方法は以下のドキュメントを参照：
+         *  * <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/estimator/SwerveDrivePoseEstimator.html">SwerveDrivePoseEstimator</a>
+         */
         public static final Vector<N3> kVisionStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
     }
 }
