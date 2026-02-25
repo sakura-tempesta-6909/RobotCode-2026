@@ -2,8 +2,8 @@ package frc.robot.components.shooter;
 
 public class ShooterTools {
 
-    /** m/sからRPMへ変換　*/
-    public static double MpsToRPM(double supplierMps) {
-        return supplierMps / ShooterConst.maxMps * ShooterConst.maxRPM;
+    /** 割合からRPMへ変換　*/
+    public static double RatioToRPM(double supplierRatio) {
+        return supplierRatio * ShooterConst.maxRPM;
     }
 }

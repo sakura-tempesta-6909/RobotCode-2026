@@ -17,13 +17,13 @@ public class ShooterCommands {
     }
 
     /**
-     *  指定した目標値（supplier）の速度でシューターを動かす
-     *  @param supplier シューターの目標値　単位はm/s
+     *  指定した目標値（supplier）の割合でシューターを動かす
+     *  @param supplier シューターの目標値　1.0で全速シュート┃-1.0で全速逆回転　0で停止
      */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                ShooterTools.MpsToRPM(supplier.getAsDouble())),
+                ShooterTools.RatioToRPM(supplier.getAsDouble())),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
@@ -44,7 +44,7 @@ public class ShooterCommands {
     public static Command feed() {
         return ShooterRepository.startEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                (ShooterTools.MpsToRPM(ShooterParameter.feedSpeed))),
+                (ShooterTools.RatioToRPM(ShooterParameter.feedSpeed))),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(0);
                 ShooterRepository.resetPID();
