@@ -18,7 +18,7 @@ public interface ShooterRepository extends Subsystem {
      * 正回転でシュート
      * 0で停止
      */
-    void moveShooterSpecifedPower(double targetPower);
+    void moveShooterSpecifiedPower(double targetPower);
 
     /** PIDのリセット */
     void resetPID();

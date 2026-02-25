@@ -25,7 +25,7 @@ public class ShooterCommands {
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
                 ShooterTools.RatioToRPM(supplier.getAsDouble())),
             () -> {
-                ShooterRepository.moveShooterSpecifiedSpeed(0);
+                ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.resetPID();
             }
         );
@@ -46,7 +46,7 @@ public class ShooterCommands {
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
                 (ShooterTools.RatioToRPM(ShooterParameter.feedSpeed))),
             () -> {
-                ShooterRepository.moveShooterSpecifiedSpeed(0);
+                ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.resetPID();
             }
         );
@@ -58,10 +58,19 @@ public class ShooterCommands {
      */
     public static Command reverseShooter() {
         return ShooterRepository.runEnd(
-            () -> ShooterRepository.moveShooterSpecifedPower(-0.7),
+            () -> ShooterRepository.moveShooterSpecifiedPower(ShooterParameter.reverseSpeed),
             () -> {
-                ShooterRepository.moveShooterSpecifedPower(0.0);
+                ShooterRepository.moveShooterSpecifiedPower(0.0);
             }
         );
+    }
+
+    /** 
+     * モーターを停止させるだけ
+     */
+    public static Command stopShooter() {
+        return ShooterRepository.startEnd(
+            () -> ShooterRepository.moveShooterSpecifiedPower(0.0),
+            () -> ShooterRepository.moveShooterSpecifiedPower(0.0));
     }
 }
