@@ -113,8 +113,8 @@ public class DriveCommands{
     /** Hubに向かった角度まで回転する
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
-     * @param xSpeedPercentSupplier x軸のコントローラーの入力
-     * @param ySpeedPercentSupplier x軸のコントローラーの入力
+     * @param xSpeedPercentSupplier x軸のコントローラーの入力[-1~1]
+     * @param ySpeedPercentSupplier x軸のコントローラーの入力[-1~1]
      */
     public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
         double xSupplier = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
