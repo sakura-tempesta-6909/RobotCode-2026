@@ -6,7 +6,7 @@ public interface ShooterRepository extends Subsystem {
 
     /** 
      * Velocity制御でモーターを任意の速度で動かす 
-     * 範囲：-1～1　（負方向の最大回転数割合―1～正方向の最大回転数割合1まで）
+     * 範囲：-30.17m/sから30.17m/sまで
      * 正回転でシュート
      * 0で停止
     */
@@ -14,7 +14,7 @@ public interface ShooterRepository extends Subsystem {
 
     /** 
      * PercentOutputでモーターを任意の速度で動かす
-     * 範囲：-30.17m/sから30.17m/sまで
+     * 範囲：-1～1　（負方向の最大回転数割合―1～正方向の最大回転数割合1まで）
      * 正回転でシュート
      * 0で停止
      */
