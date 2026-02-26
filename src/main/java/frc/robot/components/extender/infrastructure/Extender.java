@@ -5,6 +5,9 @@ import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.components.extender.ExtenderConst;
 import frc.robot.components.extender.ExtenderTools;
+import frc.robot.components.indexer.IndexerConst;
+import frc.robot.components.indexer.IndexerParameter;
+import frc.robot.components.indexer.IndexerTools;
 import frc.robot.components.extender.ExtenderParameter;
 
 import static edu.wpi.first.units.Units.Percent;
@@ -56,6 +59,14 @@ public class Extender implements ExtenderRepository {
         extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.LoweringIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
+
+        /** VelosityのPID */
+        extenderMotorConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot);
+        
+        
+
     }
 
 
@@ -77,7 +88,7 @@ public class Extender implements ExtenderRepository {
     @Override
     public void moveExtenderSpecifiedAngle(double targetAngle) {
         /** 指定の距離移動するために必要な回転数を求める | rotation */
-        double targetPosition = ExtenderTools.getRotationsForDistance(targetAngle);
+        double targetPosition = ExtenderTools.getRotationsForMotorShaft(targetAngle);
         if (targetAngle > ExtenderState.currentAngle) {
             if(!ExtenderState.isInitialPosition){
                 /** 上昇する場合 */
@@ -109,6 +120,13 @@ public class Extender implements ExtenderRepository {
     @Override
     public void resetEncorder(double resetPosition) {
        extenderEncoder.setPosition(resetPosition);
+    }
+
+    @Override
+    public void keepCurrentAngle(){
+        extenderPID.setReference(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot);
+            
+
     }
     
 }

@@ -5,7 +5,7 @@ public class ExtenderTools {
      * @param rotation 回す回転数[回]
      * @return モーターの軸の回転数[回]
      */
-    public static double getRotationsForDistance(double rotation){
+    public static double getRotationsForMotorShaft(double rotation){
         return ExtenderConst.GearRatio * rotation;
 
     }
