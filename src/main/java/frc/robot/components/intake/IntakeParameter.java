@@ -8,6 +8,8 @@ public final class IntakeParameter {
         public static final double IntakeRollerSpeed = 0.5;
         /** Fuelを吐き出すときのスピード | Fuelを吐き出す方向なので負 | [-1,0]*/
         public static final double OuttakeRollerSpeed = -0.5;
+        /** モーターの動作判定のしきい値 */
+        public static final double Threshold = 0.1;
     }
     
 }

@@ -40,9 +40,10 @@ public class Intake implements IntakeRepository {
     /**
      * Stateへの書き込みを行う
      */
+    @Override
     public void periodic() {
-        IntakeState.motorSpeed = IntakeEncoder.getVelocity();
-        IntakeState.isMotorActive = Math.abs(IntakeEncoder.getVelocity()) > 0.1;
+        IntakeState.motorSpeed = IntakeEncoder.getVelocity() / IntakeConst.maxRPM;
+        IntakeState.isMotorActive = Math.abs(IntakeEncoder.getVelocity()) > IntakeConst.Threshold;
     }
     
 }
