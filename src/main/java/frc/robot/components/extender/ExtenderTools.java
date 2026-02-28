@@ -12,7 +12,7 @@ public class ExtenderTools {
 
     /** extenderの累計回転数に対応するextenderの累計回転数を求める
      * @param position 累計回転数[回]
-     * @return extenderの累計回転数[degree]
+     * @return extenderの累計回転角度[degree]
      */
     public static double calcurateRotation(double position){
         return position * ExtenderConst.GearRatio * 360;

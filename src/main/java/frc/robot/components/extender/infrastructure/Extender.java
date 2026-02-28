@@ -85,19 +85,21 @@ public class Extender implements ExtenderRepository {
         ExtenderState.isInitialPosition = upperExtenderLimitSwitch.get();
     }
 
+    /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */
     @Override
     public void moveExtenderSpecifiedAngle(double targetAngle) {
-        /** 指定の距離移動するために必要な回転数を求める | rotation */
-        double targetPosition = ExtenderTools.getRotationsForMotorShaft(targetAngle);
+        /** 指定の距離移動するために必要な回転数を求める | rotation *
+         * 360は1回転の角度*/
+        double targetPosition = ExtenderTools.getRotationsForMotorShaft(targetAngle)*360;
         if (targetAngle > ExtenderState.currentAngle) {
-            if(!ExtenderState.isInitialPosition){
+            if(!upperExtenderLimitSwitch.get()){
                 /** 上昇する場合 */
                 extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
             }
             
                 
         } else {
-            if(!ExtenderState.isIntakePosition){
+            if(!lowerExtenderLimitSwitch.get()){
             /** 下降する場合 */  
             
             extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
@@ -105,26 +107,32 @@ public class Extender implements ExtenderRepository {
         }
     }
 
+    /** Extenderを任意の力で動かす(PercentOutput) */
     @Override
-    
     public void moveIndexerSpecifiedPower(double targetPower) {
         extenderMotor.set(targetPower);
 
     }
 
+    /** PIDをリセットする */
     @Override
     public void resetPID() {
        extenderPID.setIAccum(0);
     }
 
+    /** encoderをリセットする 
+     * @param resetPosition Encorderをリセットする際のポジション[degree]
+     * 初期位置を0°とする
+    */
     @Override
     public void resetEncorder(double resetPosition) {
        extenderEncoder.setPosition(resetPosition);
     }
 
+    /** 現在の角度を維持する */
     @Override
     public void keepCurrentAngle(){
-        extenderPID.setReference(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot);
+        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot);
             
 
     }
