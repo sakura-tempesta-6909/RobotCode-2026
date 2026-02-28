@@ -27,10 +27,6 @@ public class ExtenderCommands {
             ExtenderRepository.resetPID();
         },()->{
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
-        }).finallyDo((interrupted)->{
-            if (!interrupted) {
-                ExtenderRepository.keepCurrentAngle().schedule();
-            }
         });
     }
     
@@ -38,9 +34,7 @@ public class ExtenderCommands {
      * @param targetPower 目標の力
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
-        return ExtenderRepository.runEnd(()->{
-
-        },()->{
+        return ExtenderRepository.run(()->{
             ExtenderRepository.moveIndexerSpecifiedPower(targetPower);
         });
     }
@@ -67,5 +61,11 @@ public class ExtenderCommands {
      */
     public static Command moveToInitialAngle(){
         return moveExtenderSpecifiedAngle(()->(ExtenderParameter.InitialAngle));
+    }
+
+    public static Command keepCurrentAngle(){
+        return ExtenderRepository.run(()->{
+            ExtenderRepository.keepCurrentAngle();
+        });
     }
 } 

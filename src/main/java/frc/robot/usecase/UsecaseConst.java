@@ -18,9 +18,9 @@ public class UsecaseConst {
     }
 
     public static final class SpeedAndPower {
-        /** デフォルトの状態の角度に最大の力で動かす */
+        /** 初期位置の状態の方向に最大の力で動かす */
         public static final double MaxPowerToIntakePosition = 1;
-        /** Intakeできる角度の方向に最大の力で動かす */
+        /** Intakeする角度の方向に最大の力で動かす */
         public static final double MaxPowerToInitialPosition = -1;
     }
 
