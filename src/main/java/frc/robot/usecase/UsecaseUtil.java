@@ -37,7 +37,7 @@ public class UsecaseUtil {
         return hub;
     }
 
-    /** ガン材の位置からHubへの目標の角度を計算する
+    /** 現在の位置からHubへの目標の角度を計算する
      * @return theta 目標に向かった角度[rotation2d]
     */
     public static Rotation2d calcurateTargetAngleToShoot(Pose2d current) {

@@ -101,6 +101,8 @@ public class DriveCommands{
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
      * @param targetAngle 目標の角度[degree]
+     * @param Xspeed x軸方向の速度
+     * @param Yspeed y軸方向の速度
      */
     public static Command setAngle(Rotation2d targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
         return driveRepository.startRun(()->{
@@ -117,11 +119,11 @@ public class DriveCommands{
      * @param ySpeedPercentSupplier x軸のコントローラーの入力[-1~1]
      */
     public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
-        double xSupplier = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
-        double ySupplier = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+        double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+        double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
             
                     
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xSupplier, ()->ySupplier);
+        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xInput, ()->yInput);
     }
 
     
