@@ -101,8 +101,8 @@ public class DriveCommands{
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
      * @param targetAngle 目標の角度[degree]
-     * @param Xspeed x軸方向の速度
-     * @param Yspeed y軸方向の速度
+     * @param Xspeed x軸方向の速度[m/s]
+     * @param Yspeed y軸方向の速度[m/s]
      */
     public static Command setAngle(Rotation2d targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
         return driveRepository.startRun(()->{
