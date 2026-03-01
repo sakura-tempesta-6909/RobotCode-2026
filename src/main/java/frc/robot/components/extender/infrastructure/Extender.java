@@ -82,7 +82,8 @@ public class Extender implements ExtenderRepository {
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.isIntakePosition = lowerExtenderLimitSwitch.get();
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
-        ExtenderState.isInitialPosition = upperExtenderLimitSwitch.get();
+        ExtenderState.isPushOutPosition = upperExtenderLimitSwitch.get();
+        ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */
@@ -95,7 +96,7 @@ public class Extender implements ExtenderRepository {
             if(!upperExtenderLimitSwitch.get()){
                 /** 上昇する場合 */
                 extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
-            }else{
+            } else {
                 /** 達したら出力を0にする */
                 extenderMotor.set(0);
             }
@@ -104,9 +105,8 @@ public class Extender implements ExtenderRepository {
         } else {
             if(!lowerExtenderLimitSwitch.get()){
             /** 下降する場合 */  
-            
             extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
-            }else{
+            } else {
                 /** 達したら出力を0にする */
                 extenderMotor.set(0);
             }
