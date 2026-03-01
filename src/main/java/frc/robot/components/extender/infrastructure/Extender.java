@@ -95,6 +95,9 @@ public class Extender implements ExtenderRepository {
             if(!upperExtenderLimitSwitch.get()){
                 /** 上昇する場合 */
                 extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
+            }else{
+                /** 達したら出力を0にする */
+                extenderMotor.set(0);
             }
             
                 
@@ -103,6 +106,9 @@ public class Extender implements ExtenderRepository {
             /** 下降する場合 */  
             
             extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
+            }else{
+                /** 達したら出力を0にする */
+                extenderMotor.set(0);
             }
         }
     }
