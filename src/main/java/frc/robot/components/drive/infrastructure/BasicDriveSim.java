@@ -30,6 +30,8 @@ public class BasicDriveSim implements DriveRepository {
     private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
     private final ADXRS450_GyroSim gyroSim = new ADXRS450_GyroSim(gyro);
 
+    public final Vision vision = new Vision();
+
     private PPHolonomicDriveController driveController;
 
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
@@ -108,6 +110,8 @@ public class BasicDriveSim implements DriveRepository {
             backRight.getState()
         };
 
+        vision.periodic();
+
         Logger.recordOutput("Drive/Measured", new double[] {
             states[0].angle.getRadians(), states[0].speedMetersPerSecond,
             states[1].angle.getRadians(), states[1].speedMetersPerSecond,
@@ -118,6 +122,9 @@ public class BasicDriveSim implements DriveRepository {
         Logger.recordOutput("Drive/GyroAngle", getRotation2d());
         Logger.recordOutput("Drive/Pose", getPose());
         Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
+
+        Pose2d truePose = getPose(); // または drivetrain.getSimPose()
+        vision.updateSimulation(truePose);
     }
 
     private double getHeading(){
