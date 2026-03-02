@@ -33,4 +33,6 @@ public interface DriveRepository extends Subsystem{
     void setAngle(double setAngle ,double XSpeed, double YSpeed);
 
     void buildAuto();
+
+    void resetPID();
 }

@@ -1,5 +1,7 @@
 package frc.robot.components.drive;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.domain.option.DriveOption.DriveSpeed;
 
