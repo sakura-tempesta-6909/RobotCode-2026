@@ -1,16 +1,25 @@
 package frc.robot.components.drive;
 
-import java.util.function.Supplier;
-
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
+import java.util.function.Supplier;
+
 public final class DriveConst {
+    public static final double LoopPeriod = 0.02;
     public static final class ModuleConstants{
         public static final double kWheelDiameterMeters = edu.wpi.first.math.util.Units.inchesToMeters(4);
         public static final double kDriveMotorGearRatio = 1/6.12; // NEO 1回転でdrive motor が 1/6.12 回転する | drive motor 1回転 : NEO 6.12回転
@@ -115,5 +124,40 @@ public final class DriveConst {
             this.backRight = br;
             return this;
         }
+    }
+
+    public static final class Vision{
+        /** フィールドにあるAprilTagのレイアウト */
+        public static final AprilTagFieldLayout kTagLayout =
+                AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
+        /** ロボットの中心から見た左カメラの位置 */
+        public static final Transform3d kRobotToLeftCamera =
+                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+        /** ロボットの中心から見た右カメラの位置 */
+        public static final Transform3d kRobotToRightCamera =
+                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+
+        /** * ロボットの内部センサー（エンコーダ・ジャイロ）による推測航法の信頼度（標準偏差）。数値が小さいほどその値を強く反映する
+         * @param [0] X方向の推定誤差の標準偏差 | 前後方向 | [メートル]
+         * @param [1] Y方向の推定誤差の標準偏差 | 左右方向 | [メートル]
+         * @param [2] 旋回角の推定誤差の標準偏差 | 反時計回りが正 | [ラジアン]
+         * * これらの値はそれぞれの方向にどれくらいズレるもんだよてのを教えてあげる、
+         * ※ビジョン(Vision)よりも大幅に小さい値を設定する
+         * 詳細な設定方法は以下のドキュメントを参照：
+         * <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/estimator/SwerveDrivePoseEstimator.html">SwerveDrivePoseEstimator</a>
+         */
+        public static final Vector<N3> kStateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+
+        /** * ビジョン（カメラ）による推定精度（標準偏差）。数値が小さいほどその値を信頼する。
+         * @param [0] X方向の推定誤差の標準偏差 | 正面方向 | [メートル]
+         * @param [1] Y方向の推定誤差の標準偏差 | 横方向 | [メートル]
+         * @param [2] 旋回角の推定誤差の標準偏差 | 時計回りが正 | [ラジアン]
+         * * これらの値はそれぞれの方向にどれくらいズレるもんだよてのを教えてあげる
+         * ※一般的に、StateStdDevsよりも大きな値（0.5〜1.0程度）を設定し、
+         * ビジョンによる急激な位置のジャンプ（テレポート）を抑制する。
+         * 詳細な設定方法は以下のドキュメントを参照：
+         *  * <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/estimator/SwerveDrivePoseEstimator.html">SwerveDrivePoseEstimator</a>
+         */
+        public static final Vector<N3> kVisionStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
     }
 }
