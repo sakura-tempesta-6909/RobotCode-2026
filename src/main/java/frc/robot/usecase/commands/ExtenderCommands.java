@@ -41,12 +41,12 @@ public class ExtenderCommands {
 
     /** ExtenderをIntake位置方向に一定の力で動かす */
     public static Command moveExtenderMaxPowerToIntakePosition() {
-        return moveExtenderSpecifiedPower(UsecaseConst.SpeedAndPower.MaxPowerToIntakePosition);
+        return moveExtenderSpecifiedPower(ExtenderParameter.SpeedAndPower.MaxPowerToIntakePosition);
     }
 
     /** ExtenderをInitial位置方向に一定の力で動かす */
     public static Command moveExtenderMaxPowerToInitialPosition() {
-        return moveExtenderSpecifiedPower(UsecaseConst.SpeedAndPower.MaxPowerToInitialPosition);
+        return moveExtenderSpecifiedPower(ExtenderParameter.SpeedAndPower.MaxPowerToInitialPosition);
     }
     
     /** ExtenderをIntakeの角度に動かす
