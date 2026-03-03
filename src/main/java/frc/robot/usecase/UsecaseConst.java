@@ -17,12 +17,4 @@ public class UsecaseConst {
         public static final double DistanceToArm = -10;
     }
 
-    public static final class SpeedAndPower {
-        /** 初期位置の状態の方向に最大の力で動かす */
-        public static final double MaxPowerToIntakePosition = 1;
-        /** Intakeする角度の方向に最大の力で動かす */
-        public static final double MaxPowerToInitialPosition = -1;
-    }
-
-    
 }

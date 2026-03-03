@@ -63,6 +63,7 @@ public class ExtenderCommands {
         return moveExtenderSpecifiedAngle(()->(ExtenderParameter.InitialAngle));
     }
 
+    /** Extenderの現在の角度を維持する */
     public static Command keepCurrentAngle(){
         return ExtenderRepository.run(()->{
             ExtenderRepository.keepCurrentAngle();
