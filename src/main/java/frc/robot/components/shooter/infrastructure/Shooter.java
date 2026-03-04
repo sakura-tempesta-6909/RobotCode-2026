@@ -14,22 +14,28 @@ import frc.robot.components.shooter.ShooterTools;
 public class Shooter implements ShooterRepository {
 
     private final SparkMax motor;
+    private final SparkMax followerMotor;
     private final SparkClosedLoopController pid;
 
     public Shooter() {
         motor = new SparkMax(ShooterConst.Ports.ShooterMotor, MotorType.kBrushless);
+        followerMotor = new SparkMax(ShooterConst.Ports.ShooterFollowerMotor, MotorType.kBrushless);
 
         SparkMaxConfig config = new SparkMaxConfig();
+        SparkMaxConfig followerConfig = new SparkMaxConfig();
 
         config.closedLoop.p(ShooterParameter.pGain);
         config.closedLoop.i(ShooterParameter.iGain);
         config.closedLoop.d(ShooterParameter.dGain);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
+        followerConfig.follow(motor);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
+        followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
 
         pid = motor.getClosedLoopController();
+    
     }
 
     @Override
