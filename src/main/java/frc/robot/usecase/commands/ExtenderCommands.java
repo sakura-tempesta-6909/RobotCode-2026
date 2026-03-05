@@ -20,7 +20,7 @@ public class ExtenderCommands {
 
     /** Extenderを特定の角度に動かす
      * 目標の角度に到達したら終了
-     * @param targetSupplier 目標の角度
+     * @param targetSupplier 目標の角度[degree]
      */
     public static Command moveExtenderSpecifiedAngle(DoubleSupplier targetSupplier) {
         return ExtenderRepository.startRun(()->{
@@ -31,7 +31,7 @@ public class ExtenderCommands {
     }
     
     /** Extenderを一定の力で動かす
-     * @param targetPower 目標の力
+     * @param targetPower 目標の力[percentooutput,-1~1]
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
         return ExtenderRepository.run(()->{
@@ -44,7 +44,7 @@ public class ExtenderCommands {
         return moveExtenderSpecifiedPower(ExtenderParameter.SpeedAndPower.MaxPowerToIntakePosition);
     }
 
-    /** ExtenderをInitial位置方向に一定の力で動かす */
+    /** Extenderを上方向に一定の力で動かす */
     public static Command moveExtenderMaxPowerToInitialPosition() {
         return moveExtenderSpecifiedPower(ExtenderParameter.SpeedAndPower.MaxPowerToInitialPosition);
     }
