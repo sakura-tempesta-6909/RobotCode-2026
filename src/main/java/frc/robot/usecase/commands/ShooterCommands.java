@@ -17,7 +17,7 @@ public class ShooterCommands {
     }
 
     /**
-    * ratio値をRPMに変換してシューターを回転させる
+    * シューターを指定の速度で回す
     * @param supplier : ratio [-1.0, 1.0]
     *  1.0  → 最大正転RPM
     *  0.0  → 停止
@@ -37,11 +37,10 @@ public class ShooterCommands {
 
     /**
      * ハブへシュート
-     * 距離を取得して、それに応じたRPMでシューターを回す
      */
     public static Command shootToHub() {
         return moveShooterSpecifiedSpeed(() -> {
-            double distance = 0.0; //距離を取得する
+            double distance = 0.0; //ここで距離を取得する
             return ShooterTools.distanceToRPM(distance);
         });
     }

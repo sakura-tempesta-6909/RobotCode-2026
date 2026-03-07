@@ -6,9 +6,6 @@ public class ShooterTools {
      * 割合からRPMへ変換
      * @param Ratio モーターを動かす最大RPMに対する割合
      * @return モーターの回転数[RPM]
-     * 
-     * 変換式:
-     * RPM = ratio × maxRPM
     */
     public static double RatioToRPM(double Ratio) {
         return Ratio * ShooterConst.maxRPM;
