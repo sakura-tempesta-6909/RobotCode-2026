@@ -36,10 +36,14 @@ public class ShooterCommands {
     }
 
     /**
-     *  ハブへシュート
+     * ハブへシュート
+     * 距離を取得して、それに応じたRPMでシューターを回す
      */
     public static Command shootToHub() {
-        return moveShooterSpecifiedSpeed(() -> ShooterParameter.shootRatio);
+        return moveShooterSpecifiedSpeed(() -> {
+            double distance = 0.0; //距離を取得する
+            return ShooterTools.distanceToRPM(distance);
+        });
     }
 
     /**
@@ -73,7 +77,7 @@ public class ShooterCommands {
      * モーターを停止させるだけ
      */
     public static Command stopShooter() {
-        return ShooterRepository.runOnce(
+        return ShooterRepository.run(
             () -> ShooterRepository.moveShooterSpecifiedPower(0.0)
         );
     }

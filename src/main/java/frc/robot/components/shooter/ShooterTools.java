@@ -13,4 +13,14 @@ public class ShooterTools {
     public static double RatioToRPM(double Ratio) {
         return Ratio * ShooterConst.maxRPM;
     }
+
+    /** 
+     * 距離をもとにシュート時のRPMを算出する 
+     * @param distance 取得したロボットとゴールの距離
+     * @return 距離に応じたモーターの回転数[RPM]
+     */
+    public static double distanceToRPM(double distance) {
+        //計算式を入れる
+        return 0.0;
+    }
 }
