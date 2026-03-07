@@ -31,7 +31,7 @@ public class ExtenderCommands {
     }
     
     /** Extenderを一定の力で動かす
-     * @param targetPower 目標の力[percentooutput,-1~1]
+     * @param targetPower 目標の力[percentooutput]
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
         return ExtenderRepository.run(()->{
