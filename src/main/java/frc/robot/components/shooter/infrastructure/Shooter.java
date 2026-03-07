@@ -41,23 +41,21 @@ public class Shooter implements ShooterRepository {
     @Override
     /** 
      * PercentOutputでモーターを任意の速度で動かす
-     * 範囲：-1～1 （負方向の最大出力割合―1～正方向の最大出力割合1まで）
-     * 正回転でシュート
+     * @param targetPower 出力割合 [-1.0 - 1.0]
      * 0で停止
      */
-    public void moveShooterSpecifedPower(double targetPower) {
+    public void moveShooterSpecifiedPower(double targetPower) {
         motor.set(targetPower);
     }
 
     @Override
     /** 
-     * Velocity制御でモーターを任意の表面速度m/sで動かす 
-     * 範囲：-30.17m/sから30.17m/sまで
-     * 正回転でシュート
+     * Velocity制御でモーターを任意の回転数[RPM]で動かす 
+     * @param targetRPM モーター回転数 [RPM]
      * 0で停止
     */
-    public void moveShooterSpecifiedSpeed(double targetSpeed) {
-        pid.setReference(targetSpeed, SparkMax.ControlType.kVelocity);
+    public void moveShooterSpecifiedSpeed(double targetRPM) {
+        pid.setReference(targetRPM, SparkMax.ControlType.kVelocity);
     }
 
     @Override
@@ -73,9 +71,11 @@ public class Shooter implements ShooterRepository {
      */
     @Override
     public void periodic() {
+
+        /** モーター回転数 [RPM] */
         double WheelRPM = motor.getEncoder().getVelocity();
 
         /** stateに現在の表面速度を書き込む（m/s）*/
-        ShooterState.motorSpeed = ShooterTools.rpmToSurfaceSpeed(WheelRPM);
+        ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(WheelRPM);
     }
 }

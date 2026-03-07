@@ -4,6 +4,7 @@ public final class ShooterConst {
     public static final class Ports{
         /** ShooterのCANID */
         public static final int ShooterMotor = 16;
+        
         /** ShooterのFollowMotor側のCANID */
         public static final int ShooterFollowerMotor = 17;
     }
