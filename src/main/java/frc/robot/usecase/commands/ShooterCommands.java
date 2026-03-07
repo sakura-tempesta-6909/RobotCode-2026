@@ -17,9 +17,13 @@ public class ShooterCommands {
     }
 
     /**
-     *  指定した目標値（supplier）の割合でシューターを動かす
-     *  @param supplier シューターの目標値　1.0で全速シュート┃-1.0で全速逆回転　0で停止
-     */
+    * ratio値をRPMに変換してシューターを回転させる
+    * @param supplier : ratio [-1.0, 1.0]
+    *  1.0  → 最大正転RPM
+    *  0.0  → 停止
+    * -1.0  → 最大逆転RPM
+    * コマンド終了時 -> モーター停止&PIDリセット
+    */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
@@ -35,7 +39,7 @@ public class ShooterCommands {
      *  ハブへシュート
      */
     public static Command shootToHub() {
-        return moveShooterSpecifiedSpeed(() -> ShooterParameter.shootSpeed);
+        return moveShooterSpecifiedSpeed(() -> ShooterParameter.shootRatio);
     }
 
     /**
@@ -44,7 +48,7 @@ public class ShooterCommands {
     public static Command feed() {
         return ShooterRepository.startEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                (ShooterTools.RatioToRPM(ShooterParameter.feedSpeed))),
+                (ShooterTools.RatioToRPM(ShooterParameter.feedRatio))),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.resetPID();
@@ -58,7 +62,7 @@ public class ShooterCommands {
      */
     public static Command reverseShooter() {
         return ShooterRepository.runEnd(
-            () -> ShooterRepository.moveShooterSpecifiedPower(ShooterParameter.reverseSpeed),
+            () -> ShooterRepository.moveShooterSpecifiedPower(ShooterParameter.reverseOutput),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0.0);
             }
@@ -69,8 +73,8 @@ public class ShooterCommands {
      * モーターを停止させるだけ
      */
     public static Command stopShooter() {
-        return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedPower(0.0),
-            () -> ShooterRepository.moveShooterSpecifiedPower(0.0));
+        return ShooterRepository.runOnce(
+            () -> ShooterRepository.moveShooterSpecifiedPower(0.0)
+        );
     }
 }

@@ -2,12 +2,12 @@ package frc.robot.components.shooter;
 
 public final class ShooterParameter {
 
-    /** アライアンス側に投げ入れるときのモーターの出力割合　範囲-1から1まで */
-    public static double feedSpeed = 0.5;
+    /** アライアンス側のエリアにボールを投げ入れるときのモーターの出力割合　範囲: [-1.0, 1.0]*/
+    public static double feedRatio = 0.5;
     
-    /** シュート時のモーターの出力割合 範囲-1から1まで*/
-    public static double shootSpeed = 1.0;
+    /** シュート時のモーターの出力割合 範囲: [-1.0, 1.0]*/
+    public static double shootRatio = 1.0;
 
-    /** 逆回転させるときのモーターの出力割合 */
-    public static double reverseSpeed = -0.3;
+    /** 詰まり解消用の逆回転出力（PercentOutput） 範囲: [-1.0, 1.0] */
+    public static double reverseOutput = -0.3;
 }
