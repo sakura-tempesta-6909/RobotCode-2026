@@ -157,7 +157,12 @@ public class BasicDriveSim implements DriveRepository {
     }
 
     @Override
-    public void setAngle(double setAngle ,double XSpeed, double YSpeed) {
+    public void setAngle(double setAngle, double Xspeed, double Yspeed) {
 
+    }
+
+    @Override
+    public void resetPID(){
+        
     }
 }
