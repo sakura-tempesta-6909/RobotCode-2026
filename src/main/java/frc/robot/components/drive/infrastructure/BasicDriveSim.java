@@ -126,13 +126,13 @@ public class BasicDriveSim implements DriveRepository {
                 });
 
         vision.leftCameraPose.ifPresent(pose -> {
-            if (pose.getTranslation().getDistance(getPose().getTranslation()) < 1.5) {
+            if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
                 m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
             }
         });
         
         vision.rightCameraPose.ifPresent(pose -> {
-            if (pose.getTranslation().getDistance(getPose().getTranslation()) < 1.5) {
+            if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
                 m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
             }
         });

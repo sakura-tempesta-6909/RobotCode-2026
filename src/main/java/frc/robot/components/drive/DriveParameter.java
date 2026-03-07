@@ -66,4 +66,9 @@ public class DriveParameter {
          */
         public static final double arrowedDifference = 0.0;
     }
+
+    public static final class Vision{
+        /** Visionの測定値を採用する最大距離 */
+        public static final double kMaxVisionPoseErrorMeters = 1.5;
+    }
 }
