@@ -135,10 +135,15 @@ public class BasicDrive implements DriveRepository {
                 });
 
         vision.leftCameraPose.ifPresent(pose -> {
-            m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
+            if (pose.getTranslation().getDistance(getPose().getTranslation()) < 1.5) {
+                m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
+            }
         });
+        
         vision.rightCameraPose.ifPresent(pose -> {
-            m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
+            if (pose.getTranslation().getDistance(getPose().getTranslation()) < 1.5) {
+                m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
+            }
         });
 
         DriveState.drivePosition = getPose();
@@ -176,6 +181,17 @@ public class BasicDrive implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
         },pose);
+
+        m_poseEstimator.resetPosition(
+        getRotation2d(),
+        new SwerveModulePosition[]{
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        },
+        pose
+        );
     }
 
     private void setModuleStates(SwerveModuleState[] desiredStates){
