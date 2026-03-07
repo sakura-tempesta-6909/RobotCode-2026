@@ -42,6 +42,7 @@ public class Shooter implements ShooterRepository {
     /** 
      * PercentOutputでモーターを任意の速度で動かす
      * @param targetPower 出力割合 [-1.0 - 1.0]
+     * 正方向でシュート方向
      * 0で停止
      */
     public void moveShooterSpecifiedPower(double targetPower) {
@@ -52,6 +53,7 @@ public class Shooter implements ShooterRepository {
     /** 
      * Velocity制御でモーターを任意の回転数[RPM]で動かす 
      * @param targetRPM モーター回転数 [RPM]
+     * 正方向でシュート方向
      * 0で停止
     */
     public void moveShooterSpecifiedSpeed(double targetRPM) {
