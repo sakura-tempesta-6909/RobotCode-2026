@@ -26,8 +26,7 @@ public class ShooterCommands {
     */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                ShooterTools.RatioToRPM(supplier.getAsDouble())),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble()),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.resetPID();
@@ -41,7 +40,7 @@ public class ShooterCommands {
     public static Command shootToHub() {
         return moveShooterSpecifiedSpeed(() -> {
             double distance = 0.0; //ここで距離を取得する
-            return ShooterTools.distanceToRPM(distance);
+            return ShooterTools.distanceToMps(distance);
         });
     }
 
@@ -50,8 +49,7 @@ public class ShooterCommands {
      */
     public static Command feed() {
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(
-                (ShooterTools.RatioToRPM(ShooterParameter.feedRatio))),
+            () -> ShooterRepository.moveShooterSpecifiedSpeed((ShooterParameter.feedMps)),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.resetPID();
