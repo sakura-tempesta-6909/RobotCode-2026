@@ -1,6 +1,7 @@
 package frc.robot.domain.state;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.usecase.UsecaseConst;
 
 public class StateGroup {
@@ -15,5 +16,9 @@ public class StateGroup {
     public static double getDistanceToHub() {
         Translation2d currentPosition =  DriveState.drivePosition.getTranslation();
         return currentPosition.minus(UsecaseConst.Poses.TargetPoseToHub.getTranslation()).getNorm();
+    }
+
+    public static boolean isShootableRange() {
+        return getDistanceToHub() > DriveParameter.Differences.MinShootableRange && getDistanceToHub() < DriveParameter.Differences.MaxShootableRange;
     }
 }
