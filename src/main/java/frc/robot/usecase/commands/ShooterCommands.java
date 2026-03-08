@@ -17,12 +17,8 @@ public class ShooterCommands {
     }
 
     /**
-    * シューターを指定の速度で回す
-    * @param supplier : ratio [-1.0, 1.0]
-    *  1.0  → 最大正転RPM
-    *  0.0  → 停止
-    * -1.0  → 最大逆転RPM
-    * コマンド終了時 -> モーター停止&PIDリセット
+    * シューターを指定の表面速度で回す
+    * @param supplier : 目標の表面速度(m/s)
     */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
