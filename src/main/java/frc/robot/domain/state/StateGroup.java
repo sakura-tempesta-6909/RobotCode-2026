@@ -1,7 +1,7 @@
 package frc.robot.domain.state;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.components.drive.DriveParameter;
+import frc.robot.usecase.UsecaseConst;
 
 public class StateGroup {
     public static boolean readyToScore() {
@@ -12,8 +12,8 @@ public class StateGroup {
         return ShooterState.isReadyToShoot && DriveState.isShootPosition;
     }
 
-    public static double currentPositionToHub() {
+    public static double getDistanceToHub() {
         Translation2d currentPosition =  DriveState.drivePosition.getTranslation();
-        return currentPosition.minus(DriveParameter.Poses.inFrontOfGoal.getTranslation()).getNorm();
+        return currentPosition.minus(UsecaseConst.Poses.TargetPoseToHub.getTranslation()).getNorm();
     }
 }
