@@ -52,7 +52,7 @@ public class Shooter implements ShooterRepository {
     @Override
     /** 
      * Velocity制御でモーターを任意の表面速度で動かす 
-     * @param targetMps モーターの表面速度
+     * @param targetMps モーターの表面速度(m/s)
      * 正方向でシュート方向
      * 0で停止
     */

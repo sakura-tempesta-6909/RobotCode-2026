@@ -2,12 +2,20 @@ package frc.robot.components.shooter;
 
 public class ShooterTools {
 
-        /** stateに現在の表面速度を書き込む（m/s）*/
-    public static double rpmToSurfaceSpeed(double Wheelrpm){
-        return Wheelrpm * ShooterConst.WheelDiameter * 3.14 / 60.0;
+        /**
+         * RPMからウィールの表面速度に変換する
+         * @param wheelRPM　受け取るRPM
+         * @return Wheelの表面速度（m/s）
+        */
+    public static double rpmToSurfaceSpeed(double wheelRpm){
+        return wheelRpm * ShooterConst.WheelDiameter * 3.14 / 60.0;
     }
 
-    /** 表面速度からRPMへ変換する */
+    /**
+     *  Wheelの表面速度からRPMへ変換する
+     * @param targetMps 受け取った目標のWheelの表面速度(m/s)
+     * @return モーターのRPM 
+     */
     public static double mpsToRpm(double targetMps) {
         return targetMps / ShooterConst.wheelMaxMps * ShooterConst.motorMaxRPM;
     }
