@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public interface ShooterRepository extends Subsystem {
 
     /** 
-     * Velocity制御でモーターを任意の速度で動かす 
-     * @param targetRPM モーター回転数 [RPM]
+     * Velocity制御でモーターを任意の表面速度で動かす 
+     * @param targetRPM 表面速度　単位:m/s
     */
     void moveShooterSpecifiedSpeed(double targetSpeed);
 

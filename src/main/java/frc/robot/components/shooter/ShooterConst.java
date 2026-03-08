@@ -10,4 +10,10 @@ public final class ShooterConst {
     }
     /** Wheelの直径　単位m */
     public static double WheelDiameter = 0.1016;
+
+    /** Wheelの最大表面速度 */
+    public static double wheelMaxMps = 30.17;
+
+    /**Motorの最大RPM */
+    public static double motorMaxRPM = 5627;
 }

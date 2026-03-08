@@ -51,13 +51,13 @@ public class Shooter implements ShooterRepository {
 
     @Override
     /** 
-     * Velocity制御でモーターを任意の回転数[RPM]で動かす 
-     * @param targetRPM モーター回転数 [RPM]
+     * Velocity制御でモーターを任意の表面速度で動かす 
+     * @param targetMps モーターの表面速度
      * 正方向でシュート方向
      * 0で停止
     */
-    public void moveShooterSpecifiedSpeed(double targetRPM) {
-        pid.setReference(targetRPM, SparkMax.ControlType.kVelocity);
+    public void moveShooterSpecifiedSpeed(double targetMps) {
+        pid.setReference(ShooterTools.mpsToRpm(targetMps), SparkMax.ControlType.kVelocity);
     }
 
     @Override
@@ -75,9 +75,9 @@ public class Shooter implements ShooterRepository {
     public void periodic() {
 
         /** モーター回転数 [RPM] */
-        double WheelRPM = motor.getEncoder().getVelocity();
+        double motorRPM = motor.getEncoder().getVelocity();
 
         /** stateに現在の表面速度を書き込む（m/s）*/
-        ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(WheelRPM);
+        ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(motorRPM);
     }
 }
