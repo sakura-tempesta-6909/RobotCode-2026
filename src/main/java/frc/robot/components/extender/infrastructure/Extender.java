@@ -28,16 +28,12 @@ import com.revrobotics.spark.config.LimitSwitchConfig.Type; // kNormallyOpenに�
 
 public class Extender implements ExtenderRepository {
     private final SparkMax extenderMotor;
-    private final DigitalInput upperExtenderLimitSwitch;
-    private final DigitalInput lowerExtenderLimitSwitch;
     private final RelativeEncoder extenderEncoder;
 
     private final SparkClosedLoopController extenderPID;
 
     public Extender() {
         extenderMotor = new SparkMax(ExtenderConst.Ports.extenderMotor, SparkMax.MotorType.kBrushless);
-        upperExtenderLimitSwitch = new DigitalInput(ExtenderConst.Ports.upperExtenderLimitSwitch);
-        lowerExtenderLimitSwitch = new DigitalInput(ExtenderConst.Ports.lowerExtenderLimitSwitch);
 
         SparkMaxConfig extenderMotorConfig = new SparkMaxConfig();
         /** エンコーダーとpidControllerを読み込む */
@@ -85,10 +81,10 @@ public class Extender implements ExtenderRepository {
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
         ExtenderState.currentAngle = ExtenderTools.calcurateRotation(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
-        ExtenderState.lowerLimit = lowerExtenderLimitSwitch.get();
+        ExtenderState.lowerLimit = extenderMotor.getForwardLimitSwitch().isPressed();
         ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
-        ExtenderState.upperLimit = upperExtenderLimitSwitch.get();
+        ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
     }
 
