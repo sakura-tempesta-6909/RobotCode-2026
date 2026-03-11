@@ -11,8 +11,10 @@ public class ExtenderState {
     public static boolean isIntakePosition;
     /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
     public static boolean isInitialPosition;
-    /** extenderがFuelを押しだす(地面と底面のなす角が最も大きい場所)にあるかどうか|ある->true,ない->false */
-    public static boolean isPushOutPosition;
+    /** extenderが低い側（intakeposition方向）のリミットスイッチにあたってるどうか|ある->true,ない->false */
+    public static boolean lowerLimit;
+    /** extenderが高い側（initialposition方向）のリミットスイッチにあたってるどうか|ある->true,ない->false */
+    public static boolean upperLimit;
 }
 
 

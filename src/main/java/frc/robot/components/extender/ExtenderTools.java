@@ -2,11 +2,11 @@ package frc.robot.components.extender;
 
 public class ExtenderTools {
     /** extenderの回転数に対応するモーターの軸の回転数を求める
-     * @param rotation 回す回転数[回]
-     * @return モーターの軸の回転数[回]
+     * @param targetAngle 目標の回転角度[degree]
+     * @return モーターの軸の回転数[rotation]
      */
-    public static double getRotationsForMotorShaft(double rotation){
-        return ExtenderConst.GearRatio * rotation;
+    public static double getTargetRotationsForMotorShaft(double targetAngle){
+        return ExtenderConst.GearRatio * targetAngle /360;
 
     }
 
