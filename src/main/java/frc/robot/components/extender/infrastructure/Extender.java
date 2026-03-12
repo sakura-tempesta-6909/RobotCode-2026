@@ -79,7 +79,7 @@ public class Extender implements ExtenderRepository {
         /** Extenderのモーターが動作しているか|動いている->true,停止->false*/
         ExtenderState.isMotorActive = Math.abs(extenderEncoder.getVelocity()) > ExtenderConst.ExtenderMotorMinRotation;
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
-        ExtenderState.currentAngle = ExtenderTools.calcurateRotation(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
+        ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.lowerLimit = extenderMotor.getForwardLimitSwitch().isPressed();
         ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
@@ -93,7 +93,7 @@ public class Extender implements ExtenderRepository {
     public void moveExtenderSpecifiedAngle(double targetAngle) {
         /** 指定の距離移動するために必要な回転数を求める | rotation *
          * 360は1回転の角度*/
-        double targetPosition = ExtenderTools.getTargetRotationsForMotorShaft(targetAngle);
+        double targetPosition = ExtenderTools.getRotationsOfMotorShaft(targetAngle);
         if (targetAngle > ExtenderState.currentAngle) {
             
             extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
