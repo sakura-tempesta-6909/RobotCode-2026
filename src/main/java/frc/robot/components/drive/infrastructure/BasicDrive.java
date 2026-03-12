@@ -135,12 +135,14 @@ public class BasicDrive implements DriveRepository {
                 });
 
         vision.leftCameraPose.ifPresent(pose -> {
+            /** 現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する */
             if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
                 m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
             }
         });
         
         vision.rightCameraPose.ifPresent(pose -> {
+             /** 現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する */
             if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
                 m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
             }
