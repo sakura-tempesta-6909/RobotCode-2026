@@ -5,7 +5,7 @@ public final class IndexerConst {
         /** LongRollerIndexerのモーターのポート番号*/
         public static final int LongRollerIndexer = 15;
         /** StarWheelIndexerのモーターのポート番号*/
-        public static final int StarWheelIndexer = 15;
+        public static final int StarWheelIndexer = 14;
     }
     /** LongRollerIndexerのモーターの最大RPM */
     public static final double LongRollerIndexerMaxRPM = 5676;
