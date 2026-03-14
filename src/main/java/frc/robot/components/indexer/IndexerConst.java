@@ -2,9 +2,13 @@ package frc.robot.components.indexer;
 
 public final class IndexerConst {
     public static final class Ports{
-        /** Indexerのモーターのポート番号*/
-        public static final int IndexerMotor = 15;
+        /** LongRollerIndexerのモーターのポート番号*/
+        public static final int LongRollerIndexer = 15;
+        /** StarWheelIndexerのモーターのポート番号*/
+        public static final int StarWheelIndexer = 15;
     }
-    /** モーターの最大RPM */
-    public static final double maxRPM = 5676;
+    /** LongRollerIndexerのモーターの最大RPM */
+    public static final double LongRollerIndexerMaxRPM = 5676;
+    /** StarWheelIndexerのモーターの最大RPM */
+    public static final double StarWheelIndexerMaxRPM = 5676;
 }

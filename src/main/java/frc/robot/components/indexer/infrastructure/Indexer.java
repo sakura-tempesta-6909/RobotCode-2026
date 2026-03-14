@@ -12,19 +12,33 @@ import frc.robot.domain.repository.IndexerRepository;
 import frc.robot.domain.state.IndexerState;
 
 public class Indexer implements IndexerRepository {
-    private final SparkMax IndexerMotor;
-    private final SparkMaxConfig IndexerMotorConfig;
-    private final RelativeEncoder IndexerEncoder;
+    private final SparkMax LongRollerIndexer;
+    private final SparkMaxConfig LongRollerIndexerConfig;
+    private final RelativeEncoder LongRollerIndexerEncoder;
+
+    private final SparkMax StarWheelIndexer;
+    private final SparkMaxConfig StarWheelIndexerConfig;
+    private final RelativeEncoder StarWheelIndexerEncoder;
 
     public Indexer() {
-        IndexerMotor = new SparkMax(IndexerConst.Ports.IndexerMotor, SparkLowLevel.MotorType.kBrushless);
-        IndexerMotorConfig = new SparkMaxConfig();
-        IndexerEncoder = IndexerMotor.getEncoder();
+        LongRollerIndexer = new SparkMax(IndexerConst.Ports.LongRollerIndexer, SparkLowLevel.MotorType.kBrushless);
+        LongRollerIndexerConfig = new SparkMaxConfig();
+        LongRollerIndexerEncoder = LongRollerIndexer.getEncoder();
 
-        IndexerMotorConfig.inverted(false);
-        IndexerMotorConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        LongRollerIndexerConfig.inverted(false);
+        LongRollerIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
 
-        IndexerMotor.configure(IndexerMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        LongRollerIndexer.configure(LongRollerIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+
+        StarWheelIndexer = new SparkMax(IndexerConst.Ports.StarWheelIndexer, SparkLowLevel.MotorType.kBrushless);
+        StarWheelIndexerConfig = new SparkMaxConfig();
+        StarWheelIndexerEncoder = StarWheelIndexer.getEncoder();
+
+        StarWheelIndexerConfig.inverted(false);
+        StarWheelIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+
+        StarWheelIndexer.configure(StarWheelIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
     /**
@@ -32,8 +46,9 @@ public class Indexer implements IndexerRepository {
      * @param targetPower Indexerを動かすパワー | shooterに送る方向が正 | [-1~1](出力のパワーの割合)
      */
     @Override
-    public void moveIndexerSpecifiedPower(double targetPower){
-        IndexerMotor.set(targetPower);
+    public void moveIndexerSpecifiedPower(double LongRollerPower, double StarWheelPower){
+        LongRollerIndexer.set(LongRollerPower);
+        StarWheelIndexer.set(StarWheelPower);
     }
 
     /**
@@ -41,8 +56,11 @@ public class Indexer implements IndexerRepository {
      */
     @Override
     public void periodic() {
-        IndexerState.motorSpeed = IndexerEncoder.getVelocity() / IndexerConst.maxRPM;
-        IndexerState.isMotorActive = Math.abs(IndexerEncoder.getVelocity()) > 0.1;
+        IndexerState.LongRollerIndexer.motorSpeed = LongRollerIndexerEncoder.getVelocity() / IndexerConst.LongRollerIndexerMaxRPM;
+        IndexerState.LongRollerIndexer.isMotorActive = Math.abs(LongRollerIndexerEncoder.getVelocity()) > 0.1;
+
+        IndexerState.StarWheelIndexer.motorSpeed = StarWheelIndexerEncoder.getVelocity() / IndexerConst.StarWheelIndexerMaxRPM;
+        IndexerState.StarWheelIndexer.isMotorActive = Math.abs(StarWheelIndexerEncoder.getVelocity()) > 0.1;
     }
     
 }
