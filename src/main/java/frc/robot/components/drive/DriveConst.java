@@ -159,5 +159,26 @@ public final class DriveConst {
          *  * <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/estimator/SwerveDrivePoseEstimator.html">SwerveDrivePoseEstimator</a>
          */
         public static final Vector<N3> kVisionStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
+
+
+        // ── シミュレーション用カメラスペック（左）──
+    public static final int    kLeftCameraResW          = 1280;
+    public static final int    kLeftCameraResH          = 720;
+    public static final double kLeftCameraFovDeg        = 70.0;   // 水平画角 [deg]
+    public static final double kLeftCameraAvgErrorPx    = 0.35;   // 検出誤差の平均 [px]
+    public static final double kLeftCameraErrorStdDevPx = 0.10;   // 検出誤差の標準偏差 [px]
+    public static final double kLeftCameraFps           = 20.0;
+    public static final double kLeftCameraAvgLatencyMs  = 50.0;   // 平均遅延 [ms]
+    public static final double kLeftCameraLatencyStdDevMs = 15.0; // 遅延の標準偏差 [ms]
+
+    // ── シミュレーション用カメラスペック（右）──
+    public static final int    kRightCameraResW          = 1280;
+    public static final int    kRightCameraResH          = 720;
+    public static final double kRightCameraFovDeg        = 70.0;
+    public static final double kRightCameraAvgErrorPx    = 0.35;
+    public static final double kRightCameraErrorStdDevPx = 0.10;
+    public static final double kRightCameraFps           = 20.0;
+    public static final double kRightCameraAvgLatencyMs  = 50.0;
+    public static final double kRightCameraLatencyStdDevMs = 15.0;
     }
 }
