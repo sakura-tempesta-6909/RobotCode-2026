@@ -9,7 +9,7 @@ import org.photonvision.simulation.*;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public class VisionSim {
+public class VisionSim extends Vision{
 
     private final VisionSystemSim visionSim;
 
@@ -81,8 +81,8 @@ public class VisionSim {
     }
 
     public void periodic() {
-        vision.updateLeftCamera();
-        vision.updateRightCamera();
+        updateLeftCamera();
+        updateRightCamera();
 
         // 真のロボット位置
         Logger.recordOutput(
