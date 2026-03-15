@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.domain.state.ShooterState;
@@ -29,7 +30,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.d(ShooterParameter.dGain);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
-        followerConfig.follow(motor);
+        followerConfig.follow(motor,true);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
@@ -46,7 +47,7 @@ public class Shooter implements ShooterRepository {
      * 0で停止
      */
     public void moveShooterSpecifiedPower(double targetPower) {
-        motor.set(targetPower);
+        motor.set(targetPower * -1);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class Shooter implements ShooterRepository {
      * 0で停止
     */
     public void moveShooterSpecifiedSpeed(double targetMps) {
-        pid.setReference(ShooterTools.mpsToRpm(targetMps), SparkMax.ControlType.kVelocity);
+        pid.setReference(ShooterTools.mpsToRpm(targetMps) * -1, SparkMax.ControlType.kVelocity);
     }
 
     @Override
@@ -80,5 +81,8 @@ public class Shooter implements ShooterRepository {
 
         /** stateに現在の表面速度を書き込む（m/s）*/
         ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(motorRPM);
+        SmartDashboard.putNumber("velocity", motorRPM);
+        SmartDashboard.putNumber("m/s", motorRPM * ShooterConst.wheelDiameter * 3.14 / 60);
+        
     }
 }
