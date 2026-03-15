@@ -2,7 +2,6 @@ package frc.robot.components.extender.infrastructure;
 
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.state.ExtenderState;
-import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.components.extender.ExtenderConst;
 import frc.robot.components.extender.ExtenderTools;
 import frc.robot.components.indexer.IndexerConst;
@@ -130,7 +129,7 @@ public class Extender implements ExtenderRepository {
     /** 現在の角度を維持する */
     @Override
     public void keepCurrentAngle(){
-        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot);
+        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot, ExtenderParameter.FFPower);
             
 
     }

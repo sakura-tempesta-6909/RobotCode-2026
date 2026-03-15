@@ -15,7 +15,7 @@ public class ExtenderTools {
      * @return extenderの回転角度[degree]
      */
     public static double getAngleOfExtender(double position){
-        return position * ExtenderConst.GearRatio * 360;
+        return position / ExtenderConst.GearRatio * 360;
     }
     
 
