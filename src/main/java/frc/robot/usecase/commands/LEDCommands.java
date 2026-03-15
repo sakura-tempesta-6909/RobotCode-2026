@@ -6,6 +6,7 @@ import frc.robot.domain.repository.LEDRepository;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.state.ShooterState;
+import frc.robot.domain.state.StateGroup;
 
 public class LEDCommands {
     private static LEDRepository LEDRepository;
@@ -16,7 +17,9 @@ public class LEDCommands {
 
     public static Command set() {
         return LEDRepository.run(()->{
-            if (DriveState.isShootPosition) {
+            if (StateGroup.readyToShoot()) {
+                LEDRepository.flashLight(0, 255, 0);
+            } else if (DriveState.isShootPosition) {
                 LEDRepository.flashLight(255, 0, 0);
             } else if (ShooterState.isReadyToShoot) {
                 LEDRepository.flashLight(0, 0, 255);
