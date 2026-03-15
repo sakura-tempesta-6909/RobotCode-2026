@@ -17,6 +17,6 @@ public class ShooterTools {
      * @return モーターのRPM 
      */
     public static double mpsToRpm(double targetMps) {
-        return (targetMps * 60) / ShooterConst.wheelDiameter * Math.PI;
+        return (targetMps * 60) / (ShooterConst.wheelDiameter * Math.PI);
     }
 }
