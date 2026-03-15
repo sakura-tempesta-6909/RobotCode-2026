@@ -16,8 +16,11 @@ public class LEDCommands {
     }
 
     public static Command set() {
+        // TODO MUDに配慮したRGBにあとでなおす
         return LEDRepository.run(()->{
-            if (StateGroup.readyToShoot()) {
+            if (DriverStation.isDisabled()) {
+                LEDRepository.changeLight(255, 100, 0);
+            } else if (StateGroup.readyToShoot()) {
                 LEDRepository.flashLight(0, 255, 0);
             } else if (DriveState.isShootPosition) {
                 LEDRepository.flashLight(255, 0, 0);
@@ -27,8 +30,6 @@ public class LEDCommands {
                 LEDRepository.changeLight(120, 0, 220);
             } else if (DriverStation.isEnabled()) {
                 LEDRepository.changeLight(0, 255, 0);
-            } else if (DriverStation.isDisabled()) {
-                LEDRepository.changeLight(255, 100, 0);
             } else {
                 LEDRepository.changeLight(0, 0, 0);
             }
