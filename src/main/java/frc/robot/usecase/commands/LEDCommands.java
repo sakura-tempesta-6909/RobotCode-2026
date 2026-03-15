@@ -1,8 +1,11 @@
 package frc.robot.usecase.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.domain.option.LEDOption;
 import frc.robot.domain.repository.LEDRepository;
+import frc.robot.domain.state.DriveState;
+import frc.robot.domain.state.ExtenderState;
+import frc.robot.domain.state.ShooterState;
 
 public class LEDCommands {
     private static LEDRepository LEDRepository;
@@ -11,25 +14,20 @@ public class LEDCommands {
         LEDRepository = led;
     }
 
-    public static Command setState() {
+    public static Command set() {
         return LEDRepository.run(()->{
-            switch (LEDOption.ledStateOption.get()) {
-                case s_readyToShoot:
-                    LEDRepository.flashLight(0, 255, 0);
-                    break;
-                case s_shootablePosition:
-                    LEDRepository.flashLight(255, 0, 0);
-                    break;
-                case s_shootableSpeed:
-                    LEDRepository.flashLight(0, 0, 255);
-                    break;
-                case s_readyToIntake:
-                    LEDRepository.changeLight(255, 0, 255);
-                    break;
-                case s_disable:
-                    default:
-                    LEDRepository.changeLight(255, 100, 0);
-                    break;
+            if (DriveState.isShootPosition) {
+                LEDRepository.flashLight(255, 0, 0);
+            } else if (ShooterState.isReadyToShoot) {
+                LEDRepository.flashLight(0, 0, 255);
+            } else if (ExtenderState.isIntakeAngle) {
+                LEDRepository.changeLight(120, 0, 220);
+            } else if (DriverStation.isEnabled()) {
+                LEDRepository.changeLight(0, 255, 0);
+            } else if (DriverStation.isDisabled()) {
+                LEDRepository.changeLight(255, 100, 0);
+            } else {
+                LEDRepository.changeLight(0, 0, 0);
             }
         });
     }
