@@ -17,8 +17,8 @@ public interface ExtenderRepository extends Subsystem {
     void resetPID();
 
     /** encoderをリセットする 
-     * @param resetPosition Encorderをリセットする際のポジション[rotation]
-     * 初期位置を0°とする
+     * @param resetPosition Encorderをリセットする際のポジション[degree]
+     * 初期位置を90°とする
     */
     void resetEncorder(double resetPosition);
 
