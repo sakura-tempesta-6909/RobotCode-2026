@@ -1,5 +1,4 @@
 package frc.robot.mode;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -14,7 +13,6 @@ import frc.robot.usecase.commands.IntakeCommands;
 import frc.robot.usecase.commands.ExtenderCommands;
 import frc.robot.usecase.commands.ShooterCommands;
 import frc.robot.usecase.commands.CommandsGroup;
-
 
 public class DriveMode extends Mode {
     static void configureDefault() {
@@ -54,31 +52,29 @@ public class DriveMode extends Mode {
         driveController.b().whileTrue(DriveCommands.moveToHub());
         //ロボットをHUBに向ける
         driveController.x().whileTrue(DriveCommands.faceToHub(
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX()));
+            () -> 0,
+            () -> 0));
         //ロボットを0度に向ける
         driveController.y().whileTrue(DriveCommands.setAngle(
             Rotation2d.fromDegrees(0),
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX()));
+            () -> 0,
+            () -> 0));
         //ロボットを180度に向ける
         driveController.a().whileTrue(DriveCommands.setAngle(
             Rotation2d.fromDegrees(180),
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX()));
+            () -> 0,
+            () -> 0));
         //gyroリセット
         driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
 
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
-        operateController.rightTrigger().whileTrue(CommandsGroup.shoot());
+        operateController.rightTrigger(0.6).whileTrue(CommandsGroup.shoot());
         //Intake: moveToIntakeAngle,intakeFuel
-        operateController.leftTrigger().whileTrue(CommandsGroup.intake());
+        operateController.leftTrigger(0.6).whileTrue(CommandsGroup.intake());
         //feed: feed,feedToShooter
         operateController.rightBumper().whileTrue(CommandsGroup.feed());
         //Extenderを初期位置に戻す
         operateController.leftBumper().onTrue(ExtenderCommands.moveToInitialAngle());
-        //outtake: outtakeFuel,reverseIndexer,reverseShooter
-        operateController.b().whileTrue(CommandsGroup.outtake());
     }
 }
