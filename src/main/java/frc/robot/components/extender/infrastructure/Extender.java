@@ -118,12 +118,12 @@ public class Extender implements ExtenderRepository {
     }
 
     /** encoderをリセットする 
-     * @param resetPosition Encorderをリセットする際のポジション[rotation]
+     * @param resetPosition Encorderをリセットする際のポジション[degree]
      * 初期位置を90°とする
     */
     @Override
     public void resetEncorder(double resetPosition) {
-       extenderEncoder.setPosition(resetPosition*360);
+       extenderEncoder.setPosition(resetPosition/360);
     }
 
     /** 現在の角度を維持する */
