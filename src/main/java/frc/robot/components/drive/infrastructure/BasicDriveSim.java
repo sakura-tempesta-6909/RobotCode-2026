@@ -126,14 +126,22 @@ public class BasicDriveSim implements DriveRepository {
                 });
 
         vision.leftCameraPose.ifPresent(pose -> {
-             /** 現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する */
+             /** 
+             *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
+             *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
+             *  座標が大きくずれてしまうのでその対策として入れた
+             */
             if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
                 m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
             }
         });
         
         vision.rightCameraPose.ifPresent(pose -> {
-             /** 現在の座標との差がkMaxVisionPoseErrorMetersの場合のみ適用する */
+             /** 
+             *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
+             *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
+             *  座標が大きくずれてしまうのでその対策として入れた
+             */
             if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
                 m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
             }

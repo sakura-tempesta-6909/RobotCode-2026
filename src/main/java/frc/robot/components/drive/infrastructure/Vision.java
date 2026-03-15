@@ -52,7 +52,7 @@ public class Vision {
     /**
      * 左カメラの未読の結果を取得し、ロボットの位置（Pose）とタイムスタンプを更新する
      */
-    public void updateLeftCamera(){
+    protected void updateLeftCamera(){
         if (!leftCamera.isConnected()) {
             leftCameraPose = Optional.empty();
             return;
@@ -75,7 +75,7 @@ public class Vision {
     /**
      * 右カメラの未読の結果を取得し、ロボットの姿勢（Pose）とタイムスタンプを更新する
      */
-    public  void updateRightCamera(){
+    protected  void updateRightCamera(){
         if (!rightCamera.isConnected()) {
             rightCameraPose = Optional.empty();
             return;
