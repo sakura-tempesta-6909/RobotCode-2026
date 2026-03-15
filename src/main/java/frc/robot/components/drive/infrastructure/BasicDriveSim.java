@@ -33,7 +33,7 @@ public class BasicDriveSim implements DriveRepository {
     private final ADXRS450_GyroSim gyroSim = new ADXRS450_GyroSim(gyro);
 
     public final Vision vision = new Vision();
-    public final VisionSim visionSim = new VisionSim(vision);
+    public final VisionSim visionSim = new VisionSim();
 
     private PPHolonomicDriveController driveController;
 

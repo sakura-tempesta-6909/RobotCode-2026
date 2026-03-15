@@ -16,11 +16,7 @@ public class VisionSim extends Vision{
     private final PhotonCameraSim leftCameraSim;
     private final PhotonCameraSim rightCameraSim;
 
-    private final Vision vision;
-
-    public VisionSim(Vision vision) {
-
-        this.vision = vision;
+    public VisionSim() {
 
         visionSim = new VisionSystemSim("main");
 
@@ -46,8 +42,8 @@ public class VisionSim extends Vision{
                 DriveConst.Vision.kRightCameraAvgLatencyMs,
                 DriveConst.Vision.kRightCameraLatencyStdDevMs);
 
-        leftCameraSim = new PhotonCameraSim(vision.leftCamera, leftProps);
-        rightCameraSim = new PhotonCameraSim(vision.rightCamera, rightProps);
+        leftCameraSim = new PhotonCameraSim(leftCamera, leftProps);
+        rightCameraSim = new PhotonCameraSim(rightCamera, rightProps);
 
         visionSim.addCamera(leftCameraSim, DriveConst.Vision.kRobotToLeftCamera);
         visionSim.addCamera(rightCameraSim, DriveConst.Vision.kRobotToRightCamera);
@@ -92,7 +88,7 @@ public class VisionSim extends Vision{
 
         // 左カメラ
         boolean leftHasTarget =
-            vision.leftCamera.getLatestResult().hasTargets();
+            leftCamera.getLatestResult().hasTargets();
 
         Logger.recordOutput(
             "Vision/LeftHasTarget",
@@ -101,7 +97,7 @@ public class VisionSim extends Vision{
 
         // 右カメラ
         boolean rightHasTarget =
-            vision.rightCamera.getLatestResult().hasTargets();
+            rightCamera.getLatestResult().hasTargets();
 
         Logger.recordOutput(
             "Vision/RightHasTarget",
@@ -109,7 +105,7 @@ public class VisionSim extends Vision{
         );
 
         // Vision.javaで計算されたPoseをそのまま出す
-        Logger.recordOutput("Vision/LeftEstimatedPose", vision.leftCameraPose.orElse(new Pose2d()));
-        Logger.recordOutput("Vision/RightEstimatedPose", vision.rightCameraPose.orElse(new Pose2d()));
+        Logger.recordOutput("Vision/LeftEstimatedPose", leftCameraPose.orElse(new Pose2d()));
+        Logger.recordOutput("Vision/RightEstimatedPose", rightCameraPose.orElse(new Pose2d()));
     }
 }
