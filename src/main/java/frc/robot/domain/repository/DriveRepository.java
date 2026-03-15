@@ -1,8 +1,9 @@
 package frc.robot.domain.repository;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public interface DriveRepository extends Subsystem{
     /**
@@ -35,4 +36,8 @@ public interface DriveRepository extends Subsystem{
     void buildAuto();
 
     void resetPID();
+    double getFFCharacterizationVelocity();
+    void runCharacterization(double output);
+    Command sysIdDynamic(SysIdRoutine.Direction direction);
+    Command sysIdQuasistatic(SysIdRoutine.Direction direction);
 }

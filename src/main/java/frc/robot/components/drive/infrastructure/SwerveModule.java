@@ -113,5 +113,10 @@ public class SwerveModule {
         // turningMotor.set(0);
     }
 
+    public void runCharacterization(double output){
+        driveMotor.setVoltage(output);
+        turningMotor.set(0);
+    }
+
 }
 

@@ -12,12 +12,17 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+
+import static edu.wpi.first.units.Units.Volts;
+
 import org.littletonrobotics.junction.Logger;
 
 
@@ -39,9 +44,20 @@ public class BasicDriveSim implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
     });
+    public final SysIdRoutine sysId;
 
     public BasicDriveSim() {
         driveController = createDriveController();
+        sysId =
+        new SysIdRoutine(
+                new SysIdRoutine.Config(
+                        null,
+                        null,
+                        null,
+                        (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
+                new SysIdRoutine.Mechanism(
+                        (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
+        
     }
 
     public void buildAuto() {
@@ -164,5 +180,27 @@ public class BasicDriveSim implements DriveRepository {
     @Override
     public void resetPID(){
         
+    }
+
+     public double getFFCharacterizationVelocity() {
+        double output = (frontLeft.getDriveVelocity() + frontRight.getDriveVelocity() + backLeft.getDriveVelocity() + backRight.getDriveVelocity())/ 4.0;
+        return output;
+    }
+
+    public void runCharacterization(double output) {
+        frontLeft.runCharacterization(output);
+        frontRight.runCharacterization(output);
+        backLeft.runCharacterization(output);
+        backRight.runCharacterization(output);
+    }
+
+    @Override
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysId.dynamic(direction);
+    }
+
+    @Override
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysId.quasistatic(direction);
     }
 }
