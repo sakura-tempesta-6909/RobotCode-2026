@@ -13,6 +13,7 @@ import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.components.vision.infrastructure.Vision;
 import frc.robot.domain.repository.*;
 import frc.robot.mode.Mode;
+import frc.robot.mode.ShooterTestMode;
 import frc.robot.usecase.commands.*;
 import frc.robot.auto.AutoCommand;
 import frc.robot.auto.AutoCommandConfigure;
@@ -88,12 +89,13 @@ public class RobotContainer {
     mode.configureBindings();
   }
 
-  public static ModeType mode = ModeType.k_drive;
+  public static ModeType mode = ModeType.k_shooter;
 
   public enum ModeType {
     k_drive(DriveMode::configureBindings),
     k_example(ExampleMode::configureBindings),
     k_climb(ClimbMode::configureBindings),
+    k_shooter(ShooterTestMode::configureBindings),
     ;
 
     private final Runnable configureBindings;
