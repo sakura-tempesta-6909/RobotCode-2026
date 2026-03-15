@@ -66,6 +66,7 @@ public class Shooter implements ShooterRepository {
      */
     public void resetPID() {
         pid.setReference(0, SparkMax.ControlType.kVelocity);
+        pid.setIAccum(0);
     }
 
     /**

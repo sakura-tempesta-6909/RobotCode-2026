@@ -12,5 +12,5 @@ public final class ShooterConst {
     public static double wheelDiameter = 0.1016;
 
     /**Motorの最大RPM */
-    public static double motorMaxRPM = 5627;
+    public static double motorMaxRPM = 5676;
 }
