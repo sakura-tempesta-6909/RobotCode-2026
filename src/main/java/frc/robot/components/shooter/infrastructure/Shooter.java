@@ -8,7 +8,7 @@ public class Shooter implements ShooterRepository {
     }
 
     @Override
-    public void moveShooterSpecifedPower(double targetPower){
+    public void moveShooterSpecifiedPower(double targetPower){
     }
 
     @Override
