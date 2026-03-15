@@ -68,4 +68,9 @@ public class DriveParameter {
         /** シュートできる最も遠い距離 | 単位m */
         public static final double MaxShootableRange = 0.0;
     }
+
+    public static final class Vision{
+        /** Visionの測定値を採用する最大距離 | 単位:m*/
+        public static final double kMaxVisionPoseErrorMeters = 1.5;
+    }
 }

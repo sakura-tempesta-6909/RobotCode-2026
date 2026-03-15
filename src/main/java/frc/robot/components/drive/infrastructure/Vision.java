@@ -3,10 +3,16 @@ package frc.robot.components.drive.infrastructure;
 import frc.robot.components.drive.DriveConst;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.RobotBase;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 import java.util.Optional;
 
@@ -23,6 +29,7 @@ public class Vision {
     Optional<Pose2d> leftCameraPose = Optional.empty();
     /** 右カメラから推定されたロボットの位置（値がない場合はEmpty） | フィールド座標系 */
     Optional<Pose2d> rightCameraPose = Optional.empty();
+
 
     public final PhotonPoseEstimator leftEstimator;
     public final PhotonPoseEstimator rightEstimator;
@@ -41,10 +48,11 @@ public class Vision {
         rightCamera = new PhotonCamera("rightCamera");
     }
 
+
     /**
      * 左カメラの未読の結果を取得し、ロボットの位置（Pose）とタイムスタンプを更新する
      */
-    private void updateLeftCamera(){
+    protected void updateLeftCamera(){
         if (!leftCamera.isConnected()) {
             leftCameraPose = Optional.empty();
             return;
@@ -67,7 +75,7 @@ public class Vision {
     /**
      * 右カメラの未読の結果を取得し、ロボットの姿勢（Pose）とタイムスタンプを更新する
      */
-    private void updateRightCamera(){
+    protected  void updateRightCamera(){
         if (!rightCamera.isConnected()) {
             rightCameraPose = Optional.empty();
             return;
@@ -94,5 +102,15 @@ public class Vision {
     public void periodic(){
         updateLeftCamera();
         updateRightCamera();
+        
+        // AdvantageKitでのロギング処理
+        // Optionalの中身がある場合だけPoseを送り、ない場合は空のPoseを送る（または送らない）
+        Logger.recordOutput("Vision/LeftEstimatedPose", leftCameraPose.orElse(new Pose2d()));
+        Logger.recordOutput("Vision/RightEstimatedPose", rightCameraPose.orElse(new Pose2d()));
+        
+        // デバッグ用：見えているかどうかをBooleanで送ると画角判定に便利
+        Logger.recordOutput("Vision/LeftHasTarget", leftCameraPose.isPresent());
+        Logger.recordOutput("Vision/RightHasTarget", rightCameraPose.isPresent());
     }
+    
 }
