@@ -1,19 +1,27 @@
 package frc.robot.usecase.commands;
 
+import java.lang.annotation.Target;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
+import frc.robot.components.drive.infrastructure.BasicDrive;
+import frc.robot.domain.state.DriveState;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.usecase.UsecaseConst;
+import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
 
 public class DriveCommands{
@@ -52,7 +60,7 @@ public class DriveCommands{
      * @return
      */
     public static Command GoToGoal() {
-        return AutoBuilder.pathfindToPose(DriveParameter.Poses.inFrontOfGoal, UsecaseConst.PathPlannerConst.Unlimited);
+        return AutoBuilder.pathfindToPose(UsecaseConst.Poses.inFrontOfGoal, UsecaseConst.PathPlannerConst.Unlimited);
     }
 
     /**
@@ -71,4 +79,55 @@ public class DriveCommands{
     }
 
 
+    /**
+     * 目標値に対してのPathを現在地を元に自動生成して動く
+     * ただし、WaypointはGUIの方で設定したものを利用できないので、注意は必要
+     * @return
+     */
+    public static Command moveToTargetPose(Pose2d targetPose) {
+        return AutoBuilder.pathfindToPose(targetPose, UsecaseConst.PathPlannerConst.Unlimited);
+    }
+
+    /** Hubまで移動する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     */
+    public static Command moveToHub(){
+        return moveToTargetPose (UsecaseConst.Poses.TargetPoseToHub);
+
+    }
+
+    /** 目標の角度まで回転する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     * @param targetAngle 目標の角度[degree]
+     * @param Xspeed x軸方向の速度[m/s]
+     * @param Yspeed y軸方向の速度[m/s]
+     */
+    public static Command setAngle(Rotation2d targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
+        return driveRepository.startRun(()->{
+            driveRepository.resetPID();
+        },()->{
+            driveRepository.setAngle(targetAngle.getDegrees(),Xspeed.getAsDouble() , Yspeed.getAsDouble());
+        });
+    }
+
+    /** Hubに向かった角度まで回転する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     * @param xSpeedPercentSupplier x軸のコントローラーの入力[-1~1]
+     * @param ySpeedPercentSupplier x軸のコントローラーの入力[-1~1]
+     */
+    public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
+        double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+        double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+            
+                    
+        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xInput, ()->yInput);
+    }
+
+    
 }
+
+
+

@@ -4,10 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.revrobotics.spark.SparkClosedLoopController;
 
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,35 +12,30 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
-import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveConst.DriveConstants;
-import frc.robot.components.drive.DriveTools;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
+import org.littletonrobotics.junction.Logger;
 
 
+public class BasicDriveSim implements DriveRepository {
+    public final SwerveModuleSim frontLeft = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.frontLeft);
+    public final SwerveModuleSim frontRight = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.frontRight);
+    public final SwerveModuleSim backLeft = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.backLeft);
+    public final SwerveModuleSim backRight = new SwerveModuleSim(DriveConst.ModuleConstants.SwerveModuleConsts.backRight);
 
-public class BasicDrive implements DriveRepository {
-    public final SwerveModule frontLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontLeft);
-    
-    public final SwerveModule frontRight = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontRight);
+    private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    private final ADXRS450_GyroSim gyroSim = new ADXRS450_GyroSim(gyro);
 
-    public final SwerveModule backLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.backLeft);
+    public final Vision vision = new Vision();
+    public final VisionSim visionSim = new VisionSim();
 
-    public final SwerveModule backRight = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.backRight);
-        
-    private final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-
-    public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
+    private PPHolonomicDriveController driveController;
 
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
@@ -66,9 +58,8 @@ public class BasicDrive implements DriveRepository {
             DriveConst.Vision.kStateStdDevs,
             DriveConst.Vision.kVisionStdDevs);
 
-    public final Vision vision = new Vision();
-    public BasicDrive() {
-        anglePID.enableContinuousInput(-180, 180);
+    public BasicDriveSim() {
+        driveController = createDriveController();
     }
 
     public void buildAuto() {
@@ -85,19 +76,23 @@ public class BasicDrive implements DriveRepository {
         this::resetOdometry,
         this::getChassisSpeeds,
         this::setChassisSpeeds,
-        new PPHolonomicDriveController(
-            new PIDConstants(DriveParameter.Auto.kPXYController, 0, 0),
-            new PIDConstants(DriveParameter.Auto.kPThetaController, 0, 0),
-            0.2
-        ),
+        driveController,
         config,
         () -> {
         return false;
         }, RobotContainer.getDriveInstance());
     }
 
+    private PPHolonomicDriveController createDriveController() {
+        return new PPHolonomicDriveController(
+            new PIDConstants(DriveParameter.Auto.kPXYController, 0, 0),
+            new PIDConstants(DriveParameter.Auto.kPThetaController, 0 ,0)
+        );
+    }
+
     @Override
     public void setChassisSpeeds(ChassisSpeeds speeds) {
+        gyroSim.setAngle(gyro.getAngle() + Math.toDegrees(getChassisSpeeds().omegaRadiansPerSecond * DriveConst.LoopPeriod));
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
         this.setModuleStates(moduleStates);
     }
@@ -112,19 +107,15 @@ public class BasicDrive implements DriveRepository {
         gyro.reset();
     }
 
-
     @Override
     public void periodic(){
-        vision.periodic();
-
-        odometer.update(getRotation2d(), 
+        odometer.update(getRotation2d(),
         new SwerveModulePosition[]{
             frontLeft.getPosition(),
             frontRight.getPosition(),
             backLeft.getPosition(),
             backRight.getPosition()
         });
-        DriveState.driveXYOmegaSpeed = getChassisSpeeds();
 
         m_poseEstimator.update(getRotation2d(),
                 new SwerveModulePosition[]{
@@ -135,7 +126,7 @@ public class BasicDrive implements DriveRepository {
                 });
 
         vision.leftCameraPose.ifPresent(pose -> {
-            /** 
+             /** 
              *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
              *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
              *  座標が大きくずれてしまうのでその対策として入れた
@@ -158,9 +149,30 @@ public class BasicDrive implements DriveRepository {
 
         DriveState.drivePosition = getPose();
 
-        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
+        SwerveModuleState[] states = {
+            frontLeft.getState(),
+            frontRight.getState(),
+            backLeft.getState(),
+            backRight.getState()
+        };
 
-        DriveState.targetPosition = DriveTools.calculateTargetPosition(getPose());
+
+        Logger.recordOutput("Drive/Measured", new double[] {
+            states[0].angle.getRadians(), states[0].speedMetersPerSecond,
+            states[1].angle.getRadians(), states[1].speedMetersPerSecond,
+            states[2].angle.getRadians(), states[2].speedMetersPerSecond,
+            states[3].angle.getRadians(), states[3].speedMetersPerSecond
+        });
+        Logger.recordOutput("Drive/States", states);
+        Logger.recordOutput("Drive/GyroAngle", getRotation2d());
+        Logger.recordOutput("Drive/Pose", getPose());
+        Logger.recordOutput("Drive/odometerPose", getOdometerPose());
+        Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
+
+        Pose2d truePose = getPose(); // または drivetrain.getSimPose()
+
+        visionSim.update(truePose);
+        visionSim.periodic();
     }
 
     private double getHeading(){
@@ -173,6 +185,10 @@ public class BasicDrive implements DriveRepository {
     private Pose2d getPose(){
         //return odometer.getPoseMeters();
         return m_poseEstimator.getEstimatedPosition();
+    }
+
+    private Pose2d getOdometerPose(){
+        return odometer.getPoseMeters();
     }
 
     private ChassisSpeeds getChassisSpeeds() {
@@ -195,13 +211,13 @@ public class BasicDrive implements DriveRepository {
         m_poseEstimator.resetPosition(
         getRotation2d(),
         new SwerveModulePosition[]{
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
+        frontLeft.getPosition(),
+        frontRight.getPosition(),
+        backLeft.getPosition(),
+        backRight.getPosition()
         },
         pose
-        );
+    );
     }
 
     private void setModuleStates(SwerveModuleState[] desiredStates){
@@ -212,22 +228,12 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
-    /** ロボットを任意の角度に回転させる 
-     * @param setAngle フィールドに対して前を0とした目標の角度。Robotに対して反時計回りが正。度数法[degree]
-     * @param XSpeed X軸方向のスピード[m/s] 
-     * @param YSpeed Y軸方向のスピード[m/s] */
-     
-    public void setAngle(double setAngle, double XSpeed, double YSpeed) {
-        double output = anglePID.calculate(getHeading(),setAngle);
-        double targetAngularSpeed = MathUtil.clamp(output, -DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
-        ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
-        setChassisSpeedsFiledOriented(speed);
+    public void setAngle(double setAngle, double Xspeed, double Yspeed) {
+
     }
 
     @Override
     public void resetPID(){
         
     }
-
-    
 }

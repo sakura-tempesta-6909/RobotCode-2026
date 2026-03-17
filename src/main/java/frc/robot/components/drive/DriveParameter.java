@@ -1,8 +1,5 @@
 package frc.robot.components.drive;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.components.drive.DriveConst.DriveConstants;
 
@@ -55,6 +52,25 @@ public class DriveParameter {
     }
 
     public static final class Poses {
-        public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
+        
+
+    }
+
+    /** 許容される差 */
+    public static final class Differences{
+        /** TODO
+         * 必要になったら使う
+         *許容される誤差[m]
+         */
+        public static final double arrowedDifference = 0.0;
+        /** シュートできる最も近い距離 | 単位m */
+        public static final double MinShootableRange = 0.0;
+        /** シュートできる最も遠い距離 | 単位m */
+        public static final double MaxShootableRange = 0.0;
+    }
+
+    public static final class Vision{
+        /** Visionの測定値を採用する最大距離 | 単位:m*/
+        public static final double kMaxVisionPoseErrorMeters = 1.5;
     }
 }
