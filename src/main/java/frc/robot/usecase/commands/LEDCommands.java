@@ -28,7 +28,7 @@ public class LEDCommands {
                 LEDRepository.flashLight(0, 0, 255);
             } else if (ExtenderState.isIntakePosition) {
                 LEDRepository.changeLight(120, 0, 220);
-            } */else if (DriverStation.isEnabled()) {
+            } else if (DriverStation.isEnabled()) {
                 LEDRepository.changeLight(0, 255, 0);
             } else {
                 LEDRepository.changeLight(0, 0, 0);
