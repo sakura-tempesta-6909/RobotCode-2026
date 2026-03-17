@@ -25,9 +25,7 @@ public class ShooterCommands {
         return ShooterRepository.startRun(
             () -> ShooterRepository.resetPID(),
             () -> {
-                ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble());
-                ShooterState.targetMotorSpeed = supplier.getAsDouble();
             }
         );
     }
@@ -46,12 +44,7 @@ public class ShooterCommands {
      *  自アライアンス側エリアにボールを投げ入れる
      */
     public static Command feed() {
-        return ShooterRepository.runEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed((ShooterParameter.feedMps)),
-            () -> {
-                ShooterRepository.moveShooterSpecifiedPower(0);
-            }
-        );
+    return moveShooterSpecifiedSpeed(() -> ShooterParameter.feedMps);
     }
 
     /** 
