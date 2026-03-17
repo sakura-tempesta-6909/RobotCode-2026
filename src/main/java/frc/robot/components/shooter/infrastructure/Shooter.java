@@ -58,6 +58,7 @@ public class Shooter implements ShooterRepository {
     */
     public void moveShooterSpecifiedSpeed(double targetMps) {
         pid.setReference(ShooterTools.mpsToRpm(targetMps), SparkMax.ControlType.kVelocity);
+        ShooterState.targetMotorSpeed = targetMps;
     }
 
     @Override
