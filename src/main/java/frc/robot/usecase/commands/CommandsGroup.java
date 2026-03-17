@@ -26,6 +26,7 @@ public class CommandsGroup {
     }
 
     /**
+     * TODO fuelを送るためにExtenderを動かす
      * Shooterをシュートできる速度にした後ShooterとIndexerを動かしてシュートする
      * @return ↑をするコマンドを返す
      */
