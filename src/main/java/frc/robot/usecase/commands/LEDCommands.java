@@ -26,7 +26,7 @@ public class LEDCommands {
                 LEDRepository.flashLight(255, 0, 0);
             } else if (ShooterState.isReadyToShoot) {
                 LEDRepository.flashLight(0, 0, 255);
-            }/**  else if (ExtenderState.isIntakeAngle) {
+            } else if (ExtenderState.isIntakePosition) {
                 LEDRepository.changeLight(120, 0, 220);
             } */else if (DriverStation.isEnabled()) {
                 LEDRepository.changeLight(0, 255, 0);
