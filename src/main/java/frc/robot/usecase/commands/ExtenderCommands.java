@@ -1,7 +1,11 @@
 package frc.robot.usecase.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.domain.repository.ExtenderRepository;
+import frc.robot.usecase.UsecaseConst;
 
 public class ExtenderCommands {
     private static ExtenderRepository ExtenderRepository;
@@ -13,4 +17,56 @@ public class ExtenderCommands {
     public static Command templateCommand() {
         return ExtenderRepository.run(()->{});
     }
-}
+
+    /** Extenderを特定の角度に動かす
+     * 目標の角度に到達したら終了
+     * @param targetSupplier 目標の角度[degree]
+     */
+    public static Command moveExtenderSpecifiedAngle(DoubleSupplier targetSupplier) {
+        return ExtenderRepository.startRun(()->{
+            ExtenderRepository.resetPID();
+        },()->{
+            ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
+        });
+    }
+    
+    /** Extenderを一定の力で動かす
+     * @param targetPower 目標の力[percentooutput]
+     */
+    public static Command moveExtenderSpecifiedPower(double targetPower) {
+        return ExtenderRepository.run(()->{
+            ExtenderRepository.moveIndexerSpecifiedPower(targetPower);
+        });
+    }
+
+    /** ExtenderをIntake位置方向に一定の力で動かす */
+    public static Command moveExtenderMaxPowerToIntakePosition() {
+        return moveExtenderSpecifiedPower(ExtenderParameter.MaxPowerToIntakePosition);
+    }
+
+    /** Extenderを上方向に一定の力で動かす */
+    public static Command moveExtenderMaxPowerToInitialPosition() {
+        return moveExtenderSpecifiedPower(ExtenderParameter.MaxPowerToInitialPosition);
+    }
+    
+    /** ExtenderをIntakeの角度に動かす
+     * 目標の角度に到達したら終了
+     */
+    public static Command moveToIntakeAngle(){
+        return moveExtenderSpecifiedAngle(()->(ExtenderParameter.IntakeAngle));
+    }
+
+    /** Extenderをデフォルトの角度に動かす
+     * 目標の角度に到達したら終了
+     */
+    public static Command moveToInitialAngle(){
+        return moveExtenderSpecifiedAngle(()->(ExtenderParameter.InitialAngle));
+    }
+
+    /** Extenderの現在の角度を維持する */
+    public static Command keepCurrentAngle(){
+        return ExtenderRepository.run(()->{
+            ExtenderRepository.keepCurrentAngle();
+        });
+    }
+} 
