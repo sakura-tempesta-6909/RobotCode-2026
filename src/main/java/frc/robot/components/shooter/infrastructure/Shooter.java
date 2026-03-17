@@ -87,6 +87,6 @@ public class Shooter implements ShooterRepository {
         ShooterState.isMotorActive = Math.abs(ShooterState.shooterSurfaceSpeedMps) > errorToleranceMps;
         
         //目標値に達しているかをStateに書き込む　（速度 0.5 m/s 以上で True）
-        ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetSurfaceSpeedMps) < errorToleranceMps;
+        ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < errorToleranceMps;
     }
 }
