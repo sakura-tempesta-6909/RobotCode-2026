@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
+import frc.robot.domain.state.ShooterState;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
@@ -21,11 +22,10 @@ public class ShooterCommands {
     * @param supplier : 目標の表面速度(m/s)
     */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
-        return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble()),
+        return ShooterRepository.startRun(
+            () -> ShooterRepository.resetPID(),
             () -> {
-                ShooterRepository.moveShooterSpecifiedPower(0);
-                ShooterRepository.resetPID();
+                ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble());
             }
         );
     }
@@ -44,13 +44,7 @@ public class ShooterCommands {
      *  自アライアンス側エリアにボールを投げ入れる
      */
     public static Command feed() {
-        return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed((ShooterParameter.feedMps)),
-            () -> {
-                ShooterRepository.moveShooterSpecifiedPower(0);
-                ShooterRepository.resetPID();
-            }
-        );
+    return moveShooterSpecifiedSpeed(() -> ShooterParameter.feedMps);
     }
 
     /** 
