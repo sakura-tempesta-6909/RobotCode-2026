@@ -81,7 +81,6 @@ public class Shooter implements ShooterRepository {
         // 現在の表面速度 [m/s] を State に書き込む
         ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(motorRPM);
 
-
         // モーターが動いているかと待っているかをStateに書き込む（速度 0.5 m/s 以上で True）
         ShooterState.isMotorActive = Math.abs(ShooterState.shooterSurfaceSpeedMps) > ShooterParameter.errorToleranceMps;
         
