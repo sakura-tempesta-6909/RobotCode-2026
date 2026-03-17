@@ -30,12 +30,9 @@ public class CommandsGroup {
      * @return ↑をするコマンドを返す
      */
     public static Command shoot() {
-        return Commands.sequence(
-            ShooterCommands.shootToHub().until(() -> ShooterState.isReadyToShoot),
-            Commands.parallel(
-                ShooterCommands.shootToHub(),
-                IndexerCommands.feedToShooter()
-            )
+        return Commands.parallel(
+            ShooterCommands.shootToHub(),
+            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)   
         );
     }
 
@@ -75,12 +72,9 @@ public class CommandsGroup {
      * @return ↑をするコマンドを返す
      */
     public static Command feed() {
-        return Commands.sequence(
-            ShooterCommands.feed().until(() -> ShooterState.isReadyToShoot),
-            Commands.parallel(
-                ShooterCommands.feed(),
-                IndexerCommands.feedToShooter()
-            )
+        return Commands.parallel(
+            ShooterCommands.feed(),
+            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
         );
     }
 
