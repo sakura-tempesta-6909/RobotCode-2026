@@ -1,15 +1,87 @@
 package frc.robot.usecase.commands;
 
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.domain.state.ExtenderState;
+import frc.robot.domain.state.ShooterState;
+import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
 
 public class CommandsGroup {
+
+    /**
+     * ExtenderをIntakeできる角度にした後Fuelを回収する
+     * @return ↑をするコマンドを返す
+     */
     public static Command intake() {
-        return TemplateCommands.templateCommand().withName("intake").finallyDo(() -> {System.out.println("endeee");});
+        return Commands.sequence(
+            ExtenderCommands.moveToInitialAngle().until(() -> ExtenderState.isIntakePosition),
+            IntakeCommands.intakeFuel()
+        );
+    }
+
+    /**
+     * Shooterをシュートできる速度にした後ShooterとIndexerを動かしてシュートする
+     * @return ↑をするコマンドを返す
+     */
+    public static Command shoot() {
+        return Commands.sequence(
+            ShooterCommands.shootToHub().until(() -> ShooterState.isReadyToShoot),
+            Commands.parallel(
+                ShooterCommands.shootToHub(),
+                IndexerCommands.feedToShooter()
+            )
+        );
+    }
+
+    /**
+     * シュートできる位置まで移動する
+     * @return ↑をするコマンドを返す
+     */
+    public static Command alignToHub(){
+        return DriveCommands.moveToHub();
+    }
+
+    /**
+     * シュートできる位置に移動した後シュートする
+     * @return ↑をするコマンドを返す
+     */
+    public static Command alignToHubAndShoot() {
+        return Commands.sequence(
+            alignToHub().until(() -> DriveState.isShootPosition),
+            shoot()
+        );
+    }
+
+    /**
+     * 詰まった時用ににShooter,Indexer,Intakeすべてを逆回転する
+     * @return ↑をするコマンドを返す
+     */
+    public static Command outtake() {
+        return Commands.parallel(
+          ShooterCommands.reverseShooter(),
+          IndexerCommands.reverseIndexer(),
+          IntakeCommands.outtakeFuel()  
+        );
+    }
+
+    /**
+     * フィード用の速度でシューターを回しながらIndexerも回してフィードする
+     * @return ↑をするコマンドを返す
+     */
+    public static Command feed() {
+        return Commands.sequence(
+            ShooterCommands.feed().until(() -> ShooterState.isReadyToShoot),
+            Commands.parallel(
+                ShooterCommands.feed(),
+                IndexerCommands.feedToShooter()
+            )
+        );
     }
 
 
