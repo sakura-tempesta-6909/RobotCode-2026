@@ -46,7 +46,7 @@ public class ShooterCommands {
      *  自アライアンス側エリアにボールを投げ入れる
      */
     public static Command feed() {
-        return ShooterRepository.startRun(
+        return ShooterRepository.runEnd(
             () -> ShooterRepository.moveShooterSpecifiedSpeed((ShooterParameter.feedMps)),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0);
