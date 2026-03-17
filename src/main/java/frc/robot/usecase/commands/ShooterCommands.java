@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
+import frc.robot.domain.state.ShooterState;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
@@ -22,11 +23,12 @@ public class ShooterCommands {
     */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
         return ShooterRepository.startEnd(
-            () -> ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble()),
             () -> {
-                ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.resetPID();
-            }
+                ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble());
+                ShooterState.targetMotorSpeed = supplier.getAsDouble();
+            },
+            () -> ShooterRepository.moveShooterSpecifiedPower(0)
         );
     }
 
@@ -48,7 +50,6 @@ public class ShooterCommands {
             () -> ShooterRepository.moveShooterSpecifiedSpeed((ShooterParameter.feedMps)),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0);
-                ShooterRepository.resetPID();
             }
         );
     }
