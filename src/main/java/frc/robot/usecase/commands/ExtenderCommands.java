@@ -4,7 +4,9 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.components.extender.ExtenderParameter;
+import frc.robot.components.intake.IntakeParameter;
 import frc.robot.domain.repository.ExtenderRepository;
+import frc.robot.domain.repository.IntakeRepository;
 import frc.robot.usecase.UsecaseConst;
 
 public class ExtenderCommands {
@@ -35,7 +37,7 @@ public class ExtenderCommands {
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
         return ExtenderRepository.run(()->{
-            ExtenderRepository.moveIndexerSpecifiedPower(targetPower);
+            ExtenderRepository.moveExtenderSpecifiedPower(targetPower);
         });
     }
 
@@ -69,4 +71,12 @@ public class ExtenderCommands {
             ExtenderRepository.keepCurrentAngle();
         });
     }
+
+    public static Command stopExtender(){
+        return ExtenderRepository.run(() -> {
+            ExtenderRepository.moveExtenderSpecifiedPower(ExtenderParameter.Power.Neutral);
+        });
+    }
+
+
 } 

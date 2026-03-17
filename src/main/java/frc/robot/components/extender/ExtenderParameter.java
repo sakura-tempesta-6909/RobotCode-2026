@@ -1,6 +1,11 @@
 package frc.robot.components.extender;
 
 public final class ExtenderParameter {
+
+    public static final class Power{
+        public static final double Neutral = 0;
+    }
+
     public static final class SoftLimit{
         /** Extenderのソフトリミット(リミットスイッチが壊れるかもしれないからね！)[degree] */
         public static final double ForwardSoftLimit = 90;

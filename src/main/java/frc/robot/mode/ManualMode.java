@@ -49,10 +49,10 @@ public class ManualMode extends Mode {
        operateController.leftTrigger(0.6).whileTrue(CommandsGroup.intake());
        //Extenderを上方向に動かす
        operateController.leftBumper().whileTrue(
-        new RunCommand(() -> extenderRepository.moveIndexerSpecifiedPower(-0.5)));
+        new RunCommand(() -> extenderRepository.moveExtenderSpecifiedPower(-0.5)));
        //Extenderを下方向に動かす
        operateController.rightBumper().whileTrue(
-        new RunCommand(() -> extenderRepository.moveIndexerSpecifiedPower(0.5)));
+        new RunCommand(() -> extenderRepository.moveExtenderSpecifiedPower(0.5)));
        //outtake
        operateController.b().whileTrue(CommandsGroup.outtake());
        //feed
