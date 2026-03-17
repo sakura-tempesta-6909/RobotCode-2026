@@ -27,18 +27,18 @@ public class ManualMode extends Mode {
         driveController.b().whileTrue(DriveCommands.moveToHub());
         //ロボットをHUBに向ける
         driveController.x().whileTrue(DriveCommands.faceToHub(
-            () -> 0,
-            () -> 0));
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX()));
         //ロボットを0度に向ける
         driveController.y().onTrue(DriveCommands.setAngle(
             Rotation2d.fromDegrees(0),
-            () -> 0,
-            () -> 0));
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX()));
         //ロボットを180度に向ける
         driveController.a().onTrue(DriveCommands.setAngle(
             Rotation2d.fromDegrees(180),
-            () -> 0,
-            () -> 0));
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX()));
         //gyroリセット
         driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
        
@@ -59,7 +59,7 @@ public class ManualMode extends Mode {
        operateController.a().whileTrue(CommandsGroup.feed());
        //ExtenderのPIDとエンコーダーをリセットする
        operateController.pov(0).onTrue(new InstantCommand(() -> {
-        extenderRepository.resetEncorder();
+        extenderRepository.resetEncorder(90);
         extenderRepository.resetPID();}));
        //ShooterのPIDをリセットする
        operateController.pov(180).onTrue(new InstantCommand(shooterRepository::resetPID));

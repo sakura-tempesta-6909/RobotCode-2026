@@ -13,21 +13,21 @@ public class IndexerCommands {
 
     public static Command feedToShooter(){
         return IndexerRepository.runEnd(() -> {
-            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.IndexerRollerFeedSpeed);
+            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.LongRollerIndexer.FeedSpeed, IndexerParameter.StarWheelIndexer.FeedSpeed);
         },() ->
-            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.Neutral));
+            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.LongRollerIndexer.Neutral, IndexerParameter.StarWheelIndexer.Neutral));
     }
 
     public static Command reverseIndexer(){
         return IndexerRepository.runEnd(() -> {
-            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.IndexerRollerReverseSpeed);
+            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.LongRollerIndexer.ReverseSpeed, IndexerParameter.StarWheelIndexer.ReverseSpeed);
         },() ->
-                IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.Neutral));
+                IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.LongRollerIndexer.Neutral, IndexerParameter.StarWheelIndexer.Neutral));
     }
 
     public static Command stopIndexer(){
         return IndexerRepository.run(() -> {
-            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.Speed.Neutral);
+            IndexerRepository.moveIndexerSpecifiedPower(IndexerParameter.LongRollerIndexer.Neutral, IndexerParameter.StarWheelIndexer.Neutral);
         });
     }
 }
