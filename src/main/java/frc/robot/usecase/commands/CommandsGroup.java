@@ -19,8 +19,8 @@ public class CommandsGroup {
      * @return ↑をするコマンドを返す
      */
     public static Command intake() {
-        return Commands.sequence(
-            ExtenderCommands.moveToInitialAngle().until(() -> ExtenderState.isIntakePosition),
+        return Commands.parallel(
+            ExtenderCommands.moveToInitialAngle(),
             IntakeCommands.intakeFuel()
         );
     }
