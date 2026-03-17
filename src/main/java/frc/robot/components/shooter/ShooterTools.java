@@ -19,7 +19,7 @@ public class ShooterTools {
     public static double mpsToRpm(double targetMps) {
         return (targetMps * 60) / (ShooterConst.wheelDiameter * Math.PI);
     }
-}
+    
     /** 
      * 距離をもとにシュート時のm/sを算出する 
      * @param distance 取得したロボットとゴールの距離　単位：m
