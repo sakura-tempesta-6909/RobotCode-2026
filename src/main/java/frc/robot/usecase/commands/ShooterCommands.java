@@ -22,13 +22,13 @@ public class ShooterCommands {
     * @param supplier : 目標の表面速度(m/s)
     */
     public static Command moveShooterSpecifiedSpeed(DoubleSupplier supplier){
-        return ShooterRepository.runEnd(
+        return ShooterRepository.startRun(
+            () -> ShooterRepository.resetPID(),
             () -> {
-                ShooterRepository.resetPID();
+                ShooterRepository.moveShooterSpecifiedPower(0);
                 ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble());
                 ShooterState.targetMotorSpeed = supplier.getAsDouble();
-            },
-            () -> ShooterRepository.moveShooterSpecifiedPower(0)
+            }
         );
     }
 
@@ -46,7 +46,7 @@ public class ShooterCommands {
      *  自アライアンス側エリアにボールを投げ入れる
      */
     public static Command feed() {
-        return ShooterRepository.runEnd(
+        return ShooterRepository.startRun(
             () -> ShooterRepository.moveShooterSpecifiedSpeed((ShooterParameter.feedMps)),
             () -> {
                 ShooterRepository.moveShooterSpecifiedPower(0);
