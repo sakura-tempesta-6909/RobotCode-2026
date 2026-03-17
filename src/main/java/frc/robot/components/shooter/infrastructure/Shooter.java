@@ -29,7 +29,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.d(ShooterParameter.dGain);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
-        followerConfig.follow(motor);
+        followerConfig.follow(motor, true);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
@@ -57,7 +57,7 @@ public class Shooter implements ShooterRepository {
      * 0で停止
     */
     public void moveShooterSpecifiedSpeed(double targetMps) {
-        pid.setReference(ShooterTools.mpsToRpm(targetMps), SparkMax.ControlType.kVelocity);
+        pid.setReference(ShooterTools.mpsToRpm(targetMps * -1), SparkMax.ControlType.kVelocity);
     }
 
     @Override
@@ -65,7 +65,6 @@ public class Shooter implements ShooterRepository {
      * PIDをリセット
      */
     public void resetPID() {
-        pid.setReference(0, SparkMax.ControlType.kVelocity);
         pid.setIAccum(0);
     }
 
@@ -80,5 +79,7 @@ public class Shooter implements ShooterRepository {
 
         /** stateに現在の表面速度を書き込む（m/s）*/
         ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(motorRPM);
+
+        
     }
 }

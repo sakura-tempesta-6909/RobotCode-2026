@@ -3,10 +3,10 @@ package frc.robot.components.shooter;
 public final class ShooterConst {
     public static final class Ports{
         /** ShooterのCANID */
-        public static final int ShooterMotor = 16;
+        public static final int ShooterMotor = 18;
         
         /** ShooterのFollowMotor側のCANID */
-        public static final int ShooterFollowerMotor = 18;
+        public static final int ShooterFollowerMotor = 16;
     }
     /** Wheelの直径　単位m */
     public static double wheelDiameter = 0.1016;
