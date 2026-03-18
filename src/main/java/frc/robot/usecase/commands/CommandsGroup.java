@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.state.ShooterState;
+import frc.robot.Robot;
+import frc.robot.components.drive.infrastructure.BasicDriveSim;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
 
@@ -31,11 +33,22 @@ public class CommandsGroup {
      * @return ↑をするコマンドを返す
      */
     public static Command shoot() {
-        return Commands.parallel(
+    return Commands.either(
+        // --- シミュレーション中の動作 ---
+        Commands.run(() -> {
+            BasicDriveSim.fuelSimulation.launchFuel();
+        }),
+
+        // --- 実機（RoboRIO）での動作 ---
+        Commands.parallel(
             ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)   
-        );
-    }
+            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
+        ),
+
+        // どっちを使うかの判定条件
+        Robot::isSimulation
+    );
+}
 
     /**
      * シュートできる位置まで移動する

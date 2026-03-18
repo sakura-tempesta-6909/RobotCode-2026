@@ -14,12 +14,16 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import frc.robot.util.FuelSim;
+
 import org.littletonrobotics.junction.Logger;
 
 
@@ -34,6 +38,9 @@ public class BasicDriveSim implements DriveRepository {
 
     public final Vision vision = new Vision();
     public final VisionSim visionSim = new VisionSim();
+
+    public static FuelSim fuelSim = new FuelSim();
+    public static FuelSimulation fuelSimulation = new FuelSimulation(fuelSim);
 
     private PPHolonomicDriveController driveController;
 
@@ -60,6 +67,27 @@ public class BasicDriveSim implements DriveRepository {
 
     public BasicDriveSim() {
         driveController = createDriveController();
+
+        fuelSimulation.configureFuelSim();
+
+        fuelSim.registerRobot(
+            0.8,   // width (m)
+            0.8,   // length (m)
+            0.2,   // bumper height (m)
+            () -> getPose(),              // Pose2d
+            () -> getChassisSpeeds() // ChassisSpeeds
+        );
+
+        fuelSim.registerIntake(
+            0.0,   // 前方向スタート（中心）
+            0.50,  // 前方20cm
+            -0.8,  // 右端（-0.8 / 2）
+            0.8,  // 左端（+0.8 / 2）
+            () -> fuelSimulation.canIntake(),
+            () -> fuelSimulation.intakeFuel()
+        );
+
+        fuelSim.start();
     }
 
     public void buildAuto() {
@@ -173,6 +201,9 @@ public class BasicDriveSim implements DriveRepository {
 
         visionSim.update(truePose);
         visionSim.periodic();
+
+        fuelSim.updateSim();
+        Logger.recordOutput("fuleNumber", fuelSimulation.getFuelStored());
     }
 
     private double getHeading(){
