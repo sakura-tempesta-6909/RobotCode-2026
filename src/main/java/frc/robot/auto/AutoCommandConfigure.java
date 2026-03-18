@@ -8,8 +8,8 @@ import frc.robot.usecase.commands.ExtenderCommands;
 
 public class AutoCommandConfigure {
     public static void registerCommands() {
-        NamedCommands.registerCommand("Intake", CommandsGroup.intake().withTimeout(5.0));
-        NamedCommands.registerCommand("shoot", CommandsGroup.shoot().withTimeout(7.0));
+        NamedCommands.registerCommand("Intake", CommandsGroup.intake());
+        NamedCommands.registerCommand("shoot", CommandsGroup.shoot());
         NamedCommands.registerCommand("move to intake angle", ExtenderCommands.moveToIntakeAngle().until(() -> ExtenderState.isIntakePosition));
     }
 }
