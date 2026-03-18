@@ -23,6 +23,8 @@ public class FuelSimulation {
         fuelSim.spawnStartingFuel();
         fuelSim.start();
         SmartDashboard.putData(Commands.runOnce(() -> {
+                    FuelSim.Hub.BLUE_HUB.resetScore();
+                    FuelSim.Hub.RED_HUB.resetScore();
                     fuelSim.clearFuel();
                     fuelSim.spawnStartingFuel();
                 })
@@ -61,5 +63,13 @@ public class FuelSimulation {
 
     public int getFuelStored(){
         return fuelStored;
+    }
+
+    public int getBlueScore(){
+        return FuelSim.Hub.BLUE_HUB.getScore();
+    }
+
+    public int getRedScore(){
+        return FuelSim.Hub.RED_HUB.getScore();
     }
 }

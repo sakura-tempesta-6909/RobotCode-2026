@@ -203,7 +203,9 @@ public class BasicDriveSim implements DriveRepository {
         visionSim.periodic();
 
         fuelSim.updateSim();
-        Logger.recordOutput("fuleNumber", fuelSimulation.getFuelStored());
+        Logger.recordOutput("Fuel/Number", fuelSimulation.getFuelStored());
+        Logger.recordOutput("Fuel/BlueScore", fuelSimulation.getBlueScore());
+        Logger.recordOutput("Fuel/RedScore", fuelSimulation.getRedScore());
     }
 
     private double getHeading(){
