@@ -13,6 +13,6 @@ public final class ShooterParameter {
     /** 詰まり解消用の逆回転出力（PercentOutput） 範囲: [-1.0 -> 0.0] */
     public static double reverseOutput = -0.3;
 
-    //モーターの許容誤差0.3[m/s]
+    //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
     public static double errorToleranceMps = 0.3;
 }
