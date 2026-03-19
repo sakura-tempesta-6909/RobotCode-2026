@@ -3,6 +3,7 @@ package frc.robot.usecase.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.components.intake.IntakeParameter;
 import frc.robot.domain.repository.ExtenderRepository;
@@ -14,6 +15,14 @@ public class ExtenderCommands {
 
     public static void init(ExtenderRepository ex) {
         ExtenderRepository = ex;
+    }
+
+    public static Command resetEncoder() {
+        return new InstantCommand(() -> ExtenderRepository.resetEncoder(90.0));
+    }
+
+    public static Command resetPID() {
+        return new InstantCommand(ExtenderRepository::resetPID);
     }
 
     public static Command templateCommand() {
