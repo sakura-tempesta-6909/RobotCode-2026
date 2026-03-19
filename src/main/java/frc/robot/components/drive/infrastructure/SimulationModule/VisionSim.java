@@ -1,7 +1,7 @@
-package frc.robot.components.drive.infrastructure;
+package frc.robot.components.drive.infrastructure.SimulationModule;
 
 import frc.robot.components.drive.DriveConst;
-
+import frc.robot.components.drive.infrastructure.Vision;
 import edu.wpi.first.math.geometry.Pose2d;
 
 import org.photonvision.simulation.*;

@@ -21,14 +21,14 @@ import java.util.Optional;
  */
 public class Vision {
     /** 左カメラの最新データ取得時のタイムスタンプ | [s] */
-    double leftCameraTimestamp;
+    public double leftCameraTimestamp;
     /** 右カメラの最新データ取得時のタイムスタンプ | [s] */
-    double rightCameraTimestamp;
+    public double rightCameraTimestamp;
 
     /** 左カメラから推定されたロボットの位置（値がない場合はEmpty） | フィールド座標系 */
-    Optional<Pose2d> leftCameraPose = Optional.empty();
+    public Optional<Pose2d> leftCameraPose = Optional.empty();
     /** 右カメラから推定されたロボットの位置（値がない場合はEmpty） | フィールド座標系 */
-    Optional<Pose2d> rightCameraPose = Optional.empty();
+    public Optional<Pose2d> rightCameraPose = Optional.empty();
 
 
     public final PhotonPoseEstimator leftEstimator;
