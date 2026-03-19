@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.option.DriveOption;
@@ -129,6 +128,8 @@ public class DriveCommands{
         return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xInput, ()->yInput);
     }
 
+    /** DriveのkS,kVを測定する
+     * このCommandを実行したらコンソールにkS、kVの結果が出てくる */
     public static Command feedforwardCharacterization() {
         List<Double> velocitySamples = new LinkedList<>();
         List<Double> voltageSamples = new LinkedList<>();
