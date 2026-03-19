@@ -6,7 +6,7 @@ public class ShooterState {
      * 正回転でシュートする
      * 0で停止
      */
-    public static double motorSpeed;
+    public static double shooterSurfaceSpeedMps;
 
     /** 
      * シューターのモーターが動作しているか 

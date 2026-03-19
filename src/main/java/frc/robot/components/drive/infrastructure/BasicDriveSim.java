@@ -4,6 +4,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -35,6 +37,9 @@ public class BasicDriveSim implements DriveRepository {
     private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
     private final ADXRS450_GyroSim gyroSim = new ADXRS450_GyroSim(gyro);
 
+    public final Vision vision = new Vision();
+    public final VisionSim visionSim = new VisionSim();
+
     private PPHolonomicDriveController driveController;
 
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
@@ -45,6 +50,19 @@ public class BasicDriveSim implements DriveRepository {
         backRight.getPosition()
     });
     public final SysIdRoutine sysId;
+
+    private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
+            DriveConst.DriveConstants.kDriveKinematics,
+            gyro.getRotation2d(),
+            new SwerveModulePosition[] {
+                    frontLeft.getPosition(),
+                    frontRight.getPosition(),
+                    backLeft.getPosition(),
+                    backRight.getPosition()
+            },
+            new Pose2d(),
+            DriveConst.Vision.kStateStdDevs,
+            DriveConst.Vision.kVisionStdDevs);
 
     public BasicDriveSim() {
         driveController = createDriveController();
@@ -115,6 +133,36 @@ public class BasicDriveSim implements DriveRepository {
             backRight.getPosition()
         });
 
+        m_poseEstimator.update(getRotation2d(),
+                new SwerveModulePosition[]{
+                        frontLeft.getPosition(),
+                        frontRight.getPosition(),
+                        backLeft.getPosition(),
+                        backRight.getPosition()
+                });
+
+        vision.leftCameraPose.ifPresent(pose -> {
+             /** 
+             *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
+             *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
+             *  座標が大きくずれてしまうのでその対策として入れた
+             */
+            if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
+                m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
+            }
+        });
+        
+        vision.rightCameraPose.ifPresent(pose -> {
+             /** 
+             *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
+             *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
+             *  座標が大きくずれてしまうのでその対策として入れた
+             */
+            if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
+                m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
+            }
+        });
+
         DriveState.drivePosition = getPose();
 
         SwerveModuleState[] states = {
@@ -123,6 +171,7 @@ public class BasicDriveSim implements DriveRepository {
             backLeft.getState(),
             backRight.getState()
         };
+
 
         Logger.recordOutput("Drive/Measured", new double[] {
             states[0].angle.getRadians(), states[0].speedMetersPerSecond,
@@ -133,7 +182,13 @@ public class BasicDriveSim implements DriveRepository {
         Logger.recordOutput("Drive/States", states);
         Logger.recordOutput("Drive/GyroAngle", getRotation2d());
         Logger.recordOutput("Drive/Pose", getPose());
+        Logger.recordOutput("Drive/odometerPose", getOdometerPose());
         Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
+
+        Pose2d truePose = getPose(); // または drivetrain.getSimPose()
+
+        visionSim.update(truePose);
+        visionSim.periodic();
     }
 
     private double getHeading(){
@@ -144,6 +199,11 @@ public class BasicDriveSim implements DriveRepository {
     }
 
     private Pose2d getPose(){
+        //return odometer.getPoseMeters();
+        return m_poseEstimator.getEstimatedPosition();
+    }
+
+    private Pose2d getOdometerPose(){
         return odometer.getPoseMeters();
     }
 
@@ -163,6 +223,17 @@ public class BasicDriveSim implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
         },pose);
+
+        m_poseEstimator.resetPosition(
+        getRotation2d(),
+        new SwerveModulePosition[]{
+        frontLeft.getPosition(),
+        frontRight.getPosition(),
+        backLeft.getPosition(),
+        backRight.getPosition()
+        },
+        pose
+    );
     }
 
     private void setModuleStates(SwerveModuleState[] desiredStates){
