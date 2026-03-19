@@ -22,6 +22,7 @@ import frc.robot.components.drive.DriveConst.DriveConstants;
 import frc.robot.components.drive.infrastructure.SwerveModuleSim;
 import frc.robot.components.drive.infrastructure.Vision;
 import frc.robot.components.drive.DriveParameter;
+import frc.robot.components.drive.SimulationConst;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
@@ -74,18 +75,18 @@ public class BasicDriveSim implements DriveRepository {
         fuelSimulation.configureFuelSim();
 
         fuelSim.registerRobot(
-            DriveConst.RobotSize.weitht,   // width (m)
-            DriveConst.RobotSize.length,   // length (m)
-            DriveConst.RobotSize.bumperHeight,
+            SimulationConst.RobotSize.weitht,   // width (m)
+            SimulationConst.RobotSize.length,   // length (m)
+            SimulationConst.RobotSize.bumperHeight,
             () -> getPose(),              // Pose2d
             () -> getChassisSpeeds() // ChassisSpeeds
         );
 
         fuelSim.registerIntake(
-            DriveConst.IntakeSize.xMin,   // 前方向スタート（中心）
-            DriveConst.IntakeSize.xMax,  // 前方20cm
-            DriveConst.IntakeSize.yMin,  // 右端
-            DriveConst.IntakeSize.yMax,  // 左端
+            SimulationConst.IntakeSize.xMin,   // 前方向スタート（中心）
+            SimulationConst.IntakeSize.xMax,  // 前方20cm
+            SimulationConst.IntakeSize.yMin,  // 右端
+            SimulationConst.IntakeSize.yMax,  // 左端
             () -> fuelSimulation.canIntake(),
             () -> fuelSimulation.intakeFuel()
         );
