@@ -1,4 +1,4 @@
-package frc.robot.components.drive.infrastructure;
+package frc.robot.components.drive.infrastructure.SimulationModule;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.units.Units;

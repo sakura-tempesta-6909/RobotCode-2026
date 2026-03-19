@@ -1,4 +1,4 @@
-package frc.robot.components.drive.infrastructure;
+package frc.robot.components.drive.infrastructure.SimulationModule;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
+import frc.robot.components.drive.infrastructure.SwerveModuleSim;
+import frc.robot.components.drive.infrastructure.Vision;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;

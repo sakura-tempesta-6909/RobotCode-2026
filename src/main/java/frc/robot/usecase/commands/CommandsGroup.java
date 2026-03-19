@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.state.ShooterState;
 import frc.robot.Robot;
-import frc.robot.components.drive.infrastructure.BasicDriveSim;
+import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
 
