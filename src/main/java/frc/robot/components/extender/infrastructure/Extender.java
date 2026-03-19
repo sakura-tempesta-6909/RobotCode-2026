@@ -106,7 +106,7 @@ public class Extender implements ExtenderRepository {
 
     /** Extenderを任意の力で動かす(PercentOutput) */
     @Override
-    public void moveExtenderSpecifiedPower(double targetPower) {
+    public void moveIndexerSpecifiedPower(double targetPower) {
         extenderMotor.set(targetPower);
 
     }

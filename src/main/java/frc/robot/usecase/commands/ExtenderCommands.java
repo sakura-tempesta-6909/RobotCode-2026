@@ -46,7 +46,7 @@ public class ExtenderCommands {
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
         return ExtenderRepository.run(()->{
-            ExtenderRepository.moveExtenderSpecifiedPower(targetPower);
+            ExtenderRepository.moveIndexerSpecifiedPower(targetPower);
         });
     }
 
