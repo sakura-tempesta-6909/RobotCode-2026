@@ -2,8 +2,8 @@ package frc.robot.components.drive.infrastructure;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.components.drive.DriveConst;
 import frc.robot.usecase.commands.CommandsGroup;
 import frc.robot.util.FuelSim;
 
@@ -48,9 +48,9 @@ public class FuelSimulation {
 
             fuelSim.launchFuel(
                 Units.MetersPerSecond.of(launchPower), 
-                Units.Degrees.of(50),
-                Units.Degrees.of(0),
-                Units.Meters.of(0.45)
+                DriveConst.Shooter.hoodAngle,
+                DriveConst.Shooter.turretYaw,
+                DriveConst.Shooter.height
             );
     }
 

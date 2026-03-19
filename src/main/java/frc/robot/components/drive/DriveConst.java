@@ -17,6 +17,9 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 import java.util.function.Supplier;
+/**別クラスへ移行するimport */
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Angle;
 
 public final class DriveConst {
     public static final double LoopPeriod = 0.02;
@@ -197,5 +200,12 @@ public final class DriveConst {
         public static final double xMax = xMin + length;
         public static final double yMin = -weitht/2;
         public static final double yMax = weitht/2;
+    }
+    public static final class Shooter{
+        public static final Distance height = edu.wpi.first.units.Units.Meters.of(0.45);
+        /**上下方向 */
+        public static final Angle hoodAngle = edu.wpi.first.units.Units.Degrees.of(50);
+        /**左右方向 */
+        public static final Angle turretYaw = edu.wpi.first.units.Units.Degrees.of(0);
     }
 }
