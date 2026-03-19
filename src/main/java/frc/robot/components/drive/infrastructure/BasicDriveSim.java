@@ -72,18 +72,18 @@ public class BasicDriveSim implements DriveRepository {
         fuelSimulation.configureFuelSim();
 
         fuelSim.registerRobot(
-            0.8,   // width (m)
-            0.8,   // length (m)
-            0.2,   // bumper height (m)
+            DriveConst.RobotSize.weitht,   // width (m)
+            DriveConst.RobotSize.length,   // length (m)
+            DriveConst.RobotSize.bumperHeight,
             () -> getPose(),              // Pose2d
             () -> getChassisSpeeds() // ChassisSpeeds
         );
 
         fuelSim.registerIntake(
-            0.0,   // 前方向スタート（中心）
-            0.50,  // 前方20cm
-            -0.8,  // 右端（-0.8 / 2）
-            0.8,  // 左端（+0.8 / 2）
+            DriveConst.IntakeSize.xMin,   // 前方向スタート（中心）
+            DriveConst.IntakeSize.xMax,  // 前方20cm
+            DriveConst.IntakeSize.yMin,  // 右端
+            DriveConst.IntakeSize.yMax,  // 左端
             () -> fuelSimulation.canIntake(),
             () -> fuelSimulation.intakeFuel()
         );

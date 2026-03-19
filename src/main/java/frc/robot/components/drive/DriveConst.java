@@ -181,4 +181,21 @@ public final class DriveConst {
     public static final double kRightCameraAvgLatencyMs  = 50.0;
     public static final double kRightCameraLatencyStdDevMs = 15.0;
     }
+
+    /** fuelSim用の定数
+     *  TODO: 専用のにクラス変える
+     */
+    public static final class RobotSize{
+        public static final double weitht = 0.8;
+        public static final double length = 0.8;
+        public static final double bumperHeight = 0.2;
+    }
+    public static final class IntakeSize{
+        public static final double length = 0.20;
+        public static final double weitht = 0.60;
+        public static final double xMin = RobotSize.length;
+        public static final double xMax = xMin + length;
+        public static final double yMin = -weitht/2;
+        public static final double yMax = weitht/2;
+    }
 }
