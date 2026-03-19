@@ -20,6 +20,7 @@ public class FuelSimulation {
     }
 
     public void configureFuelSim() {
+        fuelSim.enableAirResistance();
         fuelSim.spawnStartingFuel();
         fuelSim.start();
         SmartDashboard.putData(Commands.runOnce(() -> {
@@ -41,12 +42,12 @@ public class FuelSimulation {
         );
     }
 
-    public void launchFuel() {
+    public void launchFuel(double launchPower) {
         if (fuelStored == 0) return;
             fuelStored--;
 
             fuelSim.launchFuel(
-                Units.MetersPerSecond.of(6.5), 
+                Units.MetersPerSecond.of(launchPower), 
                 Units.Degrees.of(50),
                 Units.Degrees.of(0),
                 Units.Meters.of(0.45)

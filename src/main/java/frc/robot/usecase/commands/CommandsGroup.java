@@ -1,6 +1,7 @@
 package frc.robot.usecase.commands;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -35,9 +36,10 @@ public class CommandsGroup {
     public static Command shoot() {
     return Commands.either(
         // --- シミュレーション中の動作 ---
-        Commands.run(() -> {
-            BasicDriveSim.fuelSimulation.launchFuel();
-        }),
+        Commands.repeatingSequence(
+            Commands.runOnce(() -> BasicDriveSim.fuelSimulation.launchFuel(7)),
+            Commands.waitSeconds(0.3) // ← ここで間隔調整
+            ),
 
         // --- 実機（RoboRIO）での動作 ---
         Commands.parallel(

@@ -22,6 +22,7 @@ import frc.robot.components.drive.DriveConst.DriveConstants;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import frc.robot.domain.state.StateGroup;
 import frc.robot.util.FuelSim;
 
 import org.littletonrobotics.junction.Logger;
@@ -196,6 +197,7 @@ public class BasicDriveSim implements DriveRepository {
         Logger.recordOutput("Drive/Pose", getPose());
         Logger.recordOutput("Drive/odometerPose", getOdometerPose());
         Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
+        Logger.recordOutput("Drive/DistanceToHub", StateGroup.getDistanceToHub());
 
         Pose2d truePose = getPose(); // または drivetrain.getSimPose()
 
