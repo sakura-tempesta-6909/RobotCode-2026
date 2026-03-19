@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.components.drive.DriveConst;
-import frc.robot.components.drive.SimulationConst;
 import frc.robot.usecase.commands.CommandsGroup;
 import frc.robot.util.FuelSim;
 

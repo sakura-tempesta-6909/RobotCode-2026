@@ -1,4 +1,4 @@
-package frc.robot.components.drive;
+package frc.robot.components.drive.infrastructure.SimulationModule;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
