@@ -185,30 +185,6 @@ public class DriveCommands{
                                     System.out.println("\tkV: " + formatter.format(kV));
                                 }));
     }
-
-    public static Command dynamicForward() {
-        return run(() -> driveRepository.runCharacterization(0.0)).withTimeout(1.0).andThen(dynamic(SysIdRoutine.Direction.kForward));
-    }
-
-    public static Command dynamicReverse() {
-        return run(() -> driveRepository.runCharacterization(0.0)).withTimeout(1.0).andThen(dynamic(SysIdRoutine.Direction.kReverse));
-    }
-
-    public static Command quasistaticForward() {
-        return run(() -> driveRepository.runCharacterization(0.0)).withTimeout(1.0).andThen(quasistatic(SysIdRoutine.Direction.kForward));
-    }
-
-    public static Command quasistaticReverse() {
-        return run(() -> driveRepository.runCharacterization(0.0)).withTimeout(1.0).andThen(quasistatic(SysIdRoutine.Direction.kReverse));
-    }
-
-    public static Command dynamic(SysIdRoutine.Direction direction) {
-        return driveRepository.sysIdDynamic(direction);
-    }
-
-    public static Command quasistatic(SysIdRoutine.Direction direction) {
-        return driveRepository.sysIdQuasistatic(direction);
-    }
 }
 
 

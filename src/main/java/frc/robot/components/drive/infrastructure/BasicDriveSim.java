@@ -49,7 +49,6 @@ public class BasicDriveSim implements DriveRepository {
         backLeft.getPosition(),
         backRight.getPosition()
     });
-    public final SysIdRoutine sysId;
 
     private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
             DriveConst.DriveConstants.kDriveKinematics,
@@ -66,16 +65,6 @@ public class BasicDriveSim implements DriveRepository {
 
     public BasicDriveSim() {
         driveController = createDriveController();
-        sysId =
-        new SysIdRoutine(
-                new SysIdRoutine.Config(
-                        null,
-                        null,
-                        null,
-                        (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
-                new SysIdRoutine.Mechanism(
-                        (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
-        
     }
 
     public void buildAuto() {
@@ -263,15 +252,5 @@ public class BasicDriveSim implements DriveRepository {
         frontRight.runCharacterization(output);
         backLeft.runCharacterization(output);
         backRight.runCharacterization(output);
-    }
-
-    @Override
-    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return sysId.dynamic(direction);
-    }
-
-    @Override
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        return sysId.quasistatic(direction);
     }
 }

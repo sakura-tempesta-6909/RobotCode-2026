@@ -33,7 +33,12 @@ public class DriveParameter {
     }
 
     public static final class Module {
-        public static final double kPTurning = 0.5; 
+        public static final double kPTurning = 0.5;
+
+        public static final double kS = 0.0;
+        public static final double kV = 0.0;
+
+        public static final double kPDrive = 0.0;
     }
 
     public static final class Auto {
@@ -41,7 +46,7 @@ public class DriveParameter {
         public static final double kMaxAccelerationMetersPerSecondSquared = 0.6;
 
         /** 左右方向のPID制御のPの値 */
-        public static final double kPXYController = 0.35;
+        public static final double kPXYController = 3.5;
         /** 回転のPID制御のPの値 */
         public static final double kPThetaController = 1;
 

@@ -11,7 +11,7 @@ public class AutoCommand {
 
     public static void buildAutoChooser() {
         autoChooser = AutoBuilder.buildAutoChooser();
-        autoChooser.addOption("qua for", DriveCommands.dynamicReverse());
+        autoChooser.addOption("feedforward characterization", DriveCommands.feedforwardCharacterization());
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 

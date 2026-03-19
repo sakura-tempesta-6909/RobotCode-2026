@@ -63,18 +63,8 @@ public class BasicDrive implements DriveRepository {
             DriveConst.Vision.kVisionStdDevs);
 
     public final Vision vision = new Vision();
-    public final SysIdRoutine sysId;
     public BasicDrive() {
         anglePID.enableContinuousInput(-180, 180);
-        sysId =
-                new SysIdRoutine(
-                        new SysIdRoutine.Config(
-                                null,
-                                null,
-                                null,
-                                (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
-                        new SysIdRoutine.Mechanism(
-                                (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
     }
 
     public void buildAuto() {
@@ -246,16 +236,4 @@ public class BasicDrive implements DriveRepository {
         backLeft.runCharacterization(output);
         backRight.runCharacterization(output);
     }
-
-    @Override
-    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return sysId.dynamic(direction);
-    }
-
-    @Override
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        return sysId.quasistatic(direction);
-    }
-
-
 }

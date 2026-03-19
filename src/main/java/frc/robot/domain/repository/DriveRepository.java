@@ -38,6 +38,4 @@ public interface DriveRepository extends Subsystem{
     void resetPID();
     double getFFCharacterizationVelocity();
     void runCharacterization(double output);
-    Command sysIdDynamic(SysIdRoutine.Direction direction);
-    Command sysIdQuasistatic(SysIdRoutine.Direction direction);
 }
