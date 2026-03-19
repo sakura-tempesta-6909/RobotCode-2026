@@ -17,9 +17,6 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 import java.util.function.Supplier;
-/**別クラスへ移行するimport */
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Angle;
 
 public final class DriveConst {
     public static final double LoopPeriod = 0.02;

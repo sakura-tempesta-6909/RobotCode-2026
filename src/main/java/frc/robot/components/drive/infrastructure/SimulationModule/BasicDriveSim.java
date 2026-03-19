@@ -25,7 +25,6 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
-import frc.robot.util.FuelSim;
 
 import org.littletonrobotics.junction.Logger;
 
