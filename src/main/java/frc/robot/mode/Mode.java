@@ -18,7 +18,7 @@ public abstract class Mode {
 
     public static void configureModeBindings() {
         driveController.back().onTrue(getSwitchModeCommand(ModeType.k_drive));
-        driveController.start().onTrue(getSwitchModeCommand(ModeType.k_example));
+        driveController.start().onTrue(getSwitchModeCommand(ModeType.k_manual));
     }
 
     private static Command getSwitchModeCommand(ModeType mode) {

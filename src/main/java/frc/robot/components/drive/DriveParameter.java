@@ -62,11 +62,11 @@ public class DriveParameter {
          * 必要になったら使う
          *許容される誤差[m]
          */
-        public static final double arrowedDifference = 0.0;
+        public static final double arrowedDifference = 0.10;
         /** シュートできる最も近い距離 | 単位m */
-        public static final double MinShootableRange = 0.0;
+        public static final double MinShootableRange = 2.5;
         /** シュートできる最も遠い距離 | 単位m */
-        public static final double MaxShootableRange = 0.0;
+        public static final double MaxShootableRange = 4.0;
     }
 
     public static final class Vision{

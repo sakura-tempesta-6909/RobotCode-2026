@@ -20,7 +20,7 @@ public interface ExtenderRepository extends Subsystem {
      * @param resetPosition Encorderをリセットする際の角度[degree]
      * 初期位置を90°とする
     */
-    void resetEncorder(double resetPosition);
+    void resetEncoder(double resetPosition);
 
     /** 現在の角度を維持する */
     void keepCurrentAngle();
