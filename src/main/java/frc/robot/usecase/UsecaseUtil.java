@@ -41,6 +41,9 @@ public class UsecaseUtil {
      * @return theta 目標に向かった角度[rotation2d]
     */
     public static Rotation2d calcurateTargetAngleToShoot(Pose2d current) {
+        if (current == null) {
+            return new Rotation2d(); // もしくは現在の角度を返すなど、null安全な処理を追加
+        }
         Pose2d relativePose = current.relativeTo(getHubPosition());
         double Xdifference = relativePose.getX();
         double Ydifference = relativePose.getY();
