@@ -9,7 +9,10 @@ import static edu.wpi.first.units.Units.Rotation;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.domain.state.DriveState;
+import frc.robot.domain.state.StateGroup;
+import frc.robot.usecase.UsecaseUtil;
 
 public class DriveTools {
     public static ChassisSpeeds modifyChassisSpeed(ChassisSpeeds speeds, DriveSpeed speed) {
@@ -57,11 +60,17 @@ public class DriveTools {
 
     /** 行くべき場所を計算する 
      * @param currentPosition 今のポジション(x[m],y[m])*/
-    public static Pose2d calculateTargetPosition(Pose2d currentPosition){
-        /*TODO
-         https://sakuratempesta6909.sharepoint.com/:w:/s/frc/IQCfFKi-SVNCSYFRP7-lMi7UAYWVTCfZH4Fo4sKpiDRmdCw?e=dUodWL
-         上のやつを用いてターゲットの座標を出す*/
-        Pose2d targetPosition = null;
+    public static Translation2d calculateTargetPosition(Pose2d currentPosition){
+        Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
+        Translation2d currentPositon = currentPosition.getTranslation();
+
+        /** T = H+3( R−H /｜R−H｜) */
+        Translation2d targetPosition = HubPose.plus(
+            currentPositon
+                .minus(HubPose)
+                .div(StateGroup.getDistanceToHub())
+                .times(3)
+        );
         return targetPosition;
     }
 }
