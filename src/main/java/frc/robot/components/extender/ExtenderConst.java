@@ -21,7 +21,7 @@ public final class ExtenderConst {
         public static final ClosedLoopSlot ExtenderVelocitySlot = ClosedLoopSlot.kSlot2;
     }
     /** extenderのモーターのギア比。モーターの軸に対するextenderの軸 */
-    public static final double GearRatio = 1;
+    public static final double GearRatio = 36 * 1 * (50/22);;
 
     /** モーターを動かす最大のRPM
      *  これをもとにパーセントで制御している| 単位はRPM*/
