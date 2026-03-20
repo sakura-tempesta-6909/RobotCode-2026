@@ -22,6 +22,14 @@ public final class ExtenderParameter {
         public static final double EndexerVelocityI = 0;
         public static final double EndexerVelocityD = 0;
     }
+
+    
+    /** ExtenderをIntake位置に動かすときの最大の力[Percent Output] */
+    public static final double MaxPowerToIntakePosition = 1.0;
+    /** Extenderを上方向に動かすときの最大の力[Percent Output] */
+    public static final double MaxPowerToInitialPosition = -1.0;
+    
+    
     /** 指定の位置に移動したか判断する時に許す誤差の範囲 | 単位は度[degree]*/
     public static final double allowableError = 2.5;
 
