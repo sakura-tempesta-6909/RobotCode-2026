@@ -128,7 +128,8 @@ public class DriveCommands{
         return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xInput, ()->yInput);
     }
 
-    /** DriveのkS,kVを測定する
+    /** 実験用
+     * DriveのkS,kVを測定する
      * このCommandを実行したらコンソールにkS、kVの結果が出てくる */
     public static Command feedforwardCharacterization() {
         List<Double> velocitySamples = new LinkedList<>();

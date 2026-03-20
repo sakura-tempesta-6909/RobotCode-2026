@@ -42,7 +42,8 @@ public interface DriveRepository extends Subsystem{
     double getFFCharacterizationVelocity();
 
     /**
-     * FF用にモーターを電圧でモーターを動かすする
+     * FF測定
+     * 用にモーターを電圧でモーターを動かすする
      * @param output モーターへの出力電圧 [V]
      */
     void runCharacterization(double output);
