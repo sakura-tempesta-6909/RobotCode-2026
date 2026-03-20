@@ -64,14 +64,12 @@ public class DriveTools {
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPositon = currentPosition.getTranslation();
 
-        /*TODO
-         https://sakuratempesta6909.sharepoint.com/:w:/s/frc/IQCfFKi-SVNCSYFRP7-lMi7UAYWVTCfZH4Fo4sKpiDRmdCw?e=dUodWL
-         上のやつを用いてターゲットの座標を出す*/
-        //T = H+3( R−H /｜R−H｜) 
+        /** T = H+3( R−H /｜R−H｜) */
         Translation2d targetPosition = HubPose.plus(
-            (
-                (currentPositon.minus(HubPose)).div(StateGroup.getDistanceToHub())
-            ).times(3)
+            currentPositon
+                .minus(HubPose)
+                .div(StateGroup.getDistanceToHub())
+                .times(3)
         );
         return targetPosition;
     }
