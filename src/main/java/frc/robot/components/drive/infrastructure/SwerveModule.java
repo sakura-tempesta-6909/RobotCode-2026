@@ -24,7 +24,7 @@ public class SwerveModule {
 
     private final CANcoder absoluteEncoder;
 
-    SparkClosedLoopController turningPidController;    
+    SparkClosedLoopController drivePidController,turningPidController;    
 
     public SwerveModule(SwerveModuleConst moduleConstant){
         absoluteEncoder = new CANcoder(moduleConstant.encoderID);
@@ -38,6 +38,7 @@ public class SwerveModule {
         driveEncoder = driveMotor.getEncoder();
         turningEncoder = turningMotor.getEncoder();
 
+        drivePidController = driveMotor.getClosedLoopController();
         turningPidController = turningMotor.getClosedLoopController();
 
         // すぐリセットすると値がブレる可能性があるため
@@ -91,7 +92,7 @@ public class SwerveModule {
         }
 
         state.optimize(getState().angle);
-        driveMotor.set(state.speedMetersPerSecond/DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        drivePidController.setSetpoint(state.speedMetersPerSecond, SparkMax.ControlType.kVelocity);
  
         double setPoint = state.angle.getDegrees();
         double currentAngle = Math.toDegrees(turningEncoder.getPosition()); 
@@ -111,6 +112,11 @@ public class SwerveModule {
     public void stop() {
         driveMotor.set(0);
         // turningMotor.set(0);
+    }
+
+    public void runCharacterization(double output){
+        driveMotor.setVoltage(output);
+        turningMotor.set(0);
     }
 
 }

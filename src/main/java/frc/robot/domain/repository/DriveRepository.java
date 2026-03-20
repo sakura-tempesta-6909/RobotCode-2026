@@ -1,6 +1,5 @@
 package frc.robot.domain.repository;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -35,4 +34,16 @@ public interface DriveRepository extends Subsystem{
     void buildAuto();
 
     void resetPID();
+
+    /**
+     * FF測定用の速度を取得する
+     * @return 全モジュールの平均速度 [m/s]
+     */
+    double getFFCharacterizationVelocity();
+
+    /**
+     * FF測定用にモーターを電圧でモーターを動かすする
+     * @param output モーターへの出力電圧 [V]
+     */
+    void runCharacterization(double output);
 }

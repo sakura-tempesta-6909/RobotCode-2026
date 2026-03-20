@@ -92,4 +92,10 @@ public class SwerveModuleSim {
         driveMotorSim.setInput(0);
         turningMotorSim.setInput(0);
     }
+     public void runCharacterization(double output){
+        driveMotorSim.setInputVoltage(output);;
+        turningMotorSim.setInput(0);
+        driveMotorSim.update(DriveConst.LoopPeriod);
+        turningMotorSim.update(DriveConst.LoopPeriod);
+    }
 }

@@ -5,7 +5,9 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveTools;
@@ -16,8 +18,14 @@ import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 
+import static edu.wpi.first.wpilibj2.command.Commands.run;
+import java.util.function.DoubleSupplier;
 public class DriveCommands{
     private static DriveRepository driveRepository;
 
@@ -120,7 +128,65 @@ public class DriveCommands{
         return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xInput, ()->yInput);
     }
 
-    
+    /** 実験用
+     * DriveのkS,kVを測定する
+     * このCommandを実行したらコンソールにkS、kVの結果が出てくる */
+    public static Command feedforwardCharacterization() {
+        List<Double> velocitySamples = new LinkedList<>();
+        List<Double> voltageSamples = new LinkedList<>();
+        Timer timer = new Timer();
+
+        return Commands.sequence(
+                // Reset data
+                Commands.runOnce(
+                        () -> {
+                            velocitySamples.clear();
+                            voltageSamples.clear();
+                        }),
+
+                // Allow modules to orient
+                run(
+                                () -> {
+                                    driveRepository.runCharacterization(0.0);
+                                }
+                                )
+                        .withTimeout(2.0),
+
+                // Start timer
+                Commands.runOnce(timer::restart),
+
+                // Accelerate and gather data
+                run(
+                                () -> {
+                                    double voltage = timer.get() * 0.1;
+                                    driveRepository.runCharacterization(voltage);
+                                    velocitySamples.add(driveRepository.getFFCharacterizationVelocity());
+                                    voltageSamples.add(voltage);
+                                })
+
+                        // When cancelled, calculate and print results
+                        .finallyDo(
+                                () -> {
+                                    int n = velocitySamples.size();
+                                    double sumX = 0.0;
+                                    double sumY = 0.0;
+                                    double sumXY = 0.0;
+                                    double sumX2 = 0.0;
+                                    for (int i = 0; i < n; i++) {
+                                        sumX += velocitySamples.get(i);
+                                        sumY += voltageSamples.get(i);
+                                        sumXY += velocitySamples.get(i) * voltageSamples.get(i);
+                                        sumX2 += velocitySamples.get(i) * velocitySamples.get(i);
+                                    }
+                                    double kS = (sumY * sumX2 - sumX * sumXY) / (n * sumX2 - sumX * sumX);
+                                    double kV = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+
+                                    NumberFormat formatter = new DecimalFormat("#0.00000");
+                                    System.out.println("********** Drive FF Characterization Results **********");
+                                    System.out.println("\tkS: " + formatter.format(kS));
+                                    System.out.println("\tkV: " + formatter.format(kV));
+                                }));
+    }
 }
 
 
