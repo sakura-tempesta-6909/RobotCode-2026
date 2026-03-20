@@ -13,6 +13,7 @@ import frc.robot.usecase.commands.ExtenderCommands;
 import frc.robot.usecase.commands.IndexerCommands;
 import frc.robot.usecase.commands.IntakeCommands;
 import frc.robot.usecase.commands.ShooterCommands;
+import frc.robot.usecase.commands.LEDCommands;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.repository.ShooterRepository;
@@ -46,6 +47,10 @@ public class ManualMode extends Mode {
 
         RobotContainer.getShooterInstance().setDefaultCommand(
             ShooterCommands.stopShooter()
+        );
+
+        RobotContainer.getLEDInstance().setDefaultCommand(
+            LEDCommands.set()
         );
     }
     

@@ -12,6 +12,7 @@ import frc.robot.usecase.commands.IndexerCommands;
 import frc.robot.usecase.commands.IntakeCommands;
 import frc.robot.usecase.commands.ExtenderCommands;
 import frc.robot.usecase.commands.ShooterCommands;
+import frc.robot.usecase.commands.LEDCommands;
 import frc.robot.usecase.commands.CommandsGroup;
 
 public class DriveMode extends Mode {
@@ -42,6 +43,11 @@ public class DriveMode extends Mode {
         RobotContainer.getShooterInstance().setDefaultCommand(
             ShooterCommands.stopShooter()
         );
+
+        RobotContainer.getLEDInstance().setDefaultCommand(
+            LEDCommands.set()
+        );
+
     }
 
     public static void configureBindings() {

@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.components.extender.ExtenderConst;
 import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.components.intake.IntakeParameter;
 import frc.robot.domain.repository.ExtenderRepository;
@@ -18,7 +19,7 @@ public class ExtenderCommands {
     }
 
     public static Command resetEncoder() {
-        return new InstantCommand(() -> ExtenderRepository.resetEncoder(90.0));
+        return new InstantCommand(() -> ExtenderRepository.resetEncoder(ExtenderConst.InitialEncoderPosition));
     }
 
     public static Command resetPID() {
