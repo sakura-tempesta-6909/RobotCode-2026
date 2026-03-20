@@ -3,6 +3,7 @@ package frc.robot.usecase.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.domain.state.ShooterState;
@@ -15,6 +16,10 @@ public class ShooterCommands {
 
     public static void init(ShooterRepository sh) {
         ShooterRepository = sh;
+    }
+
+    public static Command resetPID() {
+        return new InstantCommand(ShooterRepository::resetPID);
     }
 
     /**
