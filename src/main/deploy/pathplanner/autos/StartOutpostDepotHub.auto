@@ -5,21 +5,53 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "StartToOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "StartToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "OutpostToDepot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutpostToDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "DepotToHub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
           }
         }
       ]

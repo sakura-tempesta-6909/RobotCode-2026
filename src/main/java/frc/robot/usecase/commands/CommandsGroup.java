@@ -1,6 +1,7 @@
 package frc.robot.usecase.commands;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -9,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.state.ShooterState;
+import frc.robot.Robot;
+import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
 
@@ -31,11 +34,23 @@ public class CommandsGroup {
      * @return ↑をするコマンドを返す
      */
     public static Command shoot() {
-        return Commands.parallel(
+    return Commands.either(
+        // --- シミュレーション中の動作 ---
+        Commands.repeatingSequence(
+            Commands.runOnce(() -> BasicDriveSim.fuelSimulation.launchFuel(7)),
+            Commands.waitSeconds(0.3) // ← ここで間隔調整
+            ),
+
+        // --- 実機（RoboRIO）での動作 ---
+        Commands.parallel(
             ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)   
-        );
-    }
+            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
+        ),
+
+        // どっちを使うかの判定条件
+        Robot::isSimulation
+    );
+}
 
     /**
      * シュートできる位置まで移動する

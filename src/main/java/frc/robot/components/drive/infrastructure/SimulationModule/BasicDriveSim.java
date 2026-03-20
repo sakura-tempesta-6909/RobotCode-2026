@@ -1,4 +1,4 @@
-package frc.robot.components.drive.infrastructure;
+package frc.robot.components.drive.infrastructure.SimulationModule;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -14,12 +14,18 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
+import frc.robot.components.drive.infrastructure.SwerveModuleSim;
+import frc.robot.components.drive.infrastructure.Vision;
 import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import frc.robot.domain.state.StateGroup;
+
 import org.littletonrobotics.junction.Logger;
 
 
@@ -34,6 +40,9 @@ public class BasicDriveSim implements DriveRepository {
 
     public final Vision vision = new Vision();
     public final VisionSim visionSim = new VisionSim();
+
+    public static FuelSim fuelSim = new FuelSim();
+    public static FuelSimulation fuelSimulation = new FuelSimulation(fuelSim);
 
     private PPHolonomicDriveController driveController;
 
@@ -60,6 +69,27 @@ public class BasicDriveSim implements DriveRepository {
 
     public BasicDriveSim() {
         driveController = createDriveController();
+
+        fuelSimulation.configureFuelSim();
+
+        fuelSim.registerRobot(
+            SimulationConst.RobotSize.weitht,   // width (m)
+            SimulationConst.RobotSize.length,   // length (m)
+            SimulationConst.RobotSize.bumperHeight,
+            () -> getPose(),              // Pose2d
+            () -> getChassisSpeeds() // ChassisSpeeds
+        );
+
+        fuelSim.registerIntake(
+            SimulationConst.IntakeSize.xMin,   // 前方向スタート（中心）
+            SimulationConst.IntakeSize.xMax,  // 前方20cm
+            SimulationConst.IntakeSize.yMin,  // 右端
+            SimulationConst.IntakeSize.yMax,  // 左端
+            () -> fuelSimulation.canIntake(),
+            () -> fuelSimulation.intakeFuel()
+        );
+
+        fuelSim.start();
     }
 
     public void buildAuto() {
@@ -168,11 +198,17 @@ public class BasicDriveSim implements DriveRepository {
         Logger.recordOutput("Drive/Pose", getPose());
         Logger.recordOutput("Drive/odometerPose", getOdometerPose());
         Logger.recordOutput("Drive/ChassisSpeed", getChassisSpeeds());
+        Logger.recordOutput("Drive/DistanceToHub", StateGroup.getDistanceToHub());
 
         Pose2d truePose = getPose(); // または drivetrain.getSimPose()
 
         visionSim.update(truePose);
         visionSim.periodic();
+
+        fuelSim.updateSim();
+        Logger.recordOutput("Fuel/Number", fuelSimulation.getFuelStored());
+        Logger.recordOutput("Fuel/BlueScore", fuelSimulation.getBlueScore());
+        Logger.recordOutput("Fuel/RedScore", fuelSimulation.getRedScore());
     }
 
     private double getHeading(){

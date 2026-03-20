@@ -11,7 +11,7 @@ public interface ExtenderRepository extends Subsystem {
 
     /** Extenderを任意の力で動かす(PercentOutput) 
      * @param targetPower : 止まっている時を0とした力(％[-1~1])|地面に対して上に動かす方向を正 */
-    void moveIndexerSpecifiedPower(double targetPower);
+    void moveExtenderSpecifiedPower(double targetPower);
 
     /** PIDをリセットする */
     void resetPID();

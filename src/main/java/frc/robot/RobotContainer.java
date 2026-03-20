@@ -18,7 +18,7 @@ import frc.robot.usecase.commands.*;
 import frc.robot.auto.AutoCommand;
 import frc.robot.auto.AutoCommandConfigure;
 import frc.robot.components.drive.infrastructure.BasicDrive;
-import frc.robot.components.drive.infrastructure.BasicDriveSim;
+import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
 import frc.robot.components.template.infrastructure.Template;
