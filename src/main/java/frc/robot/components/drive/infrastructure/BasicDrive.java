@@ -4,10 +4,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.revrobotics.spark.SparkClosedLoopController;
-
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,22 +13,22 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
-import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveConst.DriveConstants;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import org.littletonrobotics.junction.Logger;
 import frc.robot.usecase.UsecaseUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
+import static edu.wpi.first.units.Units.Volts;
 
 
 public class BasicDrive implements DriveRepository {
@@ -55,7 +53,7 @@ public class BasicDrive implements DriveRepository {
     });
 
     private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
-            DriveConst.DriveConstants.kDriveKinematics,
+            DriveConstants.kDriveKinematics,
             gyro.getRotation2d(),
             new SwerveModulePosition[] {
                     frontLeft.getPosition(),
@@ -220,7 +218,7 @@ public class BasicDrive implements DriveRepository {
      
     public void setAngle(double setAngle, double XSpeed, double YSpeed) {
         double output = anglePID.calculate(getHeading(),setAngle);
-        double targetAngularSpeed = MathUtil.clamp(output, -DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConst.DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
+        double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
         setChassisSpeedsFiledOriented(speed);
         
@@ -231,5 +229,15 @@ public class BasicDrive implements DriveRepository {
         
     }
 
-    
+    public double getFFCharacterizationVelocity() {
+        double output = (frontLeft.getDriveVelocity() + frontRight.getDriveVelocity() + backLeft.getDriveVelocity() + backRight.getDriveVelocity())/ 4.0;
+        return output;
+    }
+
+    public void runCharacterization(double output) {
+        frontLeft.runCharacterization(output);
+        frontRight.runCharacterization(output);
+        backLeft.runCharacterization(output);
+        backRight.runCharacterization(output);
+    }
 }

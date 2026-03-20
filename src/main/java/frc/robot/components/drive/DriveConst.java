@@ -61,6 +61,12 @@ public final class DriveConst {
                 .inverted(true)
                 .idleMode(IdleMode.kCoast)
                 ;
+            driveConfig.closedLoop
+                .pid(DriveParameter.Module.kPDrive, 0, 0)
+                .outputRange(-1, 1)
+                .feedForward
+                .kV(DriveParameter.Module.kV)
+                .kS(DriveParameter.Module.kS);
     
             return driveConfig;
         };
