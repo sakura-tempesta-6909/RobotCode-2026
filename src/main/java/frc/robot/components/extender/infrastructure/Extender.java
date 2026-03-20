@@ -122,7 +122,7 @@ public class Extender implements ExtenderRepository {
      * 初期位置を90°とする
     */
     @Override
-    public void resetEncorder(double resetPosition) {
+    public void resetEncoder(double resetPosition) {
        extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(resetPosition));
     }
 

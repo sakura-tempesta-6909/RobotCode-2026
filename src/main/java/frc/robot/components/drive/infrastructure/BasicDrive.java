@@ -24,6 +24,9 @@ import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
 import org.littletonrobotics.junction.Logger;
+import frc.robot.usecase.UsecaseUtil;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 
 import static edu.wpi.first.units.Units.Volts;
 
@@ -156,7 +159,7 @@ public class BasicDrive implements DriveRepository {
 
         DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
 
-        DriveState.targetPosition = DriveTools.calculateTargetPosition(getPose());
+        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose()),UsecaseUtil.calcurateTargetAngleToShoot(getPose()));
     }
 
     private double getHeading(){
@@ -218,6 +221,7 @@ public class BasicDrive implements DriveRepository {
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
         setChassisSpeedsFiledOriented(speed);
+        
     }
 
     @Override

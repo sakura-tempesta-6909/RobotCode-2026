@@ -22,7 +22,7 @@ import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
 import frc.robot.components.example.ExampleRepository;
 import frc.robot.components.example.infrastructure.Example;
 import frc.robot.components.template.infrastructure.Template;
-import frc.robot.mode.ClimbMode;
+import frc.robot.mode.ManualMode;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.ExampleMode;
 
@@ -82,6 +82,7 @@ public class RobotContainer {
     IntakeCommands.init(m_intake);
     ShooterCommands.init(m_shooter);
     VisionCommands.init(m_vision);
+    LEDCommands.init(m_led);
 
     AutoCommandConfigure.registerCommands();
     AutoCommand.buildAutoChooser();
@@ -96,7 +97,7 @@ public class RobotContainer {
   public enum ModeType {
     k_drive(DriveMode::configureBindings),
     k_example(ExampleMode::configureBindings),
-    k_climb(ClimbMode::configureBindings),
+    k_manual(ManualMode::configureBindings),
     ;
 
     private final Runnable configureBindings;
