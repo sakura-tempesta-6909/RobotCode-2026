@@ -56,18 +56,38 @@ public class DriveTools {
     }
 
     /** 行くべき場所を計算する 
-     * @param currentPosition 今のポジション(x[m],y[m])*/
+     * @param currentPosition 今のポジション(x[m],y[m])
+     * */
     public static Translation2d calculateTargetPosition(Pose2d currentPosition){
+        
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPositon = currentPosition.getTranslation();
 
         /** T = H+3( R−H /｜R−H｜) */
-        Translation2d targetPosition = HubPose.plus(
+        Translation2d targetPosition;
+
+        /** Y座標がHubより手前なら*/
+        if(currentPosition.getY() < UsecaseUtil.getHubPosition().getY()){
+            targetPosition = HubPose.plus(
             currentPositon
                 .minus(HubPose)
                 .div(StateGroup.getDistanceToHub())
                 .times(3)
-        );
+            );
+        }else{
+            /** Y座標がHubより奥なら*/
+            /** X座標がHubより手前なら*/
+            if(currentPosition.getX() < UsecaseUtil.getHubPosition().getX()){
+                targetPosition = new Translation2d(UsecaseUtil.getHubPosition().getX() -3 ,UsecaseUtil.getHubPosition().getY());
+            }else{
+                /** X座標がHubより奥なら*/
+                targetPosition = new Translation2d(UsecaseUtil.getHubPosition().getX() +3 ,UsecaseUtil.getHubPosition().getY());
+
+            }
+
+        }
         return targetPosition;
     }
+
+
 }
