@@ -49,13 +49,13 @@ public class Extender implements ExtenderRepository {
         /** FFを適用したPIDの設定(上げる際) */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.RaisingP,ExtenderParameter.PID.RaisingI,ExtenderParameter.PID.RaisingD, ExtenderConst.Slot.ExtenderRaisingSlot);
-        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.RaisingIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
+                .pid(ExtenderParameter.PID.RaisingP,ExtenderParameter.PID.RaisingI,ExtenderParameter.PID.RaisingD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(extenderEncoder.getPosition());
 
+        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.RaisingIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
         /** FFを適用したPIDの設定(下げる際) */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.LoweringP,ExtenderParameter.PID.LoweringI,ExtenderParameter.PID.LoweringD, ExtenderConst.Slot.ExtenderLoweringSlot);
+                .pid(ExtenderParameter.PID.LoweringP,ExtenderParameter.PID.LoweringI,ExtenderParameter.PID.LoweringD, ExtenderConst.Slot.ExtenderLoweringSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(extenderEncoder.getPosition());
         extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.LoweringIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
@@ -63,7 +63,7 @@ public class Extender implements ExtenderRepository {
         /** VelosityのPID */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot);
+                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(extenderEncoder.getPosition());;
         
         
 
@@ -95,11 +95,11 @@ public class Extender implements ExtenderRepository {
         double targetPosition = ExtenderTools.getRotationsOfMotorShaft(targetAngle);
         if (targetAngle > ExtenderState.currentAngle) {
             
-            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
+            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot);
             
         } else {
              
-            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
+            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot);
             
         }
     }
@@ -129,7 +129,7 @@ public class Extender implements ExtenderRepository {
     /** 現在の角度を維持する */
     @Override
     public void keepCurrentAngle(){
-        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot, ExtenderParameter.FFPower);
+        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot);
             
 
     }
