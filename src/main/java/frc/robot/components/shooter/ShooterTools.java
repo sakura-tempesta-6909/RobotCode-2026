@@ -1,5 +1,6 @@
 package frc.robot.components.shooter;
 
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class ShooterTools {
@@ -22,31 +23,49 @@ public class ShooterTools {
         return (targetMps * 60) / (ShooterConst.wheelDiameter * Math.PI);
     }
 
+    /**
+     * 静止状態のとき距離からFuelの初速を求める
+     * @param distance HUBとの距離(m)
+     * @return 距離に応じたモーターの回転数[m/s] 7は仮値
+     */
     public static double stopDistanceToMps(double distance){
-        // Hubへの距離から静止状態のときにFuelの初速度計算する計算式を入れる
+        /** Hubへの距離から静止状態のときにFuelの初速度計算する計算式を入れる
+         *  はよし任せた
+         *  一旦仮で7入れてる
+         */
         return 7.0;
     }
 
-    public static double[] distanceToVector(double distance, ChassisSpeeds speeds){
+    /**
+     * DriveBaseが動いてることも考慮してFuelを飛ばすべき速度の空間ベクトルを導き出す
+     * @param distance HUBとの距離(m)
+     * @param speeds 現在の速度 型はChassisSpeeds(m/s)
+     * @return x,y,zの値を保持したTranslation3dオブジェクト
+     */
+    public static Translation3d distanceToVector(double distance, ChassisSpeeds speeds) {
         double power = stopDistanceToMps(distance);
-        double xVel = power * Math.cos(ShooterConst.hoodAngle) - speeds.vxMetersPerSecond;
+        
+        // 度数法をラジアンに変換
+        double hoodRad = Math.toRadians(ShooterConst.hoodAngle);
+
+        // 各成分の計算
+        double xVel = power * Math.cos(hoodRad) - speeds.vxMetersPerSecond;
         double yVel = -speeds.vyMetersPerSecond;
-        double zVel = power * Math.sin(ShooterConst.hoodAngle);
+        double zVel = power * Math.sin(hoodRad);
 
-        double vector[] = {xVel,yVel,zVel};
-
-        return vector;
+        // Translation3dとして一括で返す
+        return new Translation3d(xVel, yVel, zVel);
     }
 
     /** 
      * 距離をもとにシュート時のm/sを算出したあと自分が動いてる分を引く 
      * @param distance 取得したロボットとゴールの距離　単位：m
      * @param speeds 現在のロボットのスピード 単位: ChassisSpeeds(m/s)
-     * @return 距離に応じたモーターの回転数[m/s] 30は仮値
+     * @return 距離に応じたモーターの回転数[m/s] 
     */
     public static double distanceToMps(double distance, ChassisSpeeds speeds) {
-        double[] vector = distanceToVector(distance,speeds);
-        double power = Math.sqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
+        Translation3d vector = distanceToVector(distance,speeds);
+        double power = vector.getNorm();
         return power;
     }
 }
