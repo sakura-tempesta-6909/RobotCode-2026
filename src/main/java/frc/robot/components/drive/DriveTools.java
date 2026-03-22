@@ -58,12 +58,16 @@ public class DriveTools {
     /** 行くべき場所を計算する 
      * @param currentPosition 今のポジション(x[m],y[m])
      * */
-    public static Translation2d calculateTargetPosition(Pose2d currentPosition){
+    public static Translation2d calculateTargetPosition(Pose2d currentPosition, double distanceToShoot){
         
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPositon = currentPosition.getTranslation();
 
-        /** T = H+3( R−H /｜R−H｜) */
+        /** T = H+L( R−H /｜R−H｜) 
+         * T:目標の座標
+         * H:Hubの中心座標
+         * R:ロボットの座標
+        */
         Translation2d targetPosition;
 
         /** Y座標がHubより手前ならHubから半径3mの円周上に移動する*/
@@ -72,16 +76,16 @@ public class DriveTools {
             currentPositon
                 .minus(HubPose)
                 .div(StateGroup.getDistanceToHub())
-                .times(3)
+                .times(distanceToShoot)
             );
         }else{
             /** Y座標がHubより奥でかつ*/
             /** X座標がHubより手前なら手前側のY座標がHubと同じ地点（自陣から見てHubの左横）に移動する*/
             if(currentPosition.getX() < UsecaseUtil.getHubPosition().getX()){
-                targetPosition = new Translation2d(UsecaseUtil.getHubPosition().getX() -3 ,UsecaseUtil.getHubPosition().getY());
+                targetPosition = new Translation2d(UsecaseUtil.getHubPosition().getX() -distanceToShoot ,UsecaseUtil.getHubPosition().getY());
             }else{
                 /** X座標がHubより奥なら奥側のY座標がHubと同じ地点（自陣から見てHubの右横）に移動する*/
-                targetPosition = new Translation2d(UsecaseUtil.getHubPosition().getX() +3 ,UsecaseUtil.getHubPosition().getY());
+                targetPosition = new Translation2d(UsecaseUtil.getHubPosition().getX() +distanceToShoot ,UsecaseUtil.getHubPosition().getY());
 
             }
 

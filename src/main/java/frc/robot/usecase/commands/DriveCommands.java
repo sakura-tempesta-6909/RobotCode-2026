@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
@@ -96,7 +97,7 @@ public class DriveCommands{
      */
     public static Command moveToHub(){
         
-        Pose2d targetPose = new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition));
+        Pose2d targetPose = new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.distanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition));
         
         return moveToTargetPose (targetPose);
 

@@ -78,4 +78,6 @@ public class DriveParameter {
         /** Visionの測定値を採用する最大距離 | 単位:m*/
         public static final double kMaxVisionPoseErrorMeters = 1.5;
     }
+
+    public static final double distanceToShoot = 3.0;
 }
