@@ -52,7 +52,6 @@ public class DriveTools {
         double Ydifference = relativePose.getY();
         boolean isShootPosition = Math.abs(Xdifference) < arrowedDifference && Math.abs(Ydifference) < arrowedDifference;
         return isShootPosition;
-
     }
 
     /** 行くべき場所を計算する 
