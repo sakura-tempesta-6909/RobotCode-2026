@@ -71,7 +71,7 @@ public class DriveTools {
         */
         Translation2d targetPosition;
 
-        /** X座標がHubより手前ならHubから半径3mの円周上に移動する*/
+        /** X座標がHubより手前ならHubから半径distanceToHub[m]の円周上に移動する*/
         if(currentPosition.getX() < UsecaseUtil.getHubPosition().getX()){
             targetPosition = HubPose.plus(
             currentPositon
