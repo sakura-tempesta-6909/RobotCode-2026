@@ -46,24 +46,20 @@ public class Extender implements ExtenderRepository {
  
 
         /** PIDの設定 */
-        /** FFを適用したPIDの設定(上げる際) */
+        /** FFを適用したPIDの設定 */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.RaisingP,ExtenderParameter.PID.RaisingI,ExtenderParameter.PID.RaisingD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(extenderEncoder.getPosition());
+                .pid(ExtenderParameter.PID.RaisingP,ExtenderParameter.PID.RaisingI,ExtenderParameter.PID.RaisingD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderConst.GearRatio);
 
         extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.RaisingIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
-        /** FFを適用したPIDの設定(下げる際) */
-        extenderMotorConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.LoweringP,ExtenderParameter.PID.LoweringI,ExtenderParameter.PID.LoweringD, ExtenderConst.Slot.ExtenderLoweringSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(extenderEncoder.getPosition());
-        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.LoweringIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
+        
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
 
         /** VelosityのPID */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(extenderEncoder.getPosition());;
+                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderConst.GearRatio);;
         
         
 
@@ -93,15 +89,7 @@ public class Extender implements ExtenderRepository {
         /** 指定の距離移動するために必要な回転数を求める | rotation *
          * 360は1回転の角度*/
         double targetPosition = ExtenderTools.getRotationsOfMotorShaft(targetAngle);
-        if (targetAngle > ExtenderState.currentAngle) {
-            
             extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot);
-            
-        } else {
-             
-            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot);
-            
-        }
     }
 
     /** Extenderを任意の力で動かす(PercentOutput) */
