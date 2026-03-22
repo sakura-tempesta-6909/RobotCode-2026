@@ -90,6 +90,8 @@ public class ManualMode extends Mode {
        operateController.b().whileTrue(CommandsGroup.outtake());
        //feed
        operateController.a().whileTrue(CommandsGroup.feed());
+       operateController.x().whileTrue(IndexerCommands.reverseIndexer());
+       operateController.y().whileTrue(ShooterCommands.reverseShooter());
        //ExtenderのPIDとエンコーダーをリセットする
        operateController.pov(0).onTrue(
         Commands.parallel(

@@ -43,8 +43,8 @@ public class CommandsGroup {
 
         // --- 実機（RoboRIO）での動作 ---
         Commands.parallel(
-            ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
+            ShooterCommands.feed(),
+            IndexerCommands.feedToShooter()
         ),
 
         // どっちを使うかの判定条件

@@ -28,8 +28,6 @@ public class Indexer implements IndexerRepository {
         LongRollerIndexerConfig.inverted(false);
         LongRollerIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
 
-        LongRollerIndexer.configure(LongRollerIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-
 
         StarWheelIndexer = new SparkMax(IndexerConst.Ports.StarWheelIndexer, SparkLowLevel.MotorType.kBrushless);
         StarWheelIndexerConfig = new SparkMaxConfig();
@@ -39,6 +37,7 @@ public class Indexer implements IndexerRepository {
         StarWheelIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
 
         StarWheelIndexer.configure(StarWheelIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        LongRollerIndexer.configure(LongRollerIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
     /**
