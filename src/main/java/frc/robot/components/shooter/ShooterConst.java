@@ -13,4 +13,7 @@ public final class ShooterConst {
 
     /**Motorの最大RPM */
     public static double motorMaxRPM = 5676;
+
+    /** shooterがfuelを飛ばすときの角度 | 弧度法 */
+    public static double hoodAngle = Math.toRadians(45);
 }
