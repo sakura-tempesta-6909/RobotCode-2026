@@ -14,8 +14,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
@@ -23,12 +24,9 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
-import org.littletonrobotics.junction.Logger;
 import frc.robot.usecase.UsecaseUtil;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 
-import static edu.wpi.first.units.Units.Volts;
+import java.util.Optional;
 
 
 public class BasicDrive implements DriveRepository {
@@ -91,7 +89,12 @@ public class BasicDrive implements DriveRepository {
         ),
         config,
         () -> {
-        return false;
+            //RedAllianceのときはFlipする
+            Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
         }, RobotContainer.getDriveInstance());
     }
 
@@ -103,7 +106,11 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void setChassisSpeedsFiledOriented(ChassisSpeeds speeds) {
-        this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getRotation2d()));
+        this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, 
+                DriverStation.getAlliance().isPresent()
+                    && DriverStation.getAlliance().get() == Alliance.Red
+                        ? getRotation2d().plus(Rotation2d.kPi)
+                        : getRotation2d()));
     }
 
     @Override

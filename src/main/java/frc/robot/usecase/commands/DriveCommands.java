@@ -5,6 +5,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.function.DoubleSupplier;
 
 import static edu.wpi.first.wpilibj2.command.Commands.run;
-import java.util.function.DoubleSupplier;
 public class DriveCommands{
     private static DriveRepository driveRepository;
 
@@ -50,6 +50,15 @@ public class DriveCommands{
                     break;
                 case s_fieldOriented:
                 default:
+                    // Red Allianceのときは入力を反転
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+                        speeds = new ChassisSpeeds(
+                            -speeds.vxMetersPerSecond,
+                            -speeds.vyMetersPerSecond,
+                            speeds.omegaRadiansPerSecond
+                        );
+                    }
                     driveRepository.setChassisSpeedsFiledOriented(speeds);
                     break;
             }
@@ -95,7 +104,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose (UsecaseConst.Poses.TargetPoseToHub);
+        return moveToTargetPose (UsecaseUtil.getHubPosition());
 
     }
 

@@ -13,6 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -27,6 +29,9 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
 import static edu.wpi.first.units.Units.Volts;
+
+import java.util.Optional;
+
 import frc.robot.domain.state.StateGroup;
 
 import org.littletonrobotics.junction.Logger;
@@ -112,7 +117,11 @@ public class BasicDriveSim implements DriveRepository {
         driveController,
         config,
         () -> {
-        return false;
+            Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
         }, RobotContainer.getDriveInstance());
     }
 
@@ -132,7 +141,11 @@ public class BasicDriveSim implements DriveRepository {
 
     @Override
     public void setChassisSpeedsFiledOriented(ChassisSpeeds speeds) {
-        this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getRotation2d()));
+        this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds,
+                DriverStation.getAlliance().isPresent()
+                    && DriverStation.getAlliance().get() == Alliance.Red
+                        ? getRotation2d().plus(Rotation2d.kPi)
+                        : getRotation2d()));
     }
 
     @Override

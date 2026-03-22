@@ -1,15 +1,12 @@
 package frc.robot.usecase.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.components.shooter.infrastructure.Shooter;
-import frc.robot.domain.repository.ShooterRepository;
-import frc.robot.domain.state.ShooterState;
-import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
+import frc.robot.domain.repository.ShooterRepository;
+
+import java.util.function.DoubleSupplier;
 
 public class ShooterCommands {
     private static ShooterRepository ShooterRepository;
