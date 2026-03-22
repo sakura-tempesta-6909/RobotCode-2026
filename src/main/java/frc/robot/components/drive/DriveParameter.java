@@ -79,5 +79,6 @@ public class DriveParameter {
         public static final double kMaxVisionPoseErrorMeters = 1.5;
     }
 
+    /** 目標位置のHubからの距離[m]*/
     public static final double distanceToShoot = 3.0;
 }

@@ -57,6 +57,7 @@ public class DriveTools {
 
     /** 行くべき場所を計算する 
      * @param currentPosition 今のポジション(x[m],y[m])
+     * @param distanceToHub 目標位置のHubからの距離[m]
      * */
     public static Translation2d calculateTargetPosition(Pose2d currentPosition, double distanceToShoot){
         
