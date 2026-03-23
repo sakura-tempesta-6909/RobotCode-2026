@@ -28,6 +28,8 @@ import frc.robot.usecase.UsecaseUtil;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 
 public class BasicDrive implements DriveRepository {
     public final SwerveModule frontLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontLeft);
@@ -194,6 +196,8 @@ public class BasicDrive implements DriveRepository {
         DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
 
         DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose()),UsecaseUtil.calcurateTargetAngleToShoot(getPose(),getChassisSpeeds()));
+
+        Logger.recordOutput("Drive/Pose", getPose());
     }
 
     private double getHeading(){
