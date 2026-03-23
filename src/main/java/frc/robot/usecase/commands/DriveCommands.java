@@ -50,15 +50,6 @@ public class DriveCommands{
                     break;
                 case s_fieldOriented:
                 default:
-                    // Red Allianceのときは入力を反転
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                        speeds = new ChassisSpeeds(
-                            -speeds.vxMetersPerSecond,
-                            -speeds.vyMetersPerSecond,
-                            speeds.omegaRadiansPerSecond
-                        );
-                    }
                     driveRepository.setChassisSpeedsFieldOriented(speeds);
                     break;
             }
