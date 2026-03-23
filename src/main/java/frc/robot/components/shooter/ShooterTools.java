@@ -1,6 +1,7 @@
 package frc.robot.components.shooter;
 
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class ShooterTools {
@@ -38,14 +39,11 @@ public class ShooterTools {
     /**
      * 静止状態のとき距離からFuelの初速を求める
      * @param distance HUBとの距離(m)
-     * @return 距離に応じたモーターの回転数[m/s] 7は仮値
+     * @return 距離に応じたFuelの初速度[m/s] 7は仮値
      */
     public static double stopDistanceToMps(double distance){
-        /** Hubへの距離から静止状態のときにFuelの初速度計算する計算式を入れる
-         *  はよし任せた
-         *  一旦仮で7入れてる
-         */
-        return 7.0;
+        /** Hubへの距離から求めた静止状態のときにFuelの初速度 */
+        return rpmToSurfaceSpeed(shooterMPSMap.get(distance));
     }
 
     /**
