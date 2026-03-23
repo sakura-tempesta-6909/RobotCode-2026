@@ -18,7 +18,7 @@ public class FuelSimulation {
     }
 
     public void configureFuelSim() {
-        fuelSim.enableAirResistance();
+        //fuelSim.enableAirResistance();
         fuelSim.spawnStartingFuel();
         fuelSim.start();
         SmartDashboard.putData(Commands.runOnce(() -> {

@@ -196,6 +196,7 @@ public class BasicDriveSim implements DriveRepository {
         });
 
         DriveState.drivePosition = getPose();
+        DriveState.driveXYOmegaSpeed = getChassisSpeeds();
 
         SwerveModuleState[] states = {
             frontLeft.getState(),

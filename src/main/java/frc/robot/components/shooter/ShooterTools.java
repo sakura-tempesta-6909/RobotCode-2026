@@ -3,6 +3,7 @@ package frc.robot.components.shooter;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterTools {
     static InterpolatingDoubleTreeMap shooterMPSMap;
@@ -36,14 +37,18 @@ public class ShooterTools {
         return (targetMps * 60) / (ShooterConst.wheelDiameter * Math.PI);
     }
 
+    public static double SurfaceSpeedToFuelVelocity(double rpm){
+        return 0.002 * rpm;
+    }
+
     /**
      * 静止状態のとき距離からFuelの初速を求める
      * @param distance HUBとの距離(m)
      * @return 距離に応じたFuelの初速度[m/s] 7は仮値
      */
-    public static double stopDistanceToMps(double distance){
+    public static double stopDistanceToRPM(double distance){
         /** Hubへの距離から求めた静止状態のときにFuelの初速度 */
-        return rpmToSurfaceSpeed(shooterMPSMap.get(distance));
+        return SurfaceSpeedToFuelVelocity(shooterMPSMap.get(distance));
     }
 
     /**
@@ -53,7 +58,8 @@ public class ShooterTools {
      * @return x,y,zの値を保持したTranslation3dオブジェクト
      */
     public static Translation3d distanceToVector(double distance, ChassisSpeeds speeds) {
-        double power = stopDistanceToMps(distance);
+        double power = stopDistanceToRPM(distance);
+        SmartDashboard.putNumber("stopMps", power);
         
         // 度数法をラジアンに変換
         double hoodRad = Math.toRadians(ShooterConst.hoodAngle);
@@ -76,6 +82,7 @@ public class ShooterTools {
     public static double distanceToMps(double distance, ChassisSpeeds speeds) {
         Translation3d vector = distanceToVector(distance,speeds);
         double power = vector.getNorm();
+        SmartDashboard.putNumber("power", power);
         return power;
     }
 }
