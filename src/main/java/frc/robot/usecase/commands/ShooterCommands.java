@@ -13,6 +13,11 @@ import frc.robot.domain.state.StateGroup;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
+import frc.robot.domain.repository.ShooterRepository;
+
+import frc.robot.domain.state.StateGroup;
+
+import java.util.function.DoubleSupplier;
 
 public class ShooterCommands {
     private static ShooterRepository ShooterRepository;

@@ -4,7 +4,19 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class ShooterTools {
+    static InterpolatingDoubleTreeMap shooterMPSMap;
 
+    /**
+     * ShooterParameterのRPMテーブルからマップを初期化する
+     * ShooterRPMTable[i][0] = 距離 [m] （マップのキー）
+     * ShooterRPMTable[i][1] = RPM      （マップの値）
+     */
+    static {
+        shooterMPSMap = new InterpolatingDoubleTreeMap();
+        for (double[] number : ShooterParameter.ShooterRPMTable) {
+            shooterMPSMap.put(number[0], number[1]);
+        }
+    }
     /**
      * RPMからウィールの表面速度に変換する
      * @param wheelRPM　受け取るRPM
