@@ -52,12 +52,21 @@ public class BasicDrive implements DriveRepository {
 
     private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.kDriveKinematics,
-            gyro.getRotation2d(),
+            // ▼ [Vision実験] ジャイロ無効化：初期角度をゼロ固定
+            // gyro.getRotation2d(),
+            new Rotation2d(0),
+            // ▼ [Vision実験] モジュール位置無効化：ゼロ固定
+            // new SwerveModulePosition[] {
+            //         frontLeft.getPosition(),
+            //         frontRight.getPosition(),
+            //         backLeft.getPosition(),
+            //         backRight.getPosition()
+            // },
             new SwerveModulePosition[] {
-                    frontLeft.getPosition(),
-                    frontRight.getPosition(),
-                    backLeft.getPosition(),
-                    backRight.getPosition()
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition()
             },
             new Pose2d(),
             DriveConst.Vision.kStateStdDevs,
@@ -134,34 +143,50 @@ public class BasicDrive implements DriveRepository {
         });
         DriveState.driveXYOmegaSpeed = getChassisSpeeds();
 
-        m_poseEstimator.update(getRotation2d(),
+        // ▼▼▼ [Vision実験] オドメトリー＆ジャイロによるEstimator更新を無効化 ▼▼▼
+        // m_poseEstimator.update(getRotation2d(),
+        //         new SwerveModulePosition[]{
+        //                 frontLeft.getPosition(),
+        //                 frontRight.getPosition(),
+        //                 backLeft.getPosition(),
+        //                 backRight.getPosition()
+        //         });
+
+        // ▼ [Vision実験] Estimatorの内部バッファを維持するためupdateは呼ぶが、
+        //   ジャイロ・モジュール位置はすべてゼロ固定にしてオドメトリーを完全に無効化
+        m_poseEstimator.update(
+                new Rotation2d(0), // ジャイロ無効化（getRotation2d()をコメントアウト）
                 new SwerveModulePosition[]{
-                        frontLeft.getPosition(),
-                        frontRight.getPosition(),
-                        backLeft.getPosition(),
-                        backRight.getPosition()
+                        new SwerveModulePosition(), // ゼロ位置（frontLeft.getPosition()をコメントアウト）
+                        new SwerveModulePosition(), // ゼロ位置（frontRight.getPosition()をコメントアウト）
+                        new SwerveModulePosition(), // ゼロ位置（backLeft.getPosition()をコメントアウト）
+                        new SwerveModulePosition()  // ゼロ位置（backRight.getPosition()をコメントアウト）
                 });
+        // ▲▲▲ [Vision実験] ここまで ▲▲▲
 
         vision.leftCameraPose.ifPresent(pose -> {
+            // ▼ [Vision実験] 距離フィルター無効化
+            //   オドメトリーなしだと初期位置からずれてフィルターに引っかかるため除去
+            // if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
+                m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
+            // }
             /** 
              *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
              *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
              *  座標が大きくずれてしまうのでその対策として入れた
              */
-            if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
-                m_poseEstimator.addVisionMeasurement(pose, vision.leftCameraTimestamp);
-            }
         });
         
         vision.rightCameraPose.ifPresent(pose -> {
+            // ▼ [Vision実験] 距離フィルター無効化（左カメラと同様）
+            // if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
+                m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
+            // }
              /** 
              *  現在の座標との差がkMaxVisionPoseErrorMeters以内の場合のみ適用する
              *  AprilTagの性質上タグが1個だと左右反転したり、誤差が大きくなったりして、
              *  座標が大きくずれてしまうのでその対策として入れた
              */
-            if (pose.getTranslation().getDistance(getPose().getTranslation()) < DriveParameter.Vision.kMaxVisionPoseErrorMeters) {
-                m_poseEstimator.addVisionMeasurement(pose, vision.rightCameraTimestamp);
-            }
         });
 
         DriveState.drivePosition = getPose();
@@ -203,12 +228,21 @@ public class BasicDrive implements DriveRepository {
         },pose);
 
         m_poseEstimator.resetPosition(
-        getRotation2d(),
+        // ▼ [Vision実験] ジャイロ無効化
+        // getRotation2d(),
+        new Rotation2d(0),
+        // ▼ [Vision実験] モジュール位置無効化
+        // new SwerveModulePosition[]{
+        //     frontLeft.getPosition(),
+        //     frontRight.getPosition(),
+        //     backLeft.getPosition(),
+        //     backRight.getPosition()
+        // },
         new SwerveModulePosition[]{
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
+            new SwerveModulePosition(),
+            new SwerveModulePosition(),
+            new SwerveModulePosition(),
+            new SwerveModulePosition()
         },
         pose
         );
