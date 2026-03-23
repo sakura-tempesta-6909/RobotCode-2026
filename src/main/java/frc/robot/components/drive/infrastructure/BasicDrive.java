@@ -227,7 +227,7 @@ public class BasicDrive implements DriveRepository {
         double output = anglePID.calculate(getHeading(),setAngle);
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
-        setChassisSpeedsFiledOriented(speed);
+        setChassisSpeedsFieldOriented(speed);
         
     }
 
