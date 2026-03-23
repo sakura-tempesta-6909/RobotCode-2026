@@ -11,10 +11,8 @@ public class ShooterTools {
      */
     static {
         shooterMPSMap = new InterpolatingDoubleTreeMap();
-        for (int i = 0; i < ShooterParameter.ShooterRPMTable.length; i++) {
-            double distance = ShooterParameter.ShooterRPMTable[i][0];
-            double rpm = ShooterParameter.ShooterRPMTable[i][1];
-            shooterMPSMap.put(distance, rpm);
+        for (double[] number : ShooterParameter.ShooterRPMTable) {
+            shooterMPSMap.put(number[0], number[1]);
         }
     }
     /**
@@ -41,6 +39,6 @@ public class ShooterTools {
      * @return 距離に応じたモーターの回転数[m/s]
     */
     public static double distanceToMps(double distance) {
-        return rpmToSurfaceSpeed(shooterMPSMap.get(distance));
+        return 0.0;
     }
 }
