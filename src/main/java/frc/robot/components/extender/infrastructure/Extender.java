@@ -89,13 +89,13 @@ public class Extender implements ExtenderRepository {
         /** 指定の距離移動するために必要な回転数を求める | rotation *
          * 360は1回転の角度*/
         double targetPosition = ExtenderTools.getRotationsOfMotorShaft(targetAngle);
-            //extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot);
+        extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot);
     }
 
     /** Extenderを任意の力で動かす(PercentOutput) */
     @Override
     public void moveExtenderSpecifiedPower(double targetPower) {
-        //extenderMotor.set(targetPower);
+        extenderMotor.set(targetPower);
 
     }
 

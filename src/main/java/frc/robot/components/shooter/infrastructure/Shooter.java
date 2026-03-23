@@ -26,10 +26,11 @@ public class Shooter implements ShooterRepository {
 
         config.closedLoop.p(ShooterParameter.pGain);
         config.closedLoop.i(ShooterParameter.iGain);
-        config.closedLoop.d(ShooterParameter.dGain);
+        config.closedLoop.d(ShooterParameter.dGain).iZone(3000);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
         followerConfig.follow(motor, true);
+        config.inverted(true);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);

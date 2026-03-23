@@ -25,7 +25,7 @@ public class Indexer implements IndexerRepository {
         LongRollerIndexerConfig = new SparkMaxConfig();
         LongRollerIndexerEncoder = LongRollerIndexer.getEncoder();
 
-        LongRollerIndexerConfig.inverted(false);
+        LongRollerIndexerConfig.inverted(true);
         LongRollerIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
 
 
