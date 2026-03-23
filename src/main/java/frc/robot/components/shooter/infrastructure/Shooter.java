@@ -26,7 +26,7 @@ public class Shooter implements ShooterRepository {
 
         config.closedLoop.p(ShooterParameter.pGain);
         config.closedLoop.i(ShooterParameter.iGain);
-        config.closedLoop.d(ShooterParameter.dGain).iZone(3000);
+        config.closedLoop.d(ShooterParameter.dGain).iZone(ShooterParameter.IZone);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
         followerConfig.follow(motor, true);
