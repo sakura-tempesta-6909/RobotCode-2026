@@ -1,7 +1,20 @@
 package frc.robot.components.shooter;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 public class ShooterTools {
+    static InterpolatingDoubleTreeMap shooterMPSMap;
 
+    /**
+     * ShooterParameterのRPMテーブルからマップを初期化する
+     * ShooterRPMTable[i][0] = 距離 [m] （マップのキー）
+     * ShooterRPMTable[i][1] = RPM      （マップの値）
+     */
+    static {
+        shooterMPSMap = new InterpolatingDoubleTreeMap();
+        for (double[] number : ShooterParameter.ShooterRPMTable) {
+            shooterMPSMap.put(number[0], number[1]);
+        }
+    }
     /**
      * RPMからウィールの表面速度に変換する
      * @param wheelRPM　受け取るRPM
@@ -23,10 +36,9 @@ public class ShooterTools {
     /** 
      * 距離をもとにシュート時のm/sを算出する 
      * @param distance 取得したロボットとゴールの距離　単位：m
-     * @return 距離に応じたモーターの回転数[m/s] 30は仮値
+     * @return 距離に応じたモーターの回転数[m/s]
     */
     public static double distanceToMps(double distance) {
-        //計算式を入れる
         return 0.0;
     }
 }

@@ -6,6 +6,8 @@ import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
 import frc.robot.domain.repository.ShooterRepository;
 
+import frc.robot.domain.state.StateGroup;
+
 import java.util.function.DoubleSupplier;
 
 public class ShooterCommands {
@@ -36,10 +38,7 @@ public class ShooterCommands {
      * ハブへシュート
      */
     public static Command shootToHub() {
-        return moveShooterSpecifiedSpeed(() -> {
-            double distance = 0.0; //ここで距離を取得する
-            return ShooterTools.distanceToMps(distance);
-        });
+        return moveShooterSpecifiedSpeed(() -> ShooterTools.distanceToMps(StateGroup.getDistanceToHub()));
     }
 
     /**
