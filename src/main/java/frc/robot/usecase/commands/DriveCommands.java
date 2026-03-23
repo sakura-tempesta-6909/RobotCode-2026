@@ -95,7 +95,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose (UsecaseConst.Poses.TargetPoseToHub);
+        return moveToTargetPose (DriveState.targetPosition);
 
     }
 
