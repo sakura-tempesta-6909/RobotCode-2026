@@ -25,7 +25,8 @@ public class SimulationConst {
     }
     public static final class Shooter{
         /** shooterの高さ | [m] */
-        public static final Distance height = Units.Meters.of(0.524);
+        //public static final Distance height = Units.Meters.of(0.504);
+        public static final double height = 0.504;
         /** Fuelを打ち出す上下方向の角度 */
         public static final Angle hoodAngle = Units.Degrees.of(50);
         /** Fuelを打ち出す左右方向の角度 */

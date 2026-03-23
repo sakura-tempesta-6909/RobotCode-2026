@@ -38,11 +38,11 @@ public class ShooterTools {
     }
 
     public static double SurfaceSpeedToFuelVelocity(double rpm){
-        return 0.002 * rpm;
+        return 0.00238 * rpm;
     }
 
     public static double fuelVelocityToSurfaceSpeed(double power){
-        return power / 0.002;
+        return power / 0.00238;
     }
 
     /**
