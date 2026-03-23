@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
+import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 public class DriveTools {
     public static ChassisSpeeds modifyChassisSpeed(ChassisSpeeds speeds, DriveSpeed speed) {
@@ -68,51 +69,58 @@ public class DriveTools {
         Translation2d targetPosition;
 
         enum pattern{
-            Home,Left,Right
+            AroundHub,LeftAreaForBlue,RightAreaForBlue
         }
 
         pattern mode;
+        Alliance color = DriverStation.getAlliance().get();
+        switch(color){
+            /** allianceが赤で */
+            case Red:
+                /** neutralゾーンまたは敵陣（青側）にいるとき*/
+                if(currentPosition.getX() < HubPose.getX()){
+                    /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
+                    if(currentPosition.getY() < HubPose.getY()){
+                        mode = pattern.RightAreaForBlue;
+                    }
+                    /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
+                    else{
+                        mode = pattern.LeftAreaForBlue;
+                    }
+                }
+                /* 自陣（赤側）にいるとき*/
+                else{
+                    mode = pattern.AroundHub;
+                }
+                break;
 
-        /** allianceが赤で */
-        if(DriverStation.getAlliance().get() == Alliance.Red){
-            /** neutralゾーンまたは敵陣（青側）にいるとき*/
-            if(currentPosition.getX() < HubPose.getX()){
-                /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
-                if(currentPosition.getY() < HubPose.getY()){
-                    mode = pattern.Right;
+            /** allianceが青で */
+            case Blue:
+                /** neutralゾーンまたは敵陣（赤側）にいるとき*/
+                if(currentPosition.getX() > HubPose.getX()){
+                    /* 自陣(青側)から見て右半分にいるとき*/
+                    if(currentPosition.getY() <= HubPose.getY()){
+                        mode = pattern.RightAreaForBlue;
+                    }
+                    /* 自陣(青側)から見て左半分にいるとき*/
+                    else{
+                        mode = pattern.LeftAreaForBlue;
+                    }
                 }
-                /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
+                /* 自陣（青側）にいるとき*/
                 else{
-                    mode = pattern.Left;
+                    mode = pattern.AroundHub;
                 }
-            }
-            /* 自陣（赤側）にいるとき*/
-            else{
-                mode = pattern.Home;
-            }
-        }
-        /** allianceが青で */
-        else{
-            /** neutralゾーンまたは敵陣（赤側）にいるとき*/
-            if(currentPosition.getX() > HubPose.getX()){
-                /* 自陣(青側)から見て右半分にいるとき*/
-                if(currentPosition.getY() <= HubPose.getY()){
-                    mode = pattern.Right;
-                }
-                /* 自陣(青側)から見て左半分にいるとき*/
-                else{
-                    mode = pattern.Left;
-                }
-            }
-            /* 自陣（青側）にいるとき*/
-            else{
-                mode= pattern.Home;
-            }
+                break;
+            
+            default:
+                mode =pattern.AroundHub;
+
         }
 
         switch(mode){
-            /** Homeの時、HubからL[m]の演習場に移動する */
-            case Home:
+            /** AroundHubの時、HubからL[m]の円周上に移動する */
+            case AroundHub:
                 /** T = H+L( R−H /｜R−H｜) 
                  * T:目標地点の座標
                  * R:現在の座標
@@ -126,16 +134,16 @@ public class DriveTools {
                     .times(targetDistance)
                 );
                 break;
-            /** Left,Rightの時、Hubの真横のうち近い方に移動する */
-            case Right:
+            /** LeftAreaForBlue,RightAreaForBlueの時、Hubの真横のうち近い方に移動する */
+            case RightAreaForBlue:
                 targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() - targetDistance);
                 break;
-            case Left:
+            case LeftAreaForBlue:
                 targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() + targetDistance);
                 break;
             /** default状態の時、fieldの中心に移動する（実際はない） */
             default:
-                targetPosition = new Translation2d(8.25,4.61);
+                targetPosition = UsecaseConst.Poses.CenterOfTheField;
         }    
         return targetPosition;
     }
