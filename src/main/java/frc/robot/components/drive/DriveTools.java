@@ -56,55 +56,63 @@ public class DriveTools {
         return isShootPosition;
     }
 
+
+
     /** 行くべき場所を計算する 
-     * @param currentPosition 今のポジション(x[m],y[m])*/
-    public static Translation2d calculateTargetPosition(Pose2d currentPosition, double targetdistance){
+     * @param currentPosition 今のポジション(x[m],y[m])
+     * @param targetDistance Hubを中心とした目標円周の半径（=目標地点のHubからの距離） */
+    public static Translation2d calculateTargetPosition(Pose2d currentPosition, double targetDistance){
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPositon = currentPosition.getTranslation();
 
         Translation2d targetPosition;
 
-        int pattern;
+        enum pattern{
+            Home,Left,Right
+        }
+
+        pattern mode;
+
         /** allianceが赤で */
         if(DriverStation.getAlliance().get() == Alliance.Red){
-            /** ロボットのX座標 < HubのX座標 (=neutralゾーンまたは敵陣（青側）にいるとき)*/
+            /** neutralゾーンまたは敵陣（青側）にいるとき*/
             if(currentPosition.getX() < HubPose.getX()){
-                /* ロボットのY座標 < HubのY座標 (=自陣(赤側)から見て左半分にいるとき)*/
+                /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
                 if(currentPosition.getY() < HubPose.getY()){
-                    pattern = 2;
+                    mode = pattern.Right;
                 }
-                /* ロボットのY座標 >= HubのY座標 (=自陣(赤側)から見て右半分にいるとき)*/
+                /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
                 else{
-                    pattern = 3;
+                    mode = pattern.Left;
                 }
             }
-            /* ロボットのX座標 >= HubのX座標 (=自陣（赤側）にいるとき)*/
+            /* 自陣（赤側）にいるとき*/
             else{
-                pattern = 1;
+                mode = pattern.Home;
             }
         }
         /** allianceが青で */
         else{
-            /** ロボットのX座標 > HubのX座標 (=neutralゾーンまたは敵陣（赤側）にいるとき)*/
+            /** neutralゾーンまたは敵陣（赤側）にいるとき*/
             if(currentPosition.getX() > HubPose.getX()){
-                /* ロボットのY座標 <= HubのY座標 (=自陣(青側)から見て右半分にいるとき)*/
+                /* 自陣(青側)から見て右半分にいるとき*/
                 if(currentPosition.getY() <= HubPose.getY()){
-                    pattern = 2;
+                    mode = pattern.Right;
                 }
-                /* ロボットのY座標 > HubのY座標 (=自陣(青側)から見て左半分にいるとき)*/
+                /* 自陣(青側)から見て左半分にいるとき*/
                 else{
-                    pattern = 3;
+                    mode = pattern.Left;
                 }
             }
-            /* ロボットのX座標 <= HubのX座標 (=自陣（青側）にいるとき)*/
+            /* 自陣（青側）にいるとき*/
             else{
-                pattern = 1;
+                mode= pattern.Home;
             }
         }
 
-        switch(pattern){
-            /** case1の時、HubからL[m]の演習場に移動する */
-            case 1:
+        switch(mode){
+            /** Homeの時、HubからL[m]の演習場に移動する */
+            case Home:
                 /** T = H+L( R−H /｜R−H｜) 
                  * T:目標地点の座標
                  * R:現在の座標
@@ -115,15 +123,15 @@ public class DriveTools {
                 currentPositon
                     .minus(HubPose)
                     .div(StateGroup.getDistanceToHub())
-                    .times(targetdistance)
+                    .times(targetDistance)
                 );
                 break;
-            /** case2,3の時、Hubの真横のうち近い方に移動する */
-            case 2:
-                targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() - targetdistance);
+            /** Left,Rightの時、Hubの真横のうち近い方に移動する */
+            case Right:
+                targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() - targetDistance);
                 break;
-            case 3:
-                targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() + targetdistance);
+            case Left:
+                targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() + targetDistance);
                 break;
             /** default状態の時、fieldの中心に移動する（実際はない） */
             default:
