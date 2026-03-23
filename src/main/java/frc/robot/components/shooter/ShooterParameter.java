@@ -16,4 +16,15 @@ public final class ShooterParameter {
 
     //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
     public static double errorToleranceMps = 0.3;
+
+    /**
+     * シューターのRPMマップ
+     * [距離(m), RPM] で設定
+     */
+    public static final double[][] ShooterRPMTable = {
+        {2.5, 2850.0},
+        {3.0, 3000.0},
+        {3.5, 3400.0},
+        {4.0, 3800.0}
+    };
 }
