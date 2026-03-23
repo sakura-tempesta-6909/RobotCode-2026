@@ -41,6 +41,10 @@ public class ShooterTools {
         return 0.002 * rpm;
     }
 
+    public static double fuelVelocityToSurfaceSpeed(double power){
+        return power / 0.002;
+    }
+
     /**
      * 静止状態のとき距離からFuelの初速を求める
      * @param distance HUBとの距離(m)
@@ -77,7 +81,7 @@ public class ShooterTools {
      * 距離をもとにシュート時のm/sを算出したあと自分が動いてる分を引く 
      * @param distance 取得したロボットとゴールの距離　単位：m
      * @param speeds 現在のロボットのスピード 単位: ChassisSpeeds(m/s)
-     * @return 距離に応じたモーターの回転数[m/s] 
+     * @return 距離に応じたFuelの初速度
     */
     public static double distanceToMps(double distance, ChassisSpeeds speeds) {
         Translation3d vector = distanceToVector(distance,speeds);

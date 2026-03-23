@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import frc.robot.domain.state.DriveState;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.shooter.infrastructure.Shooter;
@@ -49,7 +50,10 @@ public class ShooterCommands {
     public static Command shootToHub() {
         return moveShooterSpecifiedSpeed(() -> {
             double distance = StateGroup.getDistanceToHub(); //ここで距離を取得する
-            return ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed);
+            double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
+            double surfaceSpeed = ShooterTools.fuelVelocityToSurfaceSpeed(power); // wheelの表面速度
+            SmartDashboard.putNumber("shooterRPM", surfaceSpeed);
+            return surfaceSpeed;
         });
     }
 
