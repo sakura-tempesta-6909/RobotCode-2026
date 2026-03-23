@@ -59,7 +59,7 @@ public class DriveCommands{
                             speeds.omegaRadiansPerSecond
                         );
                     }
-                    driveRepository.setChassisSpeedsFiledOriented(speeds);
+                    driveRepository.setChassisSpeedsFieldOriented(speeds);
                     break;
             }
         });

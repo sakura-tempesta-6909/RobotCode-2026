@@ -105,7 +105,7 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
-    public void setChassisSpeedsFiledOriented(ChassisSpeeds speeds) {
+    public void setChassisSpeedsFieldOriented(ChassisSpeeds speeds) {
         this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, 
                 DriverStation.getAlliance().isPresent()
                     && DriverStation.getAlliance().get() == Alliance.Red
