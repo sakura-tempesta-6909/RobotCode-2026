@@ -51,10 +51,18 @@ public class Extender implements ExtenderRepository {
         /** FFを適用したPIDの設定 */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.PositionP,ExtenderParameter.PID.PositionI,ExtenderParameter.PID.PositionD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderParameter.kCosRatio);
-
-        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.PositionIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
-        extenderMotorConfig.closedLoop.maxOutput(ExtenderParameter.PID.MaxOutput, ExtenderConst.Slot.ExtenderRaisingSlot).minOutput(ExtenderParameter.PID.MinOutput,ExtenderConst.Slot.ExtenderRaisingSlot);
+                .pid(ExtenderParameter.PID.PositionP,ExtenderParameter.PID.PositionI,ExtenderParameter.PID.PositionD, ExtenderConst.Slot.ExtenderRaisingSlot)
+                .iZone(ExtenderParameter.PID.PositionIZone, ExtenderConst.Slot.ExtenderRaisingSlot)
+                .maxOutput(ExtenderParameter.PID.MaxOutput, ExtenderConst.Slot.ExtenderRaisingSlot)
+                .minOutput(ExtenderParameter.PID.MinOutput,ExtenderConst.Slot.ExtenderRaisingSlot)
+                .feedForward.kCos(ExtenderParameter.FFPower)
+                            .kCosRatio(ExtenderParameter.kCosRatio);
+        extenderMotorConfig.softLimit
+                .forwardSoftLimit(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.InitialAngle))
+                .forwardSoftLimitEnabled(true)
+                .reverseSoftLimit(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.IntakeAngle))
+                .reverseSoftLimitEnabled(true);
+        extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.InitialAngle));
         
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
