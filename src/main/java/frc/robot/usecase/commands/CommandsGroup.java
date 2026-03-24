@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.state.ShooterState;
 import frc.robot.Robot;
+import frc.robot.components.drive.DriveTools;
 import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
+import frc.robot.components.shooter.ShooterTools;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
 
@@ -37,7 +39,7 @@ public class CommandsGroup {
     return Commands.either(
         // --- シミュレーション中の動作 ---
         Commands.repeatingSequence(
-            Commands.runOnce(() -> BasicDriveSim.fuelSimulation.launchFuel(7)),
+            Commands.runOnce(() -> BasicDriveSim.fuelSimulation.launchFuel(ShooterTools.distanceToMps(StateGroup.getDistanceToHub(), DriveState.driveXYOmegaSpeed))),
             Commands.waitSeconds(0.3) // ← ここで間隔調整
             ),
 
