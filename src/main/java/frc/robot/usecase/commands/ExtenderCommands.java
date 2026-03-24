@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.components.extender.ExtenderConst;
 import frc.robot.components.extender.ExtenderParameter;
+import frc.robot.components.extender.infrastructure.Extender;
 import frc.robot.components.intake.IntakeParameter;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.repository.IntakeRepository;
@@ -42,6 +43,8 @@ public class ExtenderCommands {
             ExtenderRepository.resetPID();
         },()->{
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
+        }).until(()->{
+        return Math.abs(ExtenderState.currentAngle - targetSupplier.getAsDouble()) < ExtenderParameter.allowableError;
         });
     }
     
