@@ -1,11 +1,12 @@
 package frc.robot.components.shooter;
 
 public final class ShooterParameter {
-    public static double pGain = 0;
-    public static double iGain = 0;
-    public static double dGain = 0;
-    public static double kSGain = 0;
-    public static double kVGain = 0;
+    public static double pGain = 0.0002;
+    public static double iGain = 0.0000002;
+    public static double dGain = 0.02;
+    public static double kSGain = 0.22738;
+    public static double kVGain = 0.002;
+    public static double IZone = 3000;
 
     /** アライアンス側のエリアにボールを投げ入れるときのモーターの速度　単位：m/s*/
     public static double feedMps = 20;
