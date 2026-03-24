@@ -3,6 +3,7 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.domain.DomainUtil;
+import frc.robot.domain.state.ExtenderState;
 
 public class Util {
     public static double deadband(double input){

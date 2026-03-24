@@ -31,6 +31,8 @@ public final class ExtenderConst {
     /** モーターを動いていると判定する最小の速度[RPM]（動いているとき）*/
     public static final double ExtenderMotorMinRotation = 0.1;
     /** エンコーダーの初期位置[degree] */
-    public static final double InitialEncoderPosition= 90.0;
+    public static final double InitialEncoderPosition = 90.0;
+    /** 1回転あたりのエンコーダーのカウント数 */
+    public static final double EncoderCountsPerRevolution = 409;
     
 }

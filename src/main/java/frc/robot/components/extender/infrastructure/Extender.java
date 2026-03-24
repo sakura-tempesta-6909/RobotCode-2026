@@ -21,6 +21,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig; // IdleModeに必要
 import com.revrobotics.spark.config.LimitSwitchConfig.Type; // kNormallyOpenに必要
@@ -39,7 +41,7 @@ public class Extender implements ExtenderRepository {
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
         /** 回転方向を指定 */
-        extenderMotorConfig.inverted(false);
+        extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */
         extenderMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         extenderMotorConfig.limitSwitch.reverseLimitSwitchType(Type.kNormallyOpen).forwardLimitSwitchType(Type.kNormallyOpen);
@@ -49,9 +51,9 @@ public class Extender implements ExtenderRepository {
         /** FFを適用したPIDの設定 */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.RaisingP,ExtenderParameter.PID.RaisingI,ExtenderParameter.PID.RaisingD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderConst.GearRatio);
+                .pid(ExtenderParameter.PID.PositionP,ExtenderParameter.PID.PositionI,ExtenderParameter.PID.PositionD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderParameter.kCosRatio);
 
-        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.RaisingIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
+        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.PositionIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
         
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
@@ -81,6 +83,7 @@ public class Extender implements ExtenderRepository {
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
         ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */
