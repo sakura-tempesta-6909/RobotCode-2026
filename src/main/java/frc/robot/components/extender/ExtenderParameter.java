@@ -21,6 +21,9 @@ public final class ExtenderParameter {
         public static final double EndexerVelocityP = 0;
         public static final double EndexerVelocityI = 0;
         public static final double EndexerVelocityD = 0;
+
+        public static final double MaxOutput = 0.5;
+        public static final double MinOutput = -0.5;
     }
 
     

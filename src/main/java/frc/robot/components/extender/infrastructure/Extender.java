@@ -54,6 +54,7 @@ public class Extender implements ExtenderRepository {
                 .pid(ExtenderParameter.PID.PositionP,ExtenderParameter.PID.PositionI,ExtenderParameter.PID.PositionD, ExtenderConst.Slot.ExtenderRaisingSlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderParameter.kCosRatio);
 
         extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.PositionIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
+        extenderMotorConfig.closedLoop.maxOutput(ExtenderParameter.PID.MaxOutput, ExtenderConst.Slot.ExtenderRaisingSlot).minOutput(ExtenderParameter.PID.MinOutput,ExtenderConst.Slot.ExtenderRaisingSlot);
         
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
