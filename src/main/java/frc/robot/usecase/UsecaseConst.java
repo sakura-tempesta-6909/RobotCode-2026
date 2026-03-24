@@ -37,4 +37,9 @@ public class UsecaseConst {
         public static final Pose2d HubPositionForBlue = new Pose2d(new Translation2d(4.02,4.61),new Rotation2d(0));
     
     }
+
+    public static final class Angles{
+        /** Extenderを揺らすときの角度 */
+        public static final double shakeAngle = 10;
+    }
 }
