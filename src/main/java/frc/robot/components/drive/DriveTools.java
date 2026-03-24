@@ -43,16 +43,15 @@ public class DriveTools {
      * @param currentPosition :現在の場所(x[m],y[m])
      * @return shoot可能な場所にいるか */ 
     public static boolean isShootPosition(Pose2d targetPosition, Pose2d currentPosition){
-        // Pose2d pose = targetPosition;
-        // Pose2d current = currentPosition;
-        // Pose2d relativePose = pose.relativeTo(current);
-        // double arrowedDifference = DriveParameter.Differences.arrowedDifference;
+        Pose2d pose = targetPosition;
+        Pose2d current = currentPosition;
+        Pose2d relativePose = pose.relativeTo(current);
+        double arrowedDifference = DriveParameter.Differences.arrowedDifference;
         
-        // double Xdifference = relativePose.getX();
-        // double Ydifference = relativePose.getY();
-        // boolean isShootPosition = Math.abs(Xdifference) < arrowedDifference && Math.abs(Ydifference) < arrowedDifference;
-        // return isShootPosition;
-        return true;
+        double Xdifference = relativePose.getX();
+        double Ydifference = relativePose.getY();
+        boolean isShootPosition = Math.abs(Xdifference) < arrowedDifference && Math.abs(Ydifference) < arrowedDifference;
+        return isShootPosition;
     }
 
     /** 行くべき場所を計算する 
