@@ -28,7 +28,7 @@ public class SimulationConst {
         //public static final Distance height = Units.Meters.of(0.504);
         public static final double height = 0.504;
         /** Fuelを打ち出す上下方向の角度 */
-        public static final Angle hoodAngle = Units.Degrees.of(45);
+        public static final Angle hoodAngle = Units.Degrees.of(48);
         /** Fuelを打ち出す左右方向の角度 */
         public static final Angle turretYaw = Units.Degrees.of(0);
     }
