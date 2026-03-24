@@ -14,8 +14,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
@@ -23,12 +24,9 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
-import org.littletonrobotics.junction.Logger;
 import frc.robot.usecase.UsecaseUtil;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 
-import static edu.wpi.first.units.Units.Volts;
+import java.util.Optional;
 
 
 public class BasicDrive implements DriveRepository {
@@ -91,7 +89,12 @@ public class BasicDrive implements DriveRepository {
         ),
         config,
         () -> {
-        return false;
+            //RedAllianceのときはFlipする
+            Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
         }, RobotContainer.getDriveInstance());
     }
 
@@ -102,7 +105,13 @@ public class BasicDrive implements DriveRepository {
     }
 
     @Override
-    public void setChassisSpeedsFiledOriented(ChassisSpeeds speeds) {
+    public void setChassisSpeedsFieldOriented(ChassisSpeeds speeds) {
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            speeds = new ChassisSpeeds(
+            -speeds.vxMetersPerSecond,
+            -speeds.vyMetersPerSecond,
+            speeds.omegaRadiansPerSecond);
+        }
         this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getRotation2d()));
     }
 
@@ -166,7 +175,9 @@ public class BasicDrive implements DriveRepository {
         return Math.IEEEremainder(gyro.getAngle(), 360);
     }
     private Rotation2d getRotation2d(){
-        return Rotation2d.fromDegrees(getHeading());
+        return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
+                        ? Rotation2d.fromDegrees(getHeading()).plus(Rotation2d.kPi)
+                        : Rotation2d.fromDegrees(getHeading());
     }
 
     private Pose2d getPose(){
@@ -220,7 +231,7 @@ public class BasicDrive implements DriveRepository {
         double output = anglePID.calculate(getHeading(),setAngle);
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
-        setChassisSpeedsFiledOriented(speed);
+        setChassisSpeedsFieldOriented(speed);
         
     }
 

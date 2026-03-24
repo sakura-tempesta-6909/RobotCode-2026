@@ -61,7 +61,7 @@ public class DriveTools {
 
     /** 行くべき場所を計算する 
      * @param currentPosition 今のポジション(x[m],y[m])
-     * @param targetDistance Hubを中心とした目標円周の半径（=目標地点のHubからの距離） */
+     * @param targetDistance Hubを中心とした目標円周の半径（=目標地点のHubからの距離）[m] */
     public static Translation2d calculateTargetPosition(Pose2d currentPosition, double targetDistance){
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPositon = currentPosition.getTranslation();
@@ -69,7 +69,7 @@ public class DriveTools {
         Translation2d targetPosition;
 
         enum pattern{
-            AroundHub,LeftAreaForBlue,RightAreaForBlue
+            AroundHub,BlueLeftArea,BlueRightArea
         }
 
         pattern mode;
@@ -81,11 +81,11 @@ public class DriveTools {
                 if(currentPosition.getX() < HubPose.getX()){
                     /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
                     if(currentPosition.getY() < HubPose.getY()){
-                        mode = pattern.RightAreaForBlue;
+                        mode = pattern.BlueRightArea;
                     }
                     /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
                     else{
-                        mode = pattern.LeftAreaForBlue;
+                        mode = pattern.BlueLeftArea;
                     }
                 }
                 /* 自陣（赤側）にいるとき*/
@@ -100,11 +100,11 @@ public class DriveTools {
                 if(currentPosition.getX() > HubPose.getX()){
                     /* 自陣(青側)から見て右半分にいるとき*/
                     if(currentPosition.getY() <= HubPose.getY()){
-                        mode = pattern.RightAreaForBlue;
+                        mode = pattern.BlueRightArea;
                     }
                     /* 自陣(青側)から見て左半分にいるとき*/
                     else{
-                        mode = pattern.LeftAreaForBlue;
+                        mode = pattern.BlueLeftArea;
                     }
                 }
                 /* 自陣（青側）にいるとき*/
@@ -134,11 +134,11 @@ public class DriveTools {
                     .times(targetDistance)
                 );
                 break;
-            /** LeftAreaForBlue,RightAreaForBlueの時、Hubの真横のうち近い方に移動する */
-            case RightAreaForBlue:
+            /** BlueLeftArea,BlueRightAreaの時、Hubの真横のうち近い方に移動する */
+            case BlueRightArea:
                 targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() - targetDistance);
                 break;
-            case LeftAreaForBlue:
+            case BlueLeftArea:
                 targetPosition = new Translation2d(HubPose.getX(),HubPose.getY() + targetDistance);
                 break;
             /** default状態の時、fieldの中心に移動する（実際はない） */

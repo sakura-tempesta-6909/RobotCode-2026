@@ -18,7 +18,7 @@ public interface DriveRepository extends Subsystem{
      * @param forwardSpeed   前後方向に移動するスピード | m/s | 止めたいとき0 | Robotに対して前に進むとき正
      * @param thetaSpeed    回転するスピード | m/s | 止めたいとき0 | Robotに対して反時計回りを正とする
      */
-    void setChassisSpeedsFiledOriented(ChassisSpeeds speeds);
+    void setChassisSpeedsFieldOriented(ChassisSpeeds speeds);
     
     /** ジャイロセンサーをリセットする */
     void resetGyroSensor();

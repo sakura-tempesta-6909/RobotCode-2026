@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
 import frc.robot.domain.repository.ShooterRepository;
+
 import frc.robot.domain.state.StateGroup;
 
 import java.util.function.DoubleSupplier;
