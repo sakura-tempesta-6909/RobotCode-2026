@@ -95,12 +95,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-<<<<<<< HEAD
         return moveToTargetPose (DriveState.targetPosition);
-=======
-        return moveToTargetPose (UsecaseUtil.getHubPosition());
->>>>>>> 74a40b995ab3ceae1486bb60023bb513b9884d27
-
     }
 
     /** 目標の角度まで回転する

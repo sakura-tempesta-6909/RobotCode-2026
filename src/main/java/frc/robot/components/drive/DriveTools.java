@@ -61,7 +61,7 @@ public class DriveTools {
 
     /** 行くべき場所を計算する 
      * @param currentPosition 今のポジション(x[m],y[m])
-     * @param targetDistance Hubを中心とした目標円周の半径（=目標地点のHubからの距離）[m] */
+     * @param targetDistance Shootの目標地点のHubからの距離[m] */
     public static Translation2d calculateTargetPosition(Pose2d currentPosition, double targetDistance){
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPositon = currentPosition.getTranslation();
@@ -96,8 +96,12 @@ public class DriveTools {
 
             /** allianceが青で */
             case Blue:
+                /* 自陣（青側）にいるとき*/
+                if(currentPosition.getX() <= HubPose.getX()){
+                    mode = pattern.AroundHub;
+                }
                 /** neutralゾーンまたは敵陣（赤側）にいるとき*/
-                if(currentPosition.getX() > HubPose.getX()){
+                else{
                     /* 自陣(青側)から見て右半分にいるとき*/
                     if(currentPosition.getY() <= HubPose.getY()){
                         mode = pattern.BlueRightArea;
@@ -106,10 +110,6 @@ public class DriveTools {
                     else{
                         mode = pattern.BlueLeftArea;
                     }
-                }
-                /* 自陣（青側）にいるとき*/
-                else{
-                    mode = pattern.AroundHub;
                 }
                 break;
             

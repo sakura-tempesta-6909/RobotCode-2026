@@ -2,10 +2,7 @@ package frc.robot.domain.state;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.components.drive.DriveParameter;
-<<<<<<< HEAD
 import frc.robot.usecase.UsecaseConst;
-=======
->>>>>>> 74a40b995ab3ceae1486bb60023bb513b9884d27
 import frc.robot.usecase.UsecaseUtil;
 
 public class StateGroup {

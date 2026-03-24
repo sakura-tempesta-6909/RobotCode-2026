@@ -23,14 +23,9 @@ public class UsecaseConst {
 
     public static final class Poses{
         public static final Pose2d inFrontOfGoal = new Pose2d(new Translation2d(5, 6), new Rotation2d(Math.PI / 2));
-<<<<<<< HEAD
 
-        /**. fieldの中心座標(x[m],y[m]) */
+        /** fieldの中心座標(x[m],y[m]) */
         public static final Translation2d CenterOfTheField = new Translation2d(8.25,4.61);
-
-
-=======
->>>>>>> 74a40b995ab3ceae1486bb60023bb513b9884d27
         /** Hubへの目標角度 [degree]
          * 反時計回りが正
          * 正面が0
