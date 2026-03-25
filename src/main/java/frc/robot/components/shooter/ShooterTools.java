@@ -37,11 +37,11 @@ public class ShooterTools {
         return (targetMps * 60) / (ShooterConst.wheelDiameter * Math.PI);
     }
 
-    public static double SurfaceSpeedToFuelVelocity(double rpm){
+    public static double SurfaceRPMToFuelVelocity(double rpm){
         return 0.00238 * rpm;
     }
 
-    public static double fuelVelocityToSurfaceSpeed(double power){
+    public static double fuelVelocityToSurfaceRPM(double power){
         return power / 0.00238;
     }
 
@@ -50,9 +50,9 @@ public class ShooterTools {
      * @param distance HUBとの距離(m)
      * @return 距離に応じたFuelの初速度[m/s]
      */
-    public static double stopDistanceToRPM(double distance){
+    public static double stopDistanceToFuelVelocity(double distance){
         /** Hubへの距離から求めた静止状態のときにFuelの初速度 */
-        return SurfaceSpeedToFuelVelocity(shooterMPSMap.get(distance));
+        return SurfaceRPMToFuelVelocity(shooterMPSMap.get(distance));
     }
 
     /**
@@ -62,7 +62,7 @@ public class ShooterTools {
      * @return x,y,zの値を保持したTranslation3dオブジェクト
      */
     public static Translation3d distanceToVector(double distance, ChassisSpeeds speeds) {
-        double power = stopDistanceToRPM(distance);
+        double power = stopDistanceToFuelVelocity(distance);
         SmartDashboard.putNumber("stopMps", power);
         
         // 度数法をラジアンに変換
