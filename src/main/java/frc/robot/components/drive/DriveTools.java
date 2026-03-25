@@ -1,6 +1,7 @@
 package frc.robot.components.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -59,7 +60,13 @@ public class DriveTools {
      * @param targetDistance Shootの目標地点のHubからの距離[m] */
     public static Translation2d calculateTargetPosition(Pose2d currentPosition, double targetDistance){
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
-        Translation2d currentPositon = currentPosition.getTranslation();
+        Translation2d currentPose = currentPosition.getTranslation();
+        if (HubPose == null) {
+            return new Translation2d(0,0); 
+        }
+        if (currentPose == null) {
+            return new Translation2d(0,0); 
+        }
 
         Translation2d targetPosition;
 
@@ -73,13 +80,13 @@ public class DriveTools {
             /** allianceが青で */
             case Blue:
                 /* 自陣（青側）にいるとき*/
-                if(currentPosition.getX() <= HubPose.getX()){
+                if(currentPose.getX() <= HubPose.getX()){
                     mode = pattern.AroundHub;
                 }
                 /** neutralゾーンまたは敵陣（赤側）にいるとき*/
                 else{
                     /* 自陣(青側)から見て右半分にいるとき*/
-                    if(currentPosition.getY() <= HubPose.getY()){
+                    if(currentPose.getY() <= HubPose.getY()){
                         mode = pattern.BlueRightArea;
                     }
                     /* 自陣(青側)から見て左半分にいるとき*/
@@ -92,9 +99,9 @@ public class DriveTools {
             /** allianceが赤で */
             case Red:
                 /** neutralゾーンまたは敵陣（青側）にいるとき*/
-                if(currentPosition.getX() < HubPose.getX()){
+                if(currentPose.getX() < HubPose.getX()){
                     /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
-                    if(currentPosition.getY() < HubPose.getY()){
+                    if(currentPose.getY() < HubPose.getY()){
                         mode = pattern.BlueRightArea;
                     }
                     /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
@@ -123,7 +130,7 @@ public class DriveTools {
                  * L:Hubへの目標距離
                 */
                 targetPosition = HubPose.plus(
-                currentPositon
+                currentPose
                     .minus(HubPose)
                     .div(StateGroup.getDistanceToHub())
                     .times(targetDistance)
