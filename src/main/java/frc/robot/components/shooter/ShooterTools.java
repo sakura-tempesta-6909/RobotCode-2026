@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.usecase.UsecaseUtil;
 
 public class ShooterTools {
     static InterpolatingDoubleTreeMap shooterMPSMap;
@@ -51,7 +52,7 @@ public class ShooterTools {
      * @param power Fuelの初速度（m/s）
      * @return シューターの回転数（RPM）
      */
-    public static double fuelVelocityToSurfaceRPM(double power){
+    public static double fuelVelocityToRPM(double power){
         return power / ShooterConst.RPM_TO_FUEL_VELOCITY_COEFFICIENT;
     }
 
@@ -60,31 +61,9 @@ public class ShooterTools {
      * @param distance HUBとの距離(m)
      * @return 距離に応じたFuelの初速度[m/s]
      */
-    public static double stopDistanceToFuelVelocity(double distance){
+    public static double distanceToFuelVelocityWhileStopping(double distance){
         /** Hubへの距離から求めた静止状態のときにFuelの初速度 */
         return SurfaceRPMToFuelVelocity(shooterMPSMap.get(distance));
-    }
-
-    /**
-     * DriveBaseが動いてることも考慮してFuelを飛ばすべき速度の空間ベクトルを導き出す
-     * @param distance HUBとの距離(m)
-     * @param speeds 現在の速度 型はChassisSpeeds(m/s)
-     * @return x,y,zの値を保持したTranslation3dオブジェクト | 要するに空間ベクトル[m/s]
-     */
-    public static Translation3d distanceToVector(double distance, ChassisSpeeds speeds) {
-        double power = stopDistanceToFuelVelocity(distance);
-        SmartDashboard.putNumber("stopMps", power);
-        
-        // 度数法をラジアンに変換
-        double hoodRad = Math.toRadians(ShooterConst.hoodAngle);
-
-        // 各成分の計算
-        double xVel = power * Math.cos(hoodRad) - speeds.vxMetersPerSecond;
-        double yVel = -speeds.vyMetersPerSecond;
-        double zVel = power * Math.sin(hoodRad);
-
-        // Translation3dとして一括で返す
-        return new Translation3d(xVel, yVel, zVel);
     }
 
     /** 
@@ -94,7 +73,7 @@ public class ShooterTools {
      * @return 距離に応じたFuelの初速度
     */
     public static double distanceToMps(double distance, ChassisSpeeds speeds) {
-        Translation3d vector = distanceToVector(distance,speeds);
+        Translation3d vector = UsecaseUtil.distanceToVectorWhileMoving(distance,speeds);
         double power = vector.getNorm();
         SmartDashboard.putNumber("power", power);
         return power;

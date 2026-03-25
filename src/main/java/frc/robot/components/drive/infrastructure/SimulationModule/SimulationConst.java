@@ -33,6 +33,6 @@ public class SimulationConst {
         /** Fuelを打ち出す左右方向の角度 */
         public static final Angle turretYaw = Units.Degrees.of(0);
         /** shooterの位置 | ロボットの中心が原点 | 単位[m] */
-        public static final Translation3d shooterOffset = new Translation3d(-0.30,0,SimulationConst.Shooter.height);
+        public static final Translation3d shooterOffset = new Translation3d(-0.30, 0, SimulationConst.Shooter.height);
     }
 }
