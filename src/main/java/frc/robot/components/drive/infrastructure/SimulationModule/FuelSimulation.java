@@ -1,6 +1,7 @@
 package frc.robot.components.drive.infrastructure.SimulationModule;
 
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.usecase.commands.CommandsGroup;
@@ -48,7 +49,7 @@ public class FuelSimulation {
                 Units.MetersPerSecond.of(launchPower), 
                 SimulationConst.Shooter.hoodAngle,
                 SimulationConst.Shooter.turretYaw,
-                SimulationConst.Shooter.height
+                SimulationConst.Shooter.shooterOffset
             );
     }
 
