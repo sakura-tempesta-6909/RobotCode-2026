@@ -68,7 +68,7 @@ public class DriveTools {
         }
 
         pattern mode;
-        Alliance color = DriverStation.getAlliance().get();
+        Alliance color = DriverStation.getAlliance().orElse(Alliance.Blue);
         switch(color){
             /** allianceが青で */
             case Blue:
