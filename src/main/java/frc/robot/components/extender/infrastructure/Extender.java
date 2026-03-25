@@ -16,6 +16,7 @@ import java.lang.annotation.Target;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.*;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -40,6 +41,7 @@ public class Extender implements ExtenderRepository {
         /** エンコーダーとpidControllerを読み込む */
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
+        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.arrowedAngleToJudgeIsInitialAngle),ClosedLoopSlot.kSlot0);
         /** 回転方向を指定 */
         extenderMotorConfig.inverted(false);
         /** Brakeモードに設定 */
