@@ -75,7 +75,6 @@ public class ShooterTools {
     public static double distanceToMps(double distance, ChassisSpeeds speeds) {
         Translation3d vector = UsecaseUtil.distanceToVectorWhileMoving(distance,speeds);
         double power = vector.getNorm();
-        SmartDashboard.putNumber("power", power);
         return power;
     }
 }
