@@ -16,7 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
 import frc.robot.components.drive.DriveConst.DriveConstants;
@@ -168,7 +168,12 @@ public class BasicDrive implements DriveRepository {
 
         DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
 
+<<<<<<< HEAD
         DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose(),DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(getPose()));
+=======
+        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose()),UsecaseUtil.calcurateTargetAngleToShoot(getPose()));
+        SmartDashboard.putNumber("Drive/Velocity", getChassisSpeeds().vxMetersPerSecond);
+>>>>>>> 9528d02b86047aaa505bf5e738bf369f0b3a4dc4
     }
 
     private double getHeading(){
