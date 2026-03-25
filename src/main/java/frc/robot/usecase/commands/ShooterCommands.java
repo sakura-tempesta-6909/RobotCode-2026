@@ -52,7 +52,6 @@ public class ShooterCommands {
             double distance = StateGroup.getDistanceToHub(); //ここで距離を取得する
             double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
             double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToSurfaceRPM(power)); // wheelの表面速度
-            SmartDashboard.putNumber("shooterRPM", surfaceSpeed);
             return surfaceSpeed;
         });
     }

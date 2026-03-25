@@ -37,12 +37,22 @@ public class ShooterTools {
         return (targetMps * 60) / (ShooterConst.wheelDiameter * Math.PI);
     }
 
+    /**
+     * シューターのRPMからFuelの初速度へ変換する
+     * @param rpm シューターの回転数（RPM）
+     * @return Fuelの初速度（m/s）
+     */
     public static double SurfaceRPMToFuelVelocity(double rpm){
-        return 0.00238 * rpm;
+        return ShooterConst.RPM_TO_FUEL_VELOCITY_COEFFICIENT * rpm;
     }
 
+    /**
+     * Fuelの初速度から必要なシューターのRPMを求める
+     * @param power Fuelの初速度（m/s）
+     * @return シューターの回転数（RPM）
+     */
     public static double fuelVelocityToSurfaceRPM(double power){
-        return power / 0.00238;
+        return power / ShooterConst.RPM_TO_FUEL_VELOCITY_COEFFICIENT;
     }
 
     /**
@@ -59,7 +69,7 @@ public class ShooterTools {
      * DriveBaseが動いてることも考慮してFuelを飛ばすべき速度の空間ベクトルを導き出す
      * @param distance HUBとの距離(m)
      * @param speeds 現在の速度 型はChassisSpeeds(m/s)
-     * @return x,y,zの値を保持したTranslation3dオブジェクト
+     * @return x,y,zの値を保持したTranslation3dオブジェクト | 要するに空間ベクトル[m/s]
      */
     public static Translation3d distanceToVector(double distance, ChassisSpeeds speeds) {
         double power = stopDistanceToFuelVelocity(distance);

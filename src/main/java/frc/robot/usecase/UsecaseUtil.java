@@ -40,10 +40,12 @@ public class UsecaseUtil {
         return hub;
     }
 
-    /** 現在の位置からHubへの目標の角度を計算する
-     * @return targetTheta 目標に向かった角度[rotation2d]
-     * @param speeds 現在の速度 型はChassisSpeeds(m/s)
-    */
+    /**
+     * 現在位置とロボットの速度をもとに、Hubへシュートするための目標角度を計算する
+     * @param current 現在のロボットの位置・姿勢（Pose2d）
+     * @param speeds 現在のロボットの速度（ChassisSpeeds, m/s）
+     * @return Hubへ正しくシュートするための目標角度（Rotation2d）
+     */
     public static Rotation2d calcurateTargetAngleToShoot(Pose2d current, ChassisSpeeds speeds) {
         if (current == null) {
             return new Rotation2d(); // もしくは現在の角度を返すなど、null安全な処理を追加
@@ -57,7 +59,7 @@ public class UsecaseUtil {
         Rotation2d theta = new Rotation2d(Xdifference, Ydifference);
 
         Translation3d fuelVector = ShooterTools.distanceToVector(distance, speeds);
-        // speedsが0の時は0になるので大丈夫
+        // speedsが0の時は0になるので止まっているときに使っても大丈夫
         Rotation2d fuelTheta = new Rotation2d(fuelVector.getX(), fuelVector.getY());
         // HUBに向く角度＋動いてることによる誤差の修正のための角度を目標値とする
         Rotation2d targetTheta = theta.plus(fuelTheta);
