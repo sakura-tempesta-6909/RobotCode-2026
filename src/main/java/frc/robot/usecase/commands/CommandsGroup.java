@@ -25,7 +25,7 @@ public class CommandsGroup {
      */
     public static Command intake() {
         return Commands.parallel(
-            ExtenderCommands.moveToInitialAngle(),
+            ExtenderCommands.moveToIntakeAngle(),
             IntakeCommands.intakeFuel()
         );
     }
