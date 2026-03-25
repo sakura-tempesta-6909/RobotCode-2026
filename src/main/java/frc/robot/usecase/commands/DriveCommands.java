@@ -144,8 +144,8 @@ public class DriveCommands{
                             voltageSamples.clear();
                         }),
 
-                // Allow modules to orient
-                run(
+                // Allow modules to orient - driveRepository.run()でSubsystemを要求
+                driveRepository.run(
                                 () -> {
                                     driveRepository.runCharacterization(0.0);
                                 }
@@ -155,8 +155,8 @@ public class DriveCommands{
                 // Start timer
                 Commands.runOnce(timer::restart),
 
-                // Accelerate and gather data
-                run(
+                // Accelerate and gather data - driveRepository.run()でSubsystemを要求
+                driveRepository.run(
                                 () -> {
                                     double voltage = timer.get() * 0.1;
                                     driveRepository.runCharacterization(voltage);

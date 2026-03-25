@@ -2,17 +2,15 @@ package frc.robot.components.drive.infrastructure;
 
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.ResetMode;
 import com.revrobotics.PersistMode;
-
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.components.drive.DriveConst.DriveConstants;
 import frc.robot.components.drive.DriveConst.SwerveModuleConst;
 
 public class SwerveModule {
@@ -114,8 +112,14 @@ public class SwerveModule {
         // turningMotor.set(0);
     }
 
-    public void runCharacterization(double output){
-        driveMotor.setVoltage(output);
+    /**
+     * FF測定用にモーターを動かす
+     * @param voltage 電圧 [V]
+     */
+    public void runCharacterization(double voltage){
+        // setVoltage()が動作しないため、set()を使用
+        // 12Vを基準に割合で指定
+        driveMotor.set(voltage / 12.0);
         turningMotor.set(0);
     }
 
