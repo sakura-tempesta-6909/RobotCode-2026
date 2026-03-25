@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -159,7 +160,7 @@ public class DriveCommands{
                                     driveRepository.runCharacterization(voltage);
                                     velocitySamples.add(driveRepository.getFFCharacterizationVelocity());
                                     voltageSamples.add(voltage);
-                                }).withTimeout(5)
+                                }).withTimeout(10)
 
                         // When cancelled, calculate and print results
                         .finallyDo(
@@ -183,6 +184,64 @@ public class DriveCommands{
                                     System.out.println("\tkS: " + formatter.format(kS));
                                     System.out.println("\tkV: " + formatter.format(kV));
                                 }));
+    }
+
+    /**
+     * 実験用: Pゲイン調整用テストコマンド
+     * 指定した速度で直進し、目標速度と実際の速度をSmartDashboardに出力する
+     * @param targetVelocity 目標速度 [m/s]
+     */
+    public static Command velocityTuningTest(double targetVelocity) {
+        return driveRepository.run(() -> {
+            // 前方向に一定速度で走行
+            driveRepository.setChassisSpeeds(new ChassisSpeeds(targetVelocity, 0, 0));
+
+            // SmartDashboardに出力
+            double actualVelocity = driveRepository.getFFCharacterizationVelocity();
+            double error = targetVelocity - actualVelocity;
+
+            SmartDashboard.putNumber("Drive/TargetVelocity", targetVelocity);
+            SmartDashboard.putNumber("Drive/ActualVelocity", actualVelocity);
+            SmartDashboard.putNumber("Drive/VelocityError", error);
+        });
+    }
+
+    /**
+     * 実験用: ステップ応答テスト
+     * 0から目標速度へのステップ応答を確認する
+     * @param targetVelocity 目標速度 [m/s]
+     */
+    public static Command velocityStepTest(double targetVelocity) {
+        Timer timer = new Timer();
+
+        return Commands.sequence(
+                // 停止状態から開始
+                Commands.runOnce(() -> {
+                    timer.restart();
+                    driveRepository.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+                }),
+
+                // 1秒間停止
+                driveRepository.run(() -> {
+                    driveRepository.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+                    SmartDashboard.putNumber("Drive/TargetVelocity", 0);
+                    SmartDashboard.putNumber("Drive/ActualVelocity", driveRepository.getFFCharacterizationVelocity());
+                }).withTimeout(1.0),
+
+                // タイマーリセット
+                Commands.runOnce(timer::restart),
+
+                // 目標速度で走行（5秒間）
+                driveRepository.run(() -> {
+                    driveRepository.setChassisSpeeds(new ChassisSpeeds(targetVelocity, 0, 0));
+
+                    double actualVelocity = driveRepository.getFFCharacterizationVelocity();
+                    SmartDashboard.putNumber("Drive/TargetVelocity", targetVelocity);
+                    SmartDashboard.putNumber("Drive/ActualVelocity", actualVelocity);
+                    SmartDashboard.putNumber("Drive/VelocityError", targetVelocity - actualVelocity);
+                    SmartDashboard.putNumber("Drive/Time", timer.get());
+                }).withTimeout(5.0)
+        );
     }
 }
 
