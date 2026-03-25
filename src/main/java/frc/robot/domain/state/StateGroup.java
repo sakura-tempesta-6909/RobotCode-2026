@@ -13,9 +13,7 @@ public class StateGroup {
      *  Shooterの速度とロボットの位置をもとにシュートできるかどうか
      * @return　シュートできるかどうか | 可能->true,不可->false 
      */
-    public static boolean readyToShoot() {
-        return ShooterState.isReadyToShoot && DriveState.isShootPosition;
-    }
+    
 
     /**
      * Hubまでの距離を計算する

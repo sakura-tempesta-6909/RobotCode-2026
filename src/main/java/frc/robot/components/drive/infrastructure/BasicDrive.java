@@ -166,14 +166,9 @@ public class BasicDrive implements DriveRepository {
 
         DriveState.drivePosition = getPose();
 
-<<<<<<< HEAD
-        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose()),UsecaseUtil.calcurateTargetAngleToShoot(getPose()));
-=======
-        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
-
         DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose()),UsecaseUtil.calcurateTargetAngleToShoot(getPose(),getChassisSpeeds()));
-        SmartDashboard.putNumber("Drive/Velocity", getChassisSpeeds().vxMetersPerSecond);
->>>>>>> a63a4210b19e1f283b5ded06764b393c1be2da97
+
+
     }
 
     private double getHeading(){
