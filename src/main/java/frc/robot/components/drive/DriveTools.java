@@ -75,25 +75,6 @@ public class DriveTools {
         pattern mode;
         Alliance color = DriverStation.getAlliance().get();
         switch(color){
-            /** allianceが赤で */
-            case Red:
-                /** neutralゾーンまたは敵陣（青側）にいるとき*/
-                if(currentPosition.getX() < HubPose.getX()){
-                    /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
-                    if(currentPosition.getY() < HubPose.getY()){
-                        mode = pattern.BlueRightArea;
-                    }
-                    /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
-                    else{
-                        mode = pattern.BlueLeftArea;
-                    }
-                }
-                /* 自陣（赤側）にいるとき*/
-                else{
-                    mode = pattern.AroundHub;
-                }
-                break;
-
             /** allianceが青で */
             case Blue:
                 /* 自陣（青側）にいるとき*/
@@ -110,6 +91,25 @@ public class DriveTools {
                     else{
                         mode = pattern.BlueLeftArea;
                     }
+                }
+                break;
+            
+            /** allianceが赤で */
+            case Red:
+                /** neutralゾーンまたは敵陣（青側）にいるとき*/
+                if(currentPosition.getX() < HubPose.getX()){
+                    /* 自陣(赤側)から見て左半分(=青から見て右半分)にいるとき*/
+                    if(currentPosition.getY() < HubPose.getY()){
+                        mode = pattern.BlueRightArea;
+                    }
+                    /* 自陣(赤側)から見て右半分(=青から見て左半分)にいるとき*/
+                    else{
+                        mode = pattern.BlueLeftArea;
+                    }
+                }
+                /* 自陣（赤側）にいるとき*/
+                else{
+                    mode = pattern.AroundHub;
                 }
                 break;
             
