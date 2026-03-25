@@ -40,6 +40,6 @@ public class UsecaseConst {
 
     public static final class Angles{
         /** Extenderを揺らすときの角度[degree] */
-        public static final double shakeAngle = 10;
+        public static final double shakeAngle = 40;
     }
 }

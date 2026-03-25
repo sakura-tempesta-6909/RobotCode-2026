@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.domain.state.ExtenderState;
 import frc.robot.domain.state.ShooterState;
@@ -16,6 +17,7 @@ import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
 import frc.robot.components.shooter.ShooterTools;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
+import frc.robot.usecase.UsecaseConst;
 
 public class CommandsGroup {
 
@@ -46,7 +48,7 @@ public class CommandsGroup {
         // --- 実機（RoboRIO）での動作 ---
         Commands.parallel(
             ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
+            IndexerCommands.feedToShooter()
         ),
 
         // どっちを使うかの判定条件
@@ -93,6 +95,13 @@ public class CommandsGroup {
         return Commands.parallel(
             ShooterCommands.feed(),
             IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
+        );
+    }
+
+    public static Command shakeExtender(){
+        return Commands.parallel(
+            IntakeCommands.intakeFuel(),
+            ExtenderCommands.shakeExtender()
         );
     }
 

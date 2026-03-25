@@ -24,6 +24,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.ExtendedKalmanFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -43,7 +44,7 @@ public class Extender implements ExtenderRepository {
         /** エンコーダーとpidControllerを読み込む */
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
-        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.arrowedAngleToJudgeIsInitialAngle),ClosedLoopSlot.kSlot0);
+        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.arrowedAngleToJudgeIsInitialAngle), ExtenderConst.Slot.ExtenderRaisingSlot);
         /** 回転方向を指定 */
         extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */
@@ -98,6 +99,10 @@ public class Extender implements ExtenderRepository {
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
         /** extenderが目標値付近に達しているか */
         ExtenderState.isTargetPosition = extenderPID.isAtSetpoint();
+        SmartDashboard.putNumber("Extender/setPoint",ExtenderTools.getAngleOfExtender(extenderPID.getSetpoint()));
+
+        SmartDashboard.putNumber("extenderAngle", ExtenderState.currentAngle);
+        SmartDashboard.putBoolean("isTargetPosition", ExtenderState.isTargetPosition);
 
     }
 
