@@ -85,7 +85,7 @@ public class Extender implements ExtenderRepository {
         /** Extenderのモーターが動作しているか|動いている->true,停止->false*/
         ExtenderState.isMotorActive = Math.abs(extenderEncoder.getVelocity()) > ExtenderConst.ExtenderMotorMinRotation;
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
-        ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
+        ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition());
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.lowerLimit = extenderMotor.getForwardLimitSwitch().isPressed();
         ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
@@ -93,6 +93,7 @@ public class Extender implements ExtenderRepository {
         ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
         SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
+        SmartDashboard.putNumber("current position", extenderEncoder.getPosition());
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */
