@@ -96,6 +96,17 @@ public class CommandsGroup {
         );
     }
 
+    public static Command intakePreload() {
+        return Commands.sequence(
+            ExtenderCommands.moveToIntakeAngle(),
+            (new ParallelCommandGroup(
+                IntakeCommands.intakeFuel(),
+            ShooterCommands.reverseShooter(),
+            IndexerCommands.reverseIndexer()                
+            )
+        ));
+    }
+
 
     public static Command score() {
         return new SequentialCommandGroup(
