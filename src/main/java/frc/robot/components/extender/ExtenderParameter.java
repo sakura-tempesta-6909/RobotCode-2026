@@ -28,9 +28,9 @@ public final class ExtenderParameter {
 
     
     /** ExtenderをIntake位置に動かすときの最大の力[Percent Output] */
-    public static final double MaxPowerToIntakePosition = 0.10;
+    public static final double MaxPowerToIntakePosition = 0.1;
     /** Extenderを上方向に動かすときの最大の力[Percent Output] */
-    public static final double MaxPowerToInitialPosition = -0.10;
+    public static final double MaxPowerToInitialPosition = -0.1;
     
     
     /** 指定の位置に移動したか判断する時に許す誤差の範囲 | 単位は度[degree]*/
