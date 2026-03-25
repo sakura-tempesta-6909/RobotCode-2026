@@ -47,6 +47,8 @@ public class ExtenderCommands {
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         }).until(()->{
         return ExtenderState.isTargetPosition;
+        }).finallyDo(()->{
+            keepCurrentAngle();
         });
     }
     
@@ -54,10 +56,8 @@ public class ExtenderCommands {
      * @param targetPower 目標の力[percentooutput]
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
-        return ExtenderRepository.runEnd(()->{
+        return ExtenderRepository.run(()->{
             ExtenderRepository.moveExtenderSpecifiedPower(targetPower);
-        },()->{
-            keepCurrentAngle();
         });
     }
 
