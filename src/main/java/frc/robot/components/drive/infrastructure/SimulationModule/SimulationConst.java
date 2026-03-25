@@ -1,5 +1,6 @@
 package frc.robot.components.drive.infrastructure.SimulationModule;
 
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
@@ -25,10 +26,13 @@ public class SimulationConst {
     }
     public static final class Shooter{
         /** shooterの高さ | [m] */
-        public static final Distance height = Units.Meters.of(0.45);
+        //public static final Distance height = Units.Meters.of(0.504);
+        public static final double height = 0.504;
         /** Fuelを打ち出す上下方向の角度 */
-        public static final Angle hoodAngle = Units.Degrees.of(50);
+        public static final Angle hoodAngle = Units.Degrees.of(48);
         /** Fuelを打ち出す左右方向の角度 */
         public static final Angle turretYaw = Units.Degrees.of(0);
+        /** shooterの位置 | ロボットの中心が原点 | 単位[m] */
+        public static final Translation3d shooterOffset = new Translation3d(-0.30, 0, SimulationConst.Shooter.height);
     }
 }
