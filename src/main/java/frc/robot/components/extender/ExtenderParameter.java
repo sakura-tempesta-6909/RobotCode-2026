@@ -13,19 +13,17 @@ public final class ExtenderParameter {
     }
 
     public  static final class PID{
-        public static final double RaisingP = 0;
-        public static final double RaisingI = 0;
-        public static final double RaisingD = 0;
-        public static final double RaisingIZone = 0;
-
-        public static final double LoweringP = 0;
-        public static final double LoweringI = 0;
-        public static final double LoweringD = 0;
-        public static final double LoweringIZone = 0;
+        public static final double PositionP = 0.09;
+        public static final double PositionI = 0;
+        public static final double PositionD = 5;
+        public static final double PositionIZone = 0;
 
         public static final double EndexerVelocityP = 0;
         public static final double EndexerVelocityI = 0;
         public static final double EndexerVelocityD = 0;
+
+        public static final double MaxOutput = 0.5;
+        public static final double MinOutput = -0.5;
     }
 
     
@@ -44,8 +42,9 @@ public final class ExtenderParameter {
 
     public static final double arrowedAngleToJudgeIsInitialAngle = 0.5;
 
-    /** ff制御のちから[Percent Output] */
-    public static final double FFPower = 0.0;
+    /** ff制御のちから[Voltage] */
+    public static final double FFPower = 0.30;
+    public static final double kCosRatio = ExtenderConst.EncoderCountsPerRevolution * 1 / ExtenderConst.GearRatio;
 
 
     
