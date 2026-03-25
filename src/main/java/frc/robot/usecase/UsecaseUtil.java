@@ -30,7 +30,7 @@ public class UsecaseUtil {
      */
     public static Pose2d getHubPosition() {
         Optional<Alliance> ally = DriverStation.getAlliance();
-        Pose2d hub = UsecaseConst.Hubs.HubPositionForRed;
+        Pose2d hub = UsecaseConst.Hubs.HubPositionForBlue;
         if(ally.isPresent()){
             if(ally.get() == Alliance.Red){
                 hub = UsecaseConst.Hubs.HubPositionForRed;
