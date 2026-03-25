@@ -19,6 +19,7 @@ import com.revrobotics.spark.*;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.estimator.ExtendedKalmanFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -81,6 +82,7 @@ public class Extender implements ExtenderRepository {
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
         ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */

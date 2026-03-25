@@ -2,6 +2,7 @@ package frc.robot.domain.state;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.components.drive.DriveParameter;
+import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.usecase.UsecaseUtil;
 
 public class StateGroup {
@@ -33,5 +34,11 @@ public class StateGroup {
     public static boolean isShootableRange() {
         double distance =  getDistanceToHub();
         return distance > DriveParameter.Differences.MinShootableRange && distance < DriveParameter.Differences.MaxShootableRange;
+    }
+
+    /** extenderが目標値付近に達しているか */
+    public static boolean isTargetPosition(double targetAngle){
+        boolean isTargetPosition = Math.abs(ExtenderState.currentAngle - targetAngle) < ExtenderParameter.allowableError;
+        return isTargetPosition;
     }
 }

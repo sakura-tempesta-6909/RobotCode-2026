@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.components.extender.ExtenderConst;
 import frc.robot.components.extender.ExtenderParameter;
+import frc.robot.components.extender.ExtenderTools;
 import frc.robot.components.extender.infrastructure.Extender;
 import frc.robot.components.intake.IntakeParameter;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.repository.IntakeRepository;
 import frc.robot.domain.state.ExtenderState;
+import frc.robot.domain.state.StateGroup;
 import frc.robot.usecase.UsecaseConst;
 
 public class ExtenderCommands {
@@ -44,7 +46,7 @@ public class ExtenderCommands {
         },()->{
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         }).until(()->{
-        return Math.abs(ExtenderState.currentAngle - targetSupplier.getAsDouble()) < ExtenderParameter.allowableError;
+        return StateGroup.isTargetPosition(targetSupplier.getAsDouble());
         });
     }
     
@@ -52,8 +54,10 @@ public class ExtenderCommands {
      * @param targetPower 目標の力[percentooutput]
      */
     public static Command moveExtenderSpecifiedPower(double targetPower) {
-        return ExtenderRepository.run(()->{
+        return ExtenderRepository.runEnd(()->{
             ExtenderRepository.moveExtenderSpecifiedPower(targetPower);
+        },()->{
+            keepCurrentAngle();
         });
     }
 
