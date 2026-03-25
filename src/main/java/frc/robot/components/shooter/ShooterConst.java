@@ -13,4 +13,13 @@ public final class ShooterConst {
 
     /**Motorの最大RPM */
     public static double motorMaxRPM = 5676;
+
+    /** shooterがfuelを飛ばすときの角度 | 度数法 */
+    public static double hoodAngle = 50;
+
+    /**
+     * シューターのRPMからFuelの初速度に変換する係数
+     * 単位：[m/s per RPM]
+     */
+    public static final double RPM_TO_FUEL_VELOCITY_COEFFICIENT = 0.00238;
 }
