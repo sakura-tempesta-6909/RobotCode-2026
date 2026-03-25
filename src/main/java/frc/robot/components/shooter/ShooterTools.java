@@ -48,7 +48,7 @@ public class ShooterTools {
     /**
      * 静止状態のとき距離からFuelの初速を求める
      * @param distance HUBとの距離(m)
-     * @return 距離に応じたFuelの初速度[m/s] 7は仮値
+     * @return 距離に応じたFuelの初速度[m/s]
      */
     public static double stopDistanceToRPM(double distance){
         /** Hubへの距離から求めた静止状態のときにFuelの初速度 */

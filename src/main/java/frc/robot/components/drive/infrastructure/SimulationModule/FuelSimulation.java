@@ -49,7 +49,7 @@ public class FuelSimulation {
                 Units.MetersPerSecond.of(launchPower), 
                 SimulationConst.Shooter.hoodAngle,
                 SimulationConst.Shooter.turretYaw,
-                new Translation3d(-0.30,0,SimulationConst.Shooter.height)
+                SimulationConst.Shooter.shooterOffset
             );
     }
 
