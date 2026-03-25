@@ -59,14 +59,12 @@ public class DriveTools {
      * @param currentPosition 今のポジション(x[m],y[m])
      * @param targetDistance Shootの目標地点のHubからの距離[m] */
     public static Translation2d calculateTargetPosition(Pose2d currentPosition, double targetDistance){
+       if (currentPosition == null) {
+            return new Translation2d(0,0); 
+        }
         Translation2d HubPose = UsecaseUtil.getHubPosition().getTranslation();
         Translation2d currentPose = currentPosition.getTranslation();
-        if (HubPose == null) {
-            return new Translation2d(0,0); 
-        }
-        if (currentPose == null) {
-            return new Translation2d(0,0); 
-        }
+        
 
         Translation2d targetPosition;
 
