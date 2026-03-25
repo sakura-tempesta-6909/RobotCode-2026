@@ -94,7 +94,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition)));
+        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
     }
 
     /** 目標の角度まで回転する
