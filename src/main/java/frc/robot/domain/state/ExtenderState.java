@@ -15,6 +15,8 @@ public class ExtenderState {
     public static boolean lowerLimit;
     /** extenderが高い側（initialposition方向）のリミットスイッチにあたってるどうか|ある->true,ない->false */
     public static boolean upperLimit;
+    /** extenderが目標値付近に達しているか */
+    public static boolean isTargetPosition;
 }
 
 

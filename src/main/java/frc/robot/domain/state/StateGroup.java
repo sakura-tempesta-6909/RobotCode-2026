@@ -35,10 +35,4 @@ public class StateGroup {
         double distance =  getDistanceToHub();
         return distance > DriveParameter.Differences.MinShootableRange && distance < DriveParameter.Differences.MaxShootableRange;
     }
-
-    /** extenderが目標値付近に達しているか */
-    public static boolean isTargetPosition(double targetAngle){
-        boolean isTargetPosition = Math.abs(ExtenderState.currentAngle - targetAngle) < ExtenderParameter.allowableError;
-        return isTargetPosition;
-    }
 }

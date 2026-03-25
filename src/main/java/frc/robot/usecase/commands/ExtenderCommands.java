@@ -46,7 +46,7 @@ public class ExtenderCommands {
         },()->{
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         }).until(()->{
-        return StateGroup.isTargetPosition(targetSupplier.getAsDouble());
+        return ExtenderState.isTargetPosition;
         });
     }
     
