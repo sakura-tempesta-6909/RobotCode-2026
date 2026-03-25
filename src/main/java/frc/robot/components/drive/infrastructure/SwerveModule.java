@@ -117,9 +117,7 @@ public class SwerveModule {
      * @param voltage 電圧 [V]
      */
     public void runCharacterization(double voltage){
-        // setVoltage()が動作しないため、set()を使用
-        // 12Vを基準に割合で指定
-        driveMotor.set(voltage / 12.0);
+        driveMotor.setVoltage(voltage);
         turningMotor.set(0);
     }
 

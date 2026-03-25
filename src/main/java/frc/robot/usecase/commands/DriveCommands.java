@@ -142,7 +142,7 @@ public class DriveCommands{
                             voltageSamples.clear();
                         }),
 
-                // Allow modules to orient - driveRepository.run()でSubsystemを要求
+                // Allow modules to orient 
                 driveRepository.run(
                                 () -> {
                                     driveRepository.runCharacterization(0.0);
@@ -153,7 +153,7 @@ public class DriveCommands{
                 // Start timer
                 Commands.runOnce(timer::restart),
 
-                // Accelerate and gather data - driveRepository.run()でSubsystemを要求
+                // Accelerate and gather data 
                 driveRepository.run(
                                 () -> {
                                     double voltage = timer.get() * 0.1;
@@ -186,63 +186,6 @@ public class DriveCommands{
                                 }));
     }
 
-    /**
-     * 実験用: Pゲイン調整用テストコマンド
-     * 指定した速度で直進し、目標速度と実際の速度をSmartDashboardに出力する
-     * @param targetVelocity 目標速度 [m/s]
-     */
-    public static Command velocityTuningTest(double targetVelocity) {
-        return driveRepository.run(() -> {
-            // 前方向に一定速度で走行
-            driveRepository.setChassisSpeeds(new ChassisSpeeds(targetVelocity, 0, 0));
-
-            // SmartDashboardに出力
-            double actualVelocity = driveRepository.getFFCharacterizationVelocity();
-            double error = targetVelocity - actualVelocity;
-
-            SmartDashboard.putNumber("Drive/TargetVelocity", targetVelocity);
-            SmartDashboard.putNumber("Drive/ActualVelocity", actualVelocity);
-            SmartDashboard.putNumber("Drive/VelocityError", error);
-        });
-    }
-
-    /**
-     * 実験用: ステップ応答テスト
-     * 0から目標速度へのステップ応答を確認する
-     * @param targetVelocity 目標速度 [m/s]
-     */
-    public static Command velocityStepTest(double targetVelocity) {
-        Timer timer = new Timer();
-
-        return Commands.sequence(
-                // 停止状態から開始
-                Commands.runOnce(() -> {
-                    timer.restart();
-                    driveRepository.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-                }),
-
-                // 1秒間停止
-                driveRepository.run(() -> {
-                    driveRepository.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-                    SmartDashboard.putNumber("Drive/TargetVelocity", 0);
-                    SmartDashboard.putNumber("Drive/ActualVelocity", driveRepository.getFFCharacterizationVelocity());
-                }).withTimeout(1.0),
-
-                // タイマーリセット
-                Commands.runOnce(timer::restart),
-
-                // 目標速度で走行（5秒間）
-                driveRepository.run(() -> {
-                    driveRepository.setChassisSpeeds(new ChassisSpeeds(targetVelocity, 0, 0));
-
-                    double actualVelocity = driveRepository.getFFCharacterizationVelocity();
-                    SmartDashboard.putNumber("Drive/TargetVelocity", targetVelocity);
-                    SmartDashboard.putNumber("Drive/ActualVelocity", actualVelocity);
-                    SmartDashboard.putNumber("Drive/VelocityError", targetVelocity - actualVelocity);
-                    SmartDashboard.putNumber("Drive/Time", timer.get());
-                }).withTimeout(5.0)
-        );
-    }
 }
 
 
