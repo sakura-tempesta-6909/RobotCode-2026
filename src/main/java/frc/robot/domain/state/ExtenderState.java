@@ -15,6 +15,12 @@ public class ExtenderState {
     public static boolean lowerLimit;
     /** extenderが高い側（initialposition方向）のリミットスイッチにあたってるどうか|ある->true,ない->false */
     public static boolean upperLimit;
+    /** モーターの出力電流 [A] */
+    public static double outputCurrent;
+    /** モーターの出力 [-1, 1] */
+    public static double appliedOutput;
+    /** 電圧 [V] */
+    public static double busVoltage;
 }
 
 

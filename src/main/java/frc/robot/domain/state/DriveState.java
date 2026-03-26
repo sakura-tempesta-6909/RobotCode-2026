@@ -18,6 +18,24 @@ public class DriveState {
      * |x軸:青allianceを手前にフィールドを上から見て奥方向（前方向）を正,Y軸:同じく上から見てフィールドのを左方向を正,角度：ロボットを上から見て反時計回りが正
      * |PathPlannerの座標と一致 (参照→)https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html*/
     public static Pose2d targetPosition = new Pose2d(new Translation2d(8.25,4.61),new Rotation2d(0));
+
+    public static double heading;
+
+    /** Swerve Drive モーター情報 [FL, FR, BL, BR] */
+    public static class SwerveMotors {
+        /** ドライブモーターの出力電流 [A] */
+        public static double[] driveOutputCurrent = new double[4];
+        /** ドライブモーターの出力 [-1, 1] */
+        public static double[] driveAppliedOutput = new double[4];
+        /** ドライブモーターの電圧 [V] */
+        public static double[] driveBusVoltage = new double[4];
+        /** ターニングモーターの出力電流 [A] */
+        public static double[] turningOutputCurrent = new double[4];
+        /** ターニングモーターの出力 [-1, 1] */
+        public static double[] turningAppliedOutput = new double[4];
+        /** ターニングモーターの電圧 [V] */
+        public static double[] turningBusVoltage = new double[4];
+    }
 }
 
 
