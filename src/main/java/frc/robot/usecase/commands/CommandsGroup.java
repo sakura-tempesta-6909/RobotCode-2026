@@ -68,7 +68,7 @@ public class CommandsGroup {
      */
     public static Command alignToHubAndShoot() {
         return Commands.sequence(
-            alignToHub().until(() -> DriveState.isShootPosition),
+            alignToHub(),
             shoot()
         );
     }
