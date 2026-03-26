@@ -8,6 +8,7 @@ import frc.robot.components.indexer.IndexerConst;
 import frc.robot.components.indexer.IndexerParameter;
 import frc.robot.components.indexer.IndexerTools;
 import frc.robot.components.extender.ExtenderParameter;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import static edu.wpi.first.units.Units.Percent;
 
@@ -43,7 +44,7 @@ public class Extender implements ExtenderRepository {
         /** エンコーダーとpidControllerを読み込む */
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
-        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.allowableError),ClosedLoopSlot.kSlot0);
+        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.allowableError), ExtenderConst.Slot.ExtenderRaisingSlot);
         /** 回転方向を指定 */
         extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */

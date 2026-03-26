@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.components.extender.ExtenderConst;
 import frc.robot.components.extender.ExtenderParameter;
@@ -98,12 +99,12 @@ public class ExtenderCommands {
         });
     }
 
-    
     public static Command shakeExtender(){
         double currentAngle = ExtenderState.currentAngle;
-        return new SequentialCommandGroup(
-            moveExtenderSpecifiedAngle(()->(currentAngle + UsecaseConst.Angles.shakeAngle)),
-            moveExtenderSpecifiedAngle(()->(currentAngle))
-        );
+        return new RepeatCommand(
+        new SequentialCommandGroup(
+            moveExtenderSpecifiedAngle(()->(currentAngle + UsecaseConst.Shake.shakeAngle)).withTimeout(UsecaseConst.Shake.shakeUpTimeout),
+            moveExtenderSpecifiedAngle(()->(currentAngle + UsecaseConst.Shake.shakeDownAngle)).withTimeout(UsecaseConst.Shake.shakeDownTimeout1).withTimeout(UsecaseConst.Shake.shakeDownTimeout2)
+        ));
     }
 }
