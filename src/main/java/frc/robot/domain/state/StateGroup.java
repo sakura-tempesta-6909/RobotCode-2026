@@ -9,11 +9,6 @@ public class StateGroup {
         return true;
     }
     
-    /**
-     *  Shooterの速度とロボットの位置をもとにシュートできるかどうか
-     * @return　シュートできるかどうか | 可能->true,不可->false 
-     */
-    
 
     /**
      * Hubまでの距離を計算する
