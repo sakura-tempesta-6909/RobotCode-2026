@@ -1,6 +1,5 @@
 package frc.robot.domain;
 
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.state.*;
@@ -26,7 +25,7 @@ public class DomainUtil {
         Logger.recordOutput("Drive/Speed", DriveOption.driveSpeed.toString());
         Logger.recordOutput("Drive/ChassisSpeed", DriveState.driveXYOmegaSpeed);
         Logger.recordOutput("Drive/CombinedPose", DriveState.drivePosition);
-        Logger.recordOutput("Drive/GyroAngle", DriveState.heading);
+        Logger.recordOutput("Drive/Heading", DriveState.heading);
         String[] moduleNames = {"FL", "FR", "BL", "BR"};
         for (int i = 0; i < 4; i++) {
             Logger.recordOutput("Drive/" + moduleNames[i] + "/Drive/busVoltage", DriveState.SwerveMotors.driveBusVoltage[i]);
@@ -36,6 +35,7 @@ public class DomainUtil {
             Logger.recordOutput("Drive/" + moduleNames[i] + "/Turning/outputCurrent", DriveState.SwerveMotors.turningOutputCurrent[i]);
             Logger.recordOutput("Drive/" + moduleNames[i] + "/Turning/appliedOutput", DriveState.SwerveMotors.turningAppliedOutput[i]);
         }
+        Logger.recordOutput("Drive/ModuleState", DriveState.swerveModuleState);
 
         // Extender
         Logger.recordOutput("Extender/CurrentAngle", ExtenderState.currentAngle);

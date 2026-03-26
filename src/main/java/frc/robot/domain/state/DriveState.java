@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class DriveState {
     /** 青allianceから正面を見て一番右手前の角を原点(0,0)としたロボットの位置(x[m],y[m])と青allianceを手前にフィールド上の前向きを0としたロボットの角度[degree]
@@ -17,21 +18,23 @@ public class DriveState {
      * |PathPlannerの座標と一致 (参照→)https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html*/
     public static Pose2d targetPosition = new Pose2d(new Translation2d(8.25,4.61),new Rotation2d(0));
 
-    public static double heading;
+    public static Rotation2d heading;
 
-    /** Swerve Drive モーター情報 [FL, FR, BL, BR] */
+    public static SwerveModuleState[] swerveModuleState;
+
+    /** 各モーターの情報 */
     public static class SwerveMotors {
-        /** ドライブモーターの出力電流 [A] */
+        /** Drive Motorの電流 [A] */
         public static double[] driveOutputCurrent = new double[4];
-        /** ドライブモーターの出力 [-1, 1] */
+        /** Driveの出力 [-1, 1] */
         public static double[] driveAppliedOutput = new double[4];
-        /** ドライブモーターの電圧 [V] */
+        /** Driveの電圧 [V] */
         public static double[] driveBusVoltage = new double[4];
-        /** ターニングモーターの出力電流 [A] */
+        /** Turningの電流 [A] */
         public static double[] turningOutputCurrent = new double[4];
-        /** ターニングモーターの出力 [-1, 1] */
+        /** Turningの出力 [-1, 1] */
         public static double[] turningAppliedOutput = new double[4];
-        /** ターニングモーターの電圧 [V] */
+        /** Turningの電圧 [V] */
         public static double[] turningBusVoltage = new double[4];
     }
 }

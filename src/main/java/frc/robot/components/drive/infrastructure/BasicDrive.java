@@ -183,6 +183,17 @@ public class BasicDrive implements DriveRepository {
             DriveState.SwerveMotors.turningAppliedOutput[i] = modules[i].getTurningAppliedOutput();
             DriveState.SwerveMotors.turningBusVoltage[i] = modules[i].getTurningBusVoltage();
         }
+
+        DriveState.heading = getRotation2d();
+        SwerveModuleState[] state = {
+            frontLeft.getState(),
+            frontRight.getState(),
+            backLeft.getState(),
+            backRight.getState()
+        };
+        DriveState.swerveModuleState = state;
+
+
         field.setRobotPose(DriveState.drivePosition);
         SmartDashboard.putData("field", field);
     }

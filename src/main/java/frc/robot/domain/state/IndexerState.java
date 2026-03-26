@@ -10,7 +10,7 @@ public class IndexerState {
         public static double outputCurrent;
         /** モーターの出力 [-1, 1] */
         public static double appliedOutput;
-        /** バス電圧 [V] */
+        /** 電圧 [V] */
         public static double busVoltage;
     }
     public class StarWheelIndexer{
@@ -18,11 +18,11 @@ public class IndexerState {
         public static double motorSpeed;
         /** モーターが動いているか | 動いてたらtrue*/
         public static boolean isMotorActive;
-            /** モーターの出力電流 [A] */
+        /** モーターの出力電流 [A] */
         public static double outputCurrent;
         /** モーターの出力 [-1, 1] */
         public static double appliedOutput;
-        /** バス電圧 [V] */
+        /** 電圧 [V] */
         public static double busVoltage;
 
     }
