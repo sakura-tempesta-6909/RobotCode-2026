@@ -20,10 +20,6 @@ public class LEDCommands {
         return LEDRepository.run(()->{
             if (DriverStation.isDisabled()) {
                 LEDRepository.changeLight(255, 100, 0);
-            } else if (StateGroup.readyToShoot()) {
-                LEDRepository.flashLight(0, 255, 0);
-            } else if (DriveState.isShootPosition) {
-                LEDRepository.flashLight(255, 0, 0);
             } else if (ShooterState.isReadyToShoot) {
                 LEDRepository.flashLight(0, 0, 255);
             } else if (ExtenderState.isIntakePosition) {
