@@ -2,14 +2,23 @@ package frc.robot.usecase.commands;
 
 import java.util.function.DoubleSupplier;
 
+import frc.robot.domain.state.DriveState;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.domain.state.ShooterState;
+import frc.robot.domain.state.StateGroup;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
+import frc.robot.domain.repository.ShooterRepository;
+
+import frc.robot.domain.state.StateGroup;
+
+import java.util.function.DoubleSupplier;
 
 public class ShooterCommands {
     private static ShooterRepository ShooterRepository;
@@ -40,8 +49,10 @@ public class ShooterCommands {
      */
     public static Command shootToHub() {
         return moveShooterSpecifiedSpeed(() -> {
-            double distance = 0.0; //ここで距離を取得する
-            return ShooterTools.distanceToMps(distance);
+            double distance = StateGroup.getDistanceToHub(); //ここで距離を取得する
+            double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
+            double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToRPM(power)); // wheelの表面速度
+            return surfaceSpeed;
         });
     }
 

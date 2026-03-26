@@ -1,11 +1,12 @@
 package frc.robot.components.shooter;
 
 public final class ShooterParameter {
-    public static double pGain = 0;
-    public static double iGain = 0;
-    public static double dGain = 0;
-    public static double kSGain = 0;
-    public static double kVGain = 0;
+    public static double pGain = 0.0002;
+    public static double iGain = 0.0000002;
+    public static double dGain = 0.02;
+    public static double kSGain = 0.22738;
+    public static double kVGain = 0.002;
+    public static double IZone = 3000;
 
     /** アライアンス側のエリアにボールを投げ入れるときのモーターの速度　単位：m/s*/
     public static double feedMps = 20;
@@ -15,4 +16,15 @@ public final class ShooterParameter {
 
     //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
     public static double errorToleranceMps = 0.3;
+
+    /**
+     * シューターのRPMマップ
+     * [距離(m), RPM] で設定
+     */
+    public static final double[][] ShooterRPMTable = {
+        {2.5, 2850.0},
+        {3.0, 3000.0},
+        {3.5, 3400.0},
+        {4.0, 3800.0}
+    };
 }

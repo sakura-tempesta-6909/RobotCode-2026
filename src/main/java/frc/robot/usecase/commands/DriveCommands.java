@@ -6,10 +6,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
@@ -22,9 +24,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.DoubleSupplier;
-
-import static edu.wpi.first.wpilibj2.command.Commands.run;
 import java.util.function.DoubleSupplier;
 public class DriveCommands{
     private static DriveRepository driveRepository;
@@ -50,7 +49,7 @@ public class DriveCommands{
                     break;
                 case s_fieldOriented:
                 default:
-                    driveRepository.setChassisSpeedsFiledOriented(speeds);
+                    driveRepository.setChassisSpeedsFieldOriented(speeds);
                     break;
             }
         });
@@ -95,8 +94,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose (UsecaseConst.Poses.TargetPoseToHub);
-
+        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
     }
 
     /** 目標の角度まで回転する
@@ -125,7 +123,7 @@ public class DriveCommands{
         double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
             
                     
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition), ()->xInput, ()->yInput);
+        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed), ()->xInput, ()->yInput);
     }
 
     /** 実験用
@@ -144,8 +142,8 @@ public class DriveCommands{
                             voltageSamples.clear();
                         }),
 
-                // Allow modules to orient
-                run(
+                // Allow modules to orient 
+                driveRepository.run(
                                 () -> {
                                     driveRepository.runCharacterization(0.0);
                                 }
@@ -155,14 +153,14 @@ public class DriveCommands{
                 // Start timer
                 Commands.runOnce(timer::restart),
 
-                // Accelerate and gather data
-                run(
+                // Accelerate and gather data 
+                driveRepository.run(
                                 () -> {
                                     double voltage = timer.get() * 0.1;
                                     driveRepository.runCharacterization(voltage);
                                     velocitySamples.add(driveRepository.getFFCharacterizationVelocity());
                                     voltageSamples.add(voltage);
-                                })
+                                }).withTimeout(10)
 
                         // When cancelled, calculate and print results
                         .finallyDo(
@@ -187,6 +185,7 @@ public class DriveCommands{
                                     System.out.println("\tkV: " + formatter.format(kV));
                                 }));
     }
+
 }
 
 

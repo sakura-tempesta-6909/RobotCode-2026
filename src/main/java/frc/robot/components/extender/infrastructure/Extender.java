@@ -21,6 +21,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig; // IdleModeに必要
 import com.revrobotics.spark.config.LimitSwitchConfig.Type; // kNormallyOpenに必要
@@ -39,31 +41,36 @@ public class Extender implements ExtenderRepository {
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
         /** 回転方向を指定 */
-        extenderMotorConfig.inverted(false);
+        extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */
         extenderMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         extenderMotorConfig.limitSwitch.reverseLimitSwitchType(Type.kNormallyOpen).forwardLimitSwitchType(Type.kNormallyOpen);
  
 
         /** PIDの設定 */
-        /** FFを適用したPIDの設定(上げる際) */
+        /** FFを適用したPIDの設定 */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.RaisingP,ExtenderParameter.PID.RaisingI,ExtenderParameter.PID.RaisingD, ExtenderConst.Slot.ExtenderRaisingSlot);
-        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.RaisingIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
-
-        /** FFを適用したPIDの設定(下げる際) */
-        extenderMotorConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.LoweringP,ExtenderParameter.PID.LoweringI,ExtenderParameter.PID.LoweringD, ExtenderConst.Slot.ExtenderLoweringSlot);
-        extenderMotorConfig.closedLoop.iZone(ExtenderParameter.PID.LoweringIZone, ExtenderConst.Slot.ExtenderRaisingSlot);
+                .pid(ExtenderParameter.PID.PositionP,ExtenderParameter.PID.PositionI,ExtenderParameter.PID.PositionD, ExtenderConst.Slot.ExtenderRaisingSlot)
+                .iZone(ExtenderParameter.PID.PositionIZone, ExtenderConst.Slot.ExtenderRaisingSlot)
+                .maxOutput(ExtenderParameter.PID.MaxOutput, ExtenderConst.Slot.ExtenderRaisingSlot)
+                .minOutput(ExtenderParameter.PID.MinOutput,ExtenderConst.Slot.ExtenderRaisingSlot)
+                .feedForward.kCos(ExtenderParameter.FFPower)
+                            .kCosRatio(ExtenderParameter.kCosRatio);
+        extenderMotorConfig.softLimit
+                .forwardSoftLimit(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.InitialAngle))
+                .forwardSoftLimitEnabled(true)
+                .reverseSoftLimit(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.IntakeAngle))
+                .reverseSoftLimitEnabled(true);
+        extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.InitialAngle));
+        
         /** 設定の適用 */
         extenderMotor.configure(extenderMotorConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
 
         /** VelosityのPID */
         extenderMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot);
+                .pid(ExtenderParameter.PID.EndexerVelocityP,ExtenderParameter.PID.EndexerVelocityI,ExtenderParameter.PID.EndexerVelocityD,ExtenderConst.Slot.ExtenderVelocitySlot).feedForward.kCos(ExtenderParameter.FFPower).kCosRatio(ExtenderConst.GearRatio);  
         
         
 
@@ -78,13 +85,15 @@ public class Extender implements ExtenderRepository {
         /** Extenderのモーターが動作しているか|動いている->true,停止->false*/
         ExtenderState.isMotorActive = Math.abs(extenderEncoder.getVelocity()) > ExtenderConst.ExtenderMotorMinRotation;
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
-        ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition()) + ExtenderParameter.InitialAngle;
+        ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition());
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.lowerLimit = extenderMotor.getForwardLimitSwitch().isPressed();
         ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
         ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
+        SmartDashboard.putNumber("current position", extenderEncoder.getPosition());
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */
@@ -93,15 +102,7 @@ public class Extender implements ExtenderRepository {
         /** 指定の距離移動するために必要な回転数を求める | rotation *
          * 360は1回転の角度*/
         double targetPosition = ExtenderTools.getRotationsOfMotorShaft(targetAngle);
-        if (targetAngle > ExtenderState.currentAngle) {
-            
-            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot, ExtenderParameter.FFPower);
-            
-        } else {
-             
-            extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderLoweringSlot, ExtenderParameter.FFPower);
-            
-        }
+        extenderPID.setSetpoint(targetPosition, SparkBase.ControlType.kPosition, ExtenderConst.Slot.ExtenderRaisingSlot);
     }
 
     /** Extenderを任意の力で動かす(PercentOutput) */
@@ -129,7 +130,7 @@ public class Extender implements ExtenderRepository {
     /** 現在の角度を維持する */
     @Override
     public void keepCurrentAngle(){
-        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot, ExtenderParameter.FFPower);
+        extenderPID.setSetpoint(0, SparkBase.ControlType.kVelocity,ExtenderConst.Slot.ExtenderVelocitySlot);
             
 
     }
