@@ -78,4 +78,7 @@ public class DriveParameter {
         /** Visionの測定値を採用する最大距離 | 単位:m*/
         public static final double kMaxVisionPoseErrorMeters = 1.5;
     }
+
+    /** Shootの目標地点のHubからの距離[m] */
+    public static final double targetdistanceToShoot = 3.0;
 }

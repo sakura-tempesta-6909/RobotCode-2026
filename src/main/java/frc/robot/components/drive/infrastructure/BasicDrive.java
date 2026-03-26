@@ -165,9 +165,9 @@ public class BasicDrive implements DriveRepository {
         });
 
         DriveState.drivePosition = getPose();
+        
 
-        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose()),UsecaseUtil.calcurateTargetAngleToShoot(getPose(),getChassisSpeeds()));
-
+        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose(),DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(getPose(),DriveState.driveXYOmegaSpeed));
 
     }
 
