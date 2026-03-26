@@ -40,7 +40,7 @@ public final class ExtenderParameter {
     public static final double InitialAngle = 90;
     public static final double IntakeAngle = 0;
 
-    public static final double arrowedAngleToJudgeIsInitialAngle = 0.5;
+    
 
     /** ff制御のちから[Voltage] */
     public static final double FFPower = 0.30;

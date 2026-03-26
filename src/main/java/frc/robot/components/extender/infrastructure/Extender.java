@@ -43,7 +43,7 @@ public class Extender implements ExtenderRepository {
         /** エンコーダーとpidControllerを読み込む */
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
-        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.arrowedAngleToJudgeIsInitialAngle),ClosedLoopSlot.kSlot0);
+        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.allowableError),ClosedLoopSlot.kSlot0);
         /** 回転方向を指定 */
         extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */
@@ -92,10 +92,10 @@ public class Extender implements ExtenderRepository {
         ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition());
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.lowerLimit = extenderMotor.getForwardLimitSwitch().isPressed();
-        ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        ExtenderState.isIntakePosition = Math.abs(ExtenderState.currentAngle - ExtenderParameter.IntakeAngle) < ExtenderParameter.allowableError;
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
         ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
-        ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        ExtenderState.isInitialPosition = Math.abs(ExtenderState.currentAngle - ExtenderParameter.InitialAngle) < ExtenderParameter.allowableError;
         /** extenderが目標値付近に達しているか */
         ExtenderState.isTargetPosition = extenderPID.isAtSetpoint();
 

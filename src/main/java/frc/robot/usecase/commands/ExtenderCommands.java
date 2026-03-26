@@ -47,7 +47,7 @@ public class ExtenderCommands {
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         }).until(()->{
         return ExtenderState.isTargetPosition;
-        }).finallyDo(()->{
+        }).andThen(()->{
             keepCurrentAngle();
         });
     }

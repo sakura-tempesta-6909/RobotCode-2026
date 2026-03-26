@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.components.drive.DriveConst;
+import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.option.DriveOption;
 import frc.robot.domain.repository.DriveRepository;
@@ -93,8 +94,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose (UsecaseUtil.getHubPosition());
-
+        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
     }
 
     /** 目標の角度まで回転する
