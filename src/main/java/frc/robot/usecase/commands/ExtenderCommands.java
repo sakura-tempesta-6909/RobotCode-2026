@@ -48,9 +48,7 @@ public class ExtenderCommands {
             ExtenderRepository.moveExtenderSpecifiedAngle(targetSupplier.getAsDouble());
         }).until(()->{
         return ExtenderState.isTargetPosition;
-        }).andThen(()->{
-            keepCurrentAngle();
-        });
+        }).andThen(keepCurrentAngle());
     }
     
     /** Extenderを一定の力で動かす
