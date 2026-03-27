@@ -87,5 +87,10 @@ public class Shooter implements ShooterRepository {
         
         //目標値に達しているか
         ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < ShooterParameter.errorToleranceMps;
+
+        // モーター情報
+        ShooterState.outputCurrent = motor.getOutputCurrent();
+        ShooterState.appliedOutput = motor.getAppliedOutput();
+        ShooterState.busVoltage = motor.getBusVoltage();
     }
 }

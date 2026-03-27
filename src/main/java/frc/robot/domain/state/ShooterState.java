@@ -21,9 +21,16 @@ public class ShooterState {
      */
     public static double targetMotorSpeed;
 
-    /** 
-     * シューターのモーターが十分な回転数に達しているかどうか 
+    /**
+     * シューターのモーターが十分な回転数に達しているかどうか
      * Boolean型 True:十分な回転数以上 False:十分な回転数未満
      */
     public static boolean isReadyToShoot;
+
+    /** モーターの出力電流 [A] */
+    public static double outputCurrent;
+    /** モーターの出力 [-1, 1] */
+    public static double appliedOutput;
+    /** 電圧 [V] */
+    public static double busVoltage;
 }
