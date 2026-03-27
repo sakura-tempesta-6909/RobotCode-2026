@@ -46,8 +46,9 @@ public class CommandsGroup {
         // --- 実機（RoboRIO）での動作 ---
         Commands.parallel(
             ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
-        ),
+            Commands.waitUntil(() -> ShooterState.isReadyToShoot)
+                .andThen(IndexerCommands.feedToShooter())
+            ),
 
         // どっちを使うかの判定条件
         Robot::isSimulation
