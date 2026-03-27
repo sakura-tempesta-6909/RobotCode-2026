@@ -58,9 +58,15 @@ public class Indexer implements IndexerRepository {
     public void periodic() {
         IndexerState.LongRollerIndexer.motorSpeed = LongRollerIndexerEncoder.getVelocity() / IndexerConst.LongRollerIndexerMaxRPM;
         IndexerState.LongRollerIndexer.isMotorActive = Math.abs(LongRollerIndexerEncoder.getVelocity()) > 0.1;
+        IndexerState.LongRollerIndexer.outputCurrent = LongRollerIndexer.getOutputCurrent();
+        IndexerState.LongRollerIndexer.appliedOutput = LongRollerIndexer.getAppliedOutput();
+        IndexerState.LongRollerIndexer.busVoltage = LongRollerIndexer.getBusVoltage();
 
         IndexerState.StarWheelIndexer.motorSpeed = StarWheelIndexerEncoder.getVelocity() / IndexerConst.StarWheelIndexerMaxRPM;
         IndexerState.StarWheelIndexer.isMotorActive = Math.abs(StarWheelIndexerEncoder.getVelocity()) > 0.1;
+        IndexerState.StarWheelIndexer.outputCurrent = StarWheelIndexer.getOutputCurrent();
+        IndexerState.StarWheelIndexer.appliedOutput = StarWheelIndexer.getAppliedOutput();
+        IndexerState.StarWheelIndexer.busVoltage = StarWheelIndexer.getBusVoltage();
     }
-    
+
 }
