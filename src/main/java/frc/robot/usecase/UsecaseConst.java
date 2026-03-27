@@ -1,10 +1,14 @@
 package frc.robot.usecase;
 
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
+import frc.robot.components.drive.DriveConst;
+import frc.robot.domain.state.ExtenderState;
 
 /**
  * Usecaseで使うような定数
@@ -12,6 +16,23 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class UsecaseConst {
     public static final class PathPlannerConst {
         public static final PathConstraints Unlimited = PathConstraints.unlimitedConstraints(12);
+        public static final double WheelCOF = 1.2;
+        public static final int NumberMotor = 1;
+        public static final ModuleConfig ModuleConfig =
+            new ModuleConfig(DriveConst.ModuleConstants.kWheelDiameterMeters/2,
+                             DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond,
+                             WheelCOF,
+                             DCMotor.getNEO(NumberMotor),
+                             60,
+                             NumberMotor);
+        public static final Translation2d[] ModuleOffset = new Translation2d[] {
+            new Translation2d(DriveConst.DriveConstants.kWheelBase / 2, DriveConst.DriveConstants.kTrackWidth / 2),   // Front Left
+            new Translation2d(DriveConst.DriveConstants.kWheelBase / 2, -DriveConst.DriveConstants.kTrackWidth / 2),  // Front Right
+            new Translation2d(-DriveConst.DriveConstants.kWheelBase / 2, DriveConst.DriveConstants.kTrackWidth / 2),  // Back Left
+            new Translation2d(-DriveConst.DriveConstants.kWheelBase / 2, -DriveConst.DriveConstants.kTrackWidth / 2)  // Back Right
+        };
+
+
     }
 
     /**
@@ -19,6 +40,12 @@ public class UsecaseConst {
      */
     public static final class RobotStructure {
         public static final double DistanceToArm = -10;
+        public static final double RobotMass = 56.1;
+        public static final double BumperWidth = 0.76;
+        public static final double DefaultBumperLength = 0.71;
+        public static final double DistanceToExtenderFromDriveBase = 0.3;
+        public static final double BumperLength = DefaultBumperLength + DistanceToExtenderFromDriveBase * Math.cos(ExtenderState.currentAngle);
+        public static final double RobotMOI = (Math.pow(BumperLength, 2) + Math.pow(BumperWidth, 2)) * RobotMass / 12;
     }
 
     public static final class Poses{
