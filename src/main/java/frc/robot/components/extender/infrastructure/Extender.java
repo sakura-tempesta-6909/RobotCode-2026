@@ -1,32 +1,5 @@
 package frc.robot.components.extender.infrastructure;
 
-import frc.robot.domain.repository.ExtenderRepository;
-import frc.robot.domain.state.ExtenderState;
-import frc.robot.components.extender.ExtenderConst;
-import frc.robot.components.extender.ExtenderTools;
-import frc.robot.components.indexer.IndexerConst;
-import frc.robot.components.indexer.IndexerParameter;
-import frc.robot.components.indexer.IndexerTools;
-import frc.robot.components.extender.ExtenderParameter;
-
-import static edu.wpi.first.units.Units.Percent;
-
-import java.lang.annotation.Target;
-
-import com.ctre.phoenix6.signals.ControlModeValue;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.*;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.components.extender.ExtenderConst;
-import frc.robot.components.extender.ExtenderParameter;
-import frc.robot.components.extender.ExtenderTools;
-import frc.robot.domain.repository.ExtenderRepository;
-import frc.robot.domain.state.ExtenderState;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase;
@@ -35,6 +8,12 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.components.extender.ExtenderConst;
+import frc.robot.components.extender.ExtenderParameter;
+import frc.robot.components.extender.ExtenderTools;
+import frc.robot.domain.repository.ExtenderRepository;
+import frc.robot.domain.state.ExtenderState;
 
 
 
@@ -43,6 +22,9 @@ public class Extender implements ExtenderRepository {
     private final RelativeEncoder extenderEncoder;
 
     private final SparkClosedLoopController extenderPID;
+
+    /** エンコーダーリセットされたかどうか） */
+    private boolean hasResetEncoder = false;
 
     public Extender() {
         extenderMotor = new SparkMax(ExtenderConst.Ports.extenderMotor, SparkMax.MotorType.kBrushless);
@@ -104,6 +86,13 @@ public class Extender implements ExtenderRepository {
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
         ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.allowableError < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.allowableError);
+
+        // 下限リミットスイッチに当たったら起動後一度だけエンコーダーをリセット
+        if (ExtenderState.lowerLimit && !hasResetEncoder) {
+            extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.IntakeAngle));
+            hasResetEncoder = true;
+        }
+
         SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
         SmartDashboard.putNumber("current position", extenderEncoder.getPosition());
     }
