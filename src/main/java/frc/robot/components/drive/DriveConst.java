@@ -33,15 +33,15 @@ public final class DriveConst {
     }
 
     public static final class DriveConstants {
-        public static final double kTrackWidth = Units.inchesToMeters(21);
-        public static final double kWheelBase = 0.65;
+        public static final double kTrackWidth = 0.57205;
+        public static final double kWheelBase = 0.52205;
 
         // 機体の回転中心から見たwheelの (x座標 , y座標)
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase / 2, kTrackWidth / 2), 
-                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+                new Translation2d(kWheelBase / 2, kTrackWidth / 2),   // Front Left
+                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),  // Front Right
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),  // Back Left
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); // Back Right
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 5676. * ModuleConstants.kDriveEncoderRPM2MeterPerSec;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = kPhysicalMaxSpeedMetersPerSecond / (kWheelBase / 2);
