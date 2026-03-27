@@ -43,6 +43,10 @@ public class UsecaseUtil {
         return hub;
     }
 
+    /** チームを見分けてFeedの位置を返す
+     * 
+     * @return Feedのいち[Translation2d]
+     */
     public static Translation2d getFeedPosition() {
         Optional<Alliance> ally = DriverStation.getAlliance();
         Translation2d position = getNearestPosition(UsecaseConst.Poses.TargetBlueFeedPose);
@@ -57,6 +61,11 @@ public class UsecaseUtil {
         return position;
     }
 
+    /**
+     * 
+     * @param targetPosition 目標の位置の候補
+     * @return 最も近い位置
+     */
     public static Translation2d getNearestPosition(Translation2d[] targetPosition) {
         return DriveState.drivePosition.getTranslation().nearest(List.of(targetPosition));
     }
@@ -84,18 +93,19 @@ public class UsecaseUtil {
     }
 
     /**
-     * 現在位置とロボットの速度をもとに、Hubへシュートするための目標角度を計算する
+     * 現在位置とロボットの速度をもとに、目標値へシュートするための目標角度を計算する
      * @param current 現在のロボットの位置・姿勢（Pose2d）
      * @param speeds 現在のロボットの速度（ChassisSpeeds, m/s）
-     * @return Hubへ正しくシュートするための目標角度（Rotation2d）
+     * @return 目標値へ正しくシュートするための目標角度（Rotation2d）
      */
-    public static Rotation2d calcurateTargetAngleToShoot(Pose2d current, ChassisSpeeds speeds) {
+    public static Rotation2d calcurateTargetAngleToShoot(Translation2d targetPosition, Pose2d current, ChassisSpeeds speeds) {
         if (current == null) {
             return new Rotation2d(); // もしくは現在の角度を返すなど、null安全な処理を追加
         }
-        Pose2d relativePose = current.relativeTo(getHubPosition());
-        double Xdifference = relativePose.getX();
-        double Ydifference = relativePose.getY();
+        Translation2d currentPosition = current.getTranslation();
+        Translation2d diffrencePose = targetPosition.minus(currentPosition);
+        double Xdifference = diffrencePose.getX();
+        double Ydifference = diffrencePose.getY();
 
         double distance = Math.hypot(Xdifference, Ydifference);
 

@@ -32,11 +32,19 @@ public class UsecaseConst {
         */
         public static final double TargetAngleOfHub = 0;
 
+        /**
+         * BlueAlliance側のFeedする位置
+         * 右側と左側
+         */
         public static final Translation2d[] TargetBlueFeedPose = new Translation2d []{
             new Translation2d(1.3, 1.2),
             new Translation2d(1.3, 6.8)
         };
 
+        /**
+         * RedAlliance側のFeedする位置
+         * 右側と左側
+         */
         public static final Translation2d[] TargetRedFeedPose = new Translation2d[] {
             new Translation2d(14.8, 1.2),
             new Translation2d(14.8, 6.8)
