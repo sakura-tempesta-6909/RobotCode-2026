@@ -1,31 +1,19 @@
 package frc.robot.components.extender.infrastructure;
 
-import frc.robot.domain.repository.ExtenderRepository;
-import frc.robot.domain.state.ExtenderState;
-import frc.robot.components.extender.ExtenderConst;
-import frc.robot.components.extender.ExtenderTools;
-import frc.robot.components.indexer.IndexerConst;
-import frc.robot.components.indexer.IndexerParameter;
-import frc.robot.components.indexer.IndexerTools;
-import frc.robot.components.extender.ExtenderParameter;
-
-import static edu.wpi.first.units.Units.Percent;
-
-import java.lang.annotation.Target;
-
-import com.ctre.phoenix6.signals.ControlModeValue;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.*;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig; // IdleModeに必要
-import com.revrobotics.spark.config.LimitSwitchConfig.Type; // kNormallyOpenに必要
+import frc.robot.components.extender.ExtenderConst;
+import frc.robot.components.extender.ExtenderParameter;
+import frc.robot.components.extender.ExtenderTools;
+import frc.robot.domain.repository.ExtenderRepository;
+import frc.robot.domain.state.ExtenderState;
 
 public class Extender implements ExtenderRepository {
     private final SparkMax extenderMotor;
@@ -94,6 +82,9 @@ public class Extender implements ExtenderRepository {
         ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
         SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
         SmartDashboard.putNumber("current position", extenderEncoder.getPosition());
+        ExtenderState.appliedOutput = extenderMotor.getAppliedOutput();
+        ExtenderState.outputCurrent = extenderMotor.getOutputCurrent();
+        ExtenderState.busVoltage = extenderMotor.getBusVoltage();
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */

@@ -44,6 +44,11 @@ public class Intake implements IntakeRepository {
     public void periodic() {
         IntakeState.motorSpeed = IntakeEncoder.getVelocity() / IntakeConst.maxRPM;
         IntakeState.isMotorActive = Math.abs(IntakeEncoder.getVelocity()) > IntakeConst.Threshold;
+
+        // モーター情報
+        IntakeState.outputCurrent = IntakeMotor.getOutputCurrent();
+        IntakeState.appliedOutput = IntakeMotor.getAppliedOutput();
+        IntakeState.busVoltage = IntakeMotor.getBusVoltage();
     }
-    
+
 }
