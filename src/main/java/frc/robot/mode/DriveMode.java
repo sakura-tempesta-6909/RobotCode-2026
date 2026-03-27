@@ -74,5 +74,7 @@ public class DriveMode extends Mode {
         operateController.rightBumper().whileTrue(CommandsGroup.feed());
         //Extenderを初期位置に戻す
         operateController.leftBumper().onTrue(ExtenderCommands.moveToInitialAngle());
+        // Extenderをシャカシャカする
+        operateController.a().whileTrue(CommandsGroup.shakeExtender());
     }
 }
