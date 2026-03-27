@@ -46,7 +46,7 @@ public class CommandsGroup {
         // --- 実機（RoboRIO）での動作 ---
         Commands.parallel(
             ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter().onlyWhile(() -> ShooterState.isReadyToShoot)
+            IndexerCommands.feedToShooter()
         ),
 
         // どっちを使うかの判定条件
@@ -112,6 +112,13 @@ public class CommandsGroup {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(DriveCommands.FollowGoToGoal(), ExampleCommands.moveToGoal()).withTimeout(10),
             TemplateCommands.templateCommand()
+        );
+    }
+
+    public static Command shakeExtender(){
+        return Commands.parallel(
+            IntakeCommands.intakeFuel(),
+            ExtenderCommands.shakeExtender()
         );
     }
 
