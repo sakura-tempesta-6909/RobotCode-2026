@@ -1,5 +1,6 @@
 package frc.robot.usecase;
 
+import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -40,6 +41,24 @@ public class UsecaseUtil {
             }
         }
         return hub;
+    }
+
+    public static Translation2d getFeedPosition() {
+        Optional<Alliance> ally = DriverStation.getAlliance();
+        Translation2d position = getNearestPosition(UsecaseConst.Poses.TargetBlueFeedPose);
+        if (ally.isPresent()) {
+            if (ally.get() == Alliance.Red) {
+                position = getNearestPosition(UsecaseConst.Poses.TargetRedFeedPose);
+            }
+            if (ally.get() == Alliance.Blue) {
+                position = getNearestPosition(UsecaseConst.Poses.TargetBlueFeedPose);
+            } 
+        }
+        return position;
+    }
+
+    public static Translation2d getNearestPosition(Translation2d[] targetPosition) {
+        return DriveState.drivePosition.getTranslation().nearest(List.of(targetPosition));
     }
 
     /**

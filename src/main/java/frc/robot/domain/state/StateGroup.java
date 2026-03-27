@@ -12,12 +12,24 @@ public class StateGroup {
     
 
     /**
+     * 
+     * @return
+     */
+    public static double getDistanceToTarget(Translation2d targetPose) {
+        Translation2d currentPosition = DriveState.drivePosition.getTranslation();
+        return currentPosition.minus(targetPose).getNorm();
+    }
+    
+    /**
      * Hubまでの距離を計算する
      * @return Hubまでの距離 | 単位[m] |
      */
     public static double getDistanceToHub() {
-        Translation2d currentPosition =  DriveState.drivePosition.getTranslation();
-        return currentPosition.minus(UsecaseUtil.getHubPosition().getTranslation()).getNorm();
+        return getDistanceToTarget(UsecaseUtil.getHubPosition().getTranslation());
+    }
+
+    public static double getDistanceToFeedPosition() {
+        return getDistanceToTarget(UsecaseUtil.getFeedPosition());
     }
 
    /**
