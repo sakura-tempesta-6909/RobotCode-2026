@@ -14,8 +14,11 @@ import frc.robot.components.drive.DriveConst;
 public class UsecaseConst {
     public static final class PathPlannerConst {
         public static final PathConstraints Unlimited = PathConstraints.unlimitedConstraints(12);
+        /** カーペットとwheelの摩擦係数 */
         public static final double WheelCOF = 1.2;
+        /** DriveMotorの個数 */
         public static final int NumberMotor = 1;
+        /** Moduleの設定(摩擦係数、Wheelの半径、最大速度、DriveMotorの種類、DriveMotorの電流制限、DriveMotorの個数) */
         public static final ModuleConfig ModuleConfig =
             new ModuleConfig(DriveConst.ModuleConstants.kWheelDiameterMeters/2,
                              DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond,
@@ -23,6 +26,7 @@ public class UsecaseConst {
                              DCMotor.getNEO(NumberMotor),
                              60,
                              NumberMotor);
+        /** 機体の回転中心から見たwheelの (x座標 , y座標) */
         public static final Translation2d[] ModuleOffset = new Translation2d[] {
             new Translation2d(DriveConst.DriveConstants.kWheelBase / 2, DriveConst.DriveConstants.kTrackWidth / 2),   // Front Left
             new Translation2d(DriveConst.DriveConstants.kWheelBase / 2, -DriveConst.DriveConstants.kTrackWidth / 2),  // Front Right
@@ -38,11 +42,20 @@ public class UsecaseConst {
      */
     public static final class RobotStructure {
         public static final double DistanceToArm = -10;
+        /** ロボットのバンパー、バッテリー、FUELを含んだときの重さ [単位:kg] */
         public static final double RobotMass = 56.1;
+        /** バンパーの横幅 [単位:m] */
         public static final double BumperWidth = 0.76;
+        /** バンパーの縦幅 [単位:m] */
         public static final double DefaultBumperLength = 0.71;
+        /** Extenderを一番展開したときのバンパーからExtenderの先端までの距離 [単位:m] */
         public static final double DistanceToExtenderFromDriveBase = 0.3;
+        /** Extenderを一番展開した時の縦幅 */
         public static final double BumperLength = DefaultBumperLength + DistanceToExtenderFromDriveBase;
+        /** ロボットの慣性モーメント
+         * (近似式) = (length*2 + width*2) * mass /12
+         * https://pathplanner.dev/robot-config.html#robot-config-options
+         */
         public static final double RobotMOI = (Math.pow(BumperLength, 2) + Math.pow(BumperWidth, 2)) * RobotMass / 12;
     }
 
