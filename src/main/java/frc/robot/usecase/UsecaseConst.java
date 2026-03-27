@@ -2,13 +2,11 @@ package frc.robot.usecase;
 
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.path.PathConstraints;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import frc.robot.components.drive.DriveConst;
-import frc.robot.domain.state.ExtenderState;
 
 /**
  * Usecaseで使うような定数
@@ -44,7 +42,7 @@ public class UsecaseConst {
         public static final double BumperWidth = 0.76;
         public static final double DefaultBumperLength = 0.71;
         public static final double DistanceToExtenderFromDriveBase = 0.3;
-        public static final double BumperLength = DefaultBumperLength + DistanceToExtenderFromDriveBase * Math.cos(ExtenderState.currentAngle);
+        public static final double BumperLength = DefaultBumperLength + DistanceToExtenderFromDriveBase;
         public static final double RobotMOI = (Math.pow(BumperLength, 2) + Math.pow(BumperWidth, 2)) * RobotMass / 12;
     }
 
