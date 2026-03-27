@@ -98,11 +98,10 @@ public class ExtenderCommands {
     }
 
     public static Command shakeExtender(){
-        double currentAngle = ExtenderState.currentAngle;
         return new RepeatCommand(
         new SequentialCommandGroup(
-            moveExtenderSpecifiedAngle(()->(currentAngle + UsecaseConst.Shake.shakeAngle)).withTimeout(UsecaseConst.Shake.shakeUpTimeout),
-            moveExtenderSpecifiedAngle(()->(currentAngle + UsecaseConst.Shake.shakeDownAngle)).withTimeout(UsecaseConst.Shake.shakeDownTimeout)
+            moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeUpAngle)).withTimeout(UsecaseConst.Shake.shakeUpTimeout),
+            moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeDownAngle)).withTimeout(UsecaseConst.Shake.shakeDownTimeout)
         ));
     }
 }
