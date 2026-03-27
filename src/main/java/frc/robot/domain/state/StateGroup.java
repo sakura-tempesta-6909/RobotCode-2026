@@ -12,8 +12,8 @@ public class StateGroup {
     
 
     /**
-     * 
-     * @return
+     * 目標までの距離を計算する
+     * @return 目標までの距離　| 単位[m] |
      */
     public static double getDistanceToTarget(Translation2d targetPose) {
         Translation2d currentPosition = DriveState.drivePosition.getTranslation();
@@ -28,6 +28,10 @@ public class StateGroup {
         return getDistanceToTarget(UsecaseUtil.getHubPosition().getTranslation());
     }
 
+    /**
+     * Feedする位置までの距離を計算する
+     * @return　Feedする位置までの距離　| 単位[m] |
+     */
     public static double getDistanceToFeedPosition() {
         return getDistanceToTarget(UsecaseUtil.getFeedPosition());
     }
