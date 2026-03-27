@@ -59,7 +59,7 @@ public class Shooter implements ShooterRepository {
     */
     public void moveShooterSpecifiedSpeed(double targetMps) {
         pid.setReference(ShooterTools.mpsToRpm(targetMps), SparkMax.ControlType.kVelocity);
-        ShooterState.targetMotorSpeed = targetMps;
+
     }
 
     @Override
@@ -84,9 +84,13 @@ public class Shooter implements ShooterRepository {
 
         // モーターが動いているか
         ShooterState.isMotorActive = Math.abs(ShooterState.shooterSurfaceSpeedMps) > ShooterParameter.errorToleranceMps;
-        
+            ShooterState.targetMotorSpeed = ShooterTools.rpmToSurfaceSpeed(pid.getSetpoint());
         //目標値に達しているか
-        ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < ShooterParameter.errorToleranceMps;
+        if (ShooterState.shooterSurfaceSpeedMps > 3.0) {
+            ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < ShooterParameter.errorToleranceMps;
+        } else {
+            ShooterState.isReadyToShoot = false;
+        }
 
         // モーター情報
         ShooterState.outputCurrent = motor.getOutputCurrent();
