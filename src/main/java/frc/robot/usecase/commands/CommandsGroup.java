@@ -98,7 +98,7 @@ public class CommandsGroup {
 
     public static Command intakePreload() {
         return Commands.sequence(
-            ExtenderCommands.moveToIntakeAngle().withTimeout(0.5),
+            ExtenderCommands.moveToIntakeAngle(),
             (new ParallelCommandGroup(
                 IntakeCommands.intakeFuel(),
             ShooterCommands.reverseShooter(),
