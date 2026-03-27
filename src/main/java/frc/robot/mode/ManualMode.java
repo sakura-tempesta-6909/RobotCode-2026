@@ -66,12 +66,12 @@ public class ManualMode extends Mode {
             () -> -driveController.getLeftX()));
         //ロボットを0度に向ける
         driveController.y().onTrue(DriveCommands.setAngle(
-            Rotation2d.fromDegrees(0),
+            () -> Rotation2d.fromDegrees(0),
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX()));
         //ロボットを180度に向ける
         driveController.a().onTrue(DriveCommands.setAngle(
-            Rotation2d.fromDegrees(180),
+            () -> Rotation2d.fromDegrees(180),
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX()));
         //gyroリセット

@@ -20,11 +20,14 @@ import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
 
+import org.littletonrobotics.junction.Logger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 public class DriveCommands{
     private static DriveRepository driveRepository;
 
@@ -85,16 +88,23 @@ public class DriveCommands{
      * ただし、WaypointはGUIの方で設定したものを利用できないので、注意は必要
      * @return
      */
-    public static Command moveToTargetPose(Pose2d targetPose) {
-        return AutoBuilder.pathfindToPose(targetPose, UsecaseConst.PathPlannerConst.Unlimited);
-    }
+    public static Command moveToTargetPose(Supplier<Pose2d> targetPoseSupplier) {
+    return Commands.defer(() -> {
+        Pose2d target = targetPoseSupplier.get(); // ←ここで1回だけ取得
+        Logger.recordOutput("curent target", target);
+        return AutoBuilder.pathfindToPose(
+            target,
+            UsecaseConst.PathPlannerConst.Unlimited
+        );
+    }, Set.of());
+}
 
     /** Hubまで移動する
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
+        return moveToTargetPose(() ->new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
     }
 
     /** 目標の角度まで回転する
@@ -104,13 +114,20 @@ public class DriveCommands{
      * @param Xspeed x軸方向の速度[m/s]
      * @param Yspeed y軸方向の速度[m/s]
      */
-    public static Command setAngle(Rotation2d targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
-        return driveRepository.startRun(()->{
+    public static Command setAngle(Supplier<Rotation2d> targetAngleSupplier,DoubleSupplier Xspeed,DoubleSupplier Yspeed) {
+        return driveRepository.startRun(() -> {
             driveRepository.resetPID();
-        },()->{
-            driveRepository.setAngle(targetAngle.getDegrees(),Xspeed.getAsDouble() , Yspeed.getAsDouble());
-        });
-    }
+        },
+        () -> {
+            Rotation2d targetAngle = targetAngleSupplier.get();
+            driveRepository.setAngle(
+                targetAngle.getDegrees(),
+                Xspeed.getAsDouble(),
+                Yspeed.getAsDouble()
+            );
+        }
+    );
+}
 
     /** Hubに向かった角度まで回転する
      * 目標値まで到達したら終了
@@ -118,13 +135,21 @@ public class DriveCommands{
      * @param xSpeedPercentSupplier x軸のコントローラーの入力[-1~1]
      * @param ySpeedPercentSupplier x軸のコントローラーの入力[-1~1]
      */
-    public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
+    // DriveCommands.java 内の faceToHub を以下のように修正
+public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
+    // startRun を使っている場合の例
+    return Commands.startRun(() -> {
+        driveRepository.resetPID(); // 実行開始時にPIDをリセット
+    }, () -> {
         double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
         double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
-            
-                    
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed), ()->xInput, ()->yInput);
-    }
+        
+        Rotation2d targetAngle = UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition, DriveState.driveXYOmegaSpeed);
+        
+        driveRepository.setAngle(targetAngle.getDegrees(), xInput, yInput);
+    });
+}
+
 
     /** 実験用
      * DriveのkS,kVを測定する

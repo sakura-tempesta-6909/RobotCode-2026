@@ -54,12 +54,12 @@ public class DriveMode extends Mode {
             () -> -driveController.getLeftX()));
         //ロボットを0度に向ける
         driveController.y().whileTrue(DriveCommands.setAngle(
-            Rotation2d.fromDegrees(0),
+            () ->Rotation2d.fromDegrees(0),
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX()));
         //ロボットを180度に向ける
         driveController.a().whileTrue(DriveCommands.setAngle(
-            Rotation2d.fromDegrees(180),
+            () ->Rotation2d.fromDegrees(180),
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX()));
         //gyroリセット

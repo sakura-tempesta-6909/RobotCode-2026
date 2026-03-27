@@ -74,7 +74,7 @@ public class UsecaseUtil {
         if (current == null) {
             return new Rotation2d(); // もしくは現在の角度を返すなど、null安全な処理を追加
         }
-        Pose2d relativePose = current.relativeTo(getHubPosition());
+        Pose2d relativePose = getHubPosition().relativeTo(current);
         double Xdifference = relativePose.getX();
         double Ydifference = relativePose.getY();
 

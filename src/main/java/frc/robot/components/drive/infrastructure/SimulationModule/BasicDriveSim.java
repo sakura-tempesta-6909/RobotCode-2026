@@ -5,9 +5,11 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -54,6 +56,8 @@ public class BasicDriveSim implements DriveRepository {
 
     private PPHolonomicDriveController driveController;
 
+    public final PIDController anglePID = new PIDController(0.03,0,0);
+
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
         frontLeft.getPosition(),
@@ -76,6 +80,7 @@ public class BasicDriveSim implements DriveRepository {
             DriveConst.Vision.kVisionStdDevs);
 
     public BasicDriveSim() {
+        anglePID.enableContinuousInput(-180, 180);
         driveController = createDriveController();
 
         fuelSimulation.configureFuelSim();
@@ -286,7 +291,10 @@ public class BasicDriveSim implements DriveRepository {
 
     @Override
     public void setAngle(double setAngle, double Xspeed, double Yspeed) {
-
+        double output = anglePID.calculate(getRotation2d().getDegrees(),setAngle);
+        double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
+        ChassisSpeeds speed = new ChassisSpeeds(Xspeed,Yspeed,targetAngularSpeed);
+        setChassisSpeedsFieldOriented(speed);
     }
 
     @Override
