@@ -15,11 +15,13 @@ import frc.robot.components.extender.ExtenderTools;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.state.ExtenderState;
 
+
 public class Extender implements ExtenderRepository {
     private final SparkMax extenderMotor;
     private final RelativeEncoder extenderEncoder;
 
     private final SparkClosedLoopController extenderPID;
+    boolean isEncoderReset = false;
 
     public Extender() {
         extenderMotor = new SparkMax(ExtenderConst.Ports.extenderMotor, SparkMax.MotorType.kBrushless);
@@ -28,6 +30,7 @@ public class Extender implements ExtenderRepository {
         /** エンコーダーとpidControllerを読み込む */
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
+        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.allowableError), ExtenderConst.Slot.ExtenderRaisingSlot);
         /** 回転方向を指定 */
         extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */
@@ -75,16 +78,18 @@ public class Extender implements ExtenderRepository {
         /** 底面が地面と平行な場合を0度としたExtenderの角度[degree]|0<=currentAngle<=90|ロボット側に回転するのが正方向*/
         ExtenderState.currentAngle = ExtenderTools.getAngleOfExtender(extenderEncoder.getPosition());
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
-        ExtenderState.lowerLimit = extenderMotor.getForwardLimitSwitch().isPressed();
-        ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        ExtenderState.lowerLimit = extenderMotor.getReverseLimitSwitch().isPressed();
+        // lowerLimitがtrueのときにエンコーダーをリセット
+        if (ExtenderState.lowerLimit && !isEncoderReset) {
+            extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.IntakeAngle));
+            isEncoderReset = true;
+        }
+        ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.allowableError < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.allowableError);
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
-        ExtenderState.upperLimit = extenderMotor.getReverseLimitSwitch().isPressed();
-        ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        ExtenderState.upperLimit = extenderMotor.getForwardLimitSwitch().isPressed();
+        ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.allowableError < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.allowableError);
         SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
         SmartDashboard.putNumber("current position", extenderEncoder.getPosition());
-        ExtenderState.appliedOutput = extenderMotor.getAppliedOutput();
-        ExtenderState.outputCurrent = extenderMotor.getOutputCurrent();
-        ExtenderState.busVoltage = extenderMotor.getBusVoltage();
     }
 
     /** Extenderを任意の角度に動かす(Position) |targetAngle:Extenderが地面に対して並行な時を0とした目標の角度[degree]|地面に対して上に動かす方向を正 */
