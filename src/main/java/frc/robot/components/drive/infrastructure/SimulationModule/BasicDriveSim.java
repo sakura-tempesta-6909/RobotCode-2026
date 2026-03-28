@@ -56,7 +56,7 @@ public class BasicDriveSim implements DriveRepository {
 
     private PPHolonomicDriveController driveController;
 
-    public final PIDController anglePID = new PIDController(0.03,0,0);
+    public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
 
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
