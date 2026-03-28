@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -107,8 +108,24 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose(() ->new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
-    }
+    return Commands.defer(() -> {
+        // 現在位置から計算した目標の座標（Translation2d）を求める
+        Translation2d targetTrans = DriveTools.calculateTargetPosition(DriveState.drivePosition, DriveParameter.targetdistanceToShoot);
+        
+        // 【重要】現在位置と目標位置の「距離のズレ」を計算
+        double translationError = DriveState.drivePosition.getTranslation().getDistance(targetTrans);
+        if (translationError < 0.2) {
+            // ① すでに到着していれば、その場で回転し続ける（faceToHub）
+            return faceToHub(() -> 0.0, () -> 0.0);
+        } else {
+            // ② まだ遠ければ、移動のためのPathPlannerを生成する（移動＋角度）
+            Rotation2d targetRot = UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition, DriveState.driveXYOmegaSpeed);
+            Pose2d target = new Pose2d(targetTrans, targetRot);
+            return AutoBuilder.pathfindToPose(target, UsecaseConst.PathPlannerConst.Unlimited).andThen(faceToHub(() -> 0.0, () -> 0.0));
+        }
+    }, Set.of());
+}
+
 
     /** 目標の角度まで回転する
      * 目標値まで到達したら終了
