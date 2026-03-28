@@ -1,9 +1,12 @@
 package frc.robot.util;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.domain.DomainUtil;
-import org.littletonrobotics.junction.Logger;
+import frc.robot.domain.state.ExtenderState;
+import frc.robot.usecase.commands.DriveCommands;
 
 public class Util {
     public static double deadband(double input){
