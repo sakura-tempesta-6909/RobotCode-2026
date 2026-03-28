@@ -14,14 +14,7 @@ import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.components.extender.ExtenderTools;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.state.ExtenderState;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.LimitSwitchConfig.Type;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
+
 
 public class Extender implements ExtenderRepository {
     private final SparkMax extenderMotor;
@@ -91,10 +84,10 @@ public class Extender implements ExtenderRepository {
             extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.IntakeAngle));
             isEncoderReset = true;
         }
-        ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.allowableError < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.allowableError);
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
         ExtenderState.upperLimit = extenderMotor.getForwardLimitSwitch().isPressed();
-        ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
+        ExtenderState.isInitialPosition = (ExtenderParameter.InitialAngle - ExtenderParameter.allowableError < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.allowableError);
         SmartDashboard.putNumber("current angle", ExtenderState.currentAngle);
         SmartDashboard.putNumber("current position", extenderEncoder.getPosition());
     }
