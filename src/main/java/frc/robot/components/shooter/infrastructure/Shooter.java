@@ -82,18 +82,19 @@ public class Shooter implements ShooterRepository {
         // 現在の表面速度 [m/s] を State に書き込む
         ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(motorRPM);
 
-        // モーターが動いているか
+        /** モーターが動いているか */
         ShooterState.isMotorActive = Math.abs(ShooterState.shooterSurfaceSpeedMps) > ShooterParameter.errorToleranceMps;
-            ShooterState.targetMotorSpeed = ShooterTools.rpmToSurfaceSpeed(pid.getSetpoint());
-        //目標値に達しているか
+        /** 現在の目標値 */
+        ShooterState.targetMotorSpeed = ShooterTools.rpmToSurfaceSpeed(pid.getSetpoint());
+        /** 目標値に達しているか */
         if (ShooterState.shooterSurfaceSpeedMps > 3.0) {
             ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < ShooterParameter.errorToleranceMps;
         } else {
             ShooterState.isReadyToShoot = false;
         }
 
-        // モーター情報
-        ShooterState.outputCurrent = motor.getOutputCurrent();
+        /** モーター情報 */
+        ShooterState.outputCurrent = motor.getOutputCurrent();  
         ShooterState.appliedOutput = motor.getAppliedOutput();
         ShooterState.busVoltage = motor.getBusVoltage();
     }
