@@ -20,6 +20,7 @@ public class Extender implements ExtenderRepository {
     private final RelativeEncoder extenderEncoder;
 
     private final SparkClosedLoopController extenderPID;
+    boolean isEncoderReset = false;
 
     public Extender() {
         extenderMotor = new SparkMax(ExtenderConst.Ports.extenderMotor, SparkMax.MotorType.kBrushless);
@@ -77,8 +78,9 @@ public class Extender implements ExtenderRepository {
         /** intakeできる位置にExtenderがあるかないか|可能->true,不可->false */
         ExtenderState.lowerLimit = extenderMotor.getReverseLimitSwitch().isPressed();
         // lowerLimitがtrueのときにエンコーダーをリセット
-        if (ExtenderState.lowerLimit) {
+        if (ExtenderState.lowerLimit && !isEncoderReset) {
             extenderEncoder.setPosition(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.IntakeAngle));
+            isEncoderReset = true;
         }
         ExtenderState.isIntakePosition = (ExtenderParameter.IntakeAngle - ExtenderParameter.arrowedAngleToJudgeIsInitialAngle < ExtenderState.currentAngle)&&(ExtenderState.currentAngle < ExtenderParameter.InitialAngle + ExtenderParameter.arrowedAngleToJudgeIsInitialAngle);
         /** extenderが初期位置(地面に対して鉛直方向)にあるかどうか|ある->true,ない->false */
