@@ -89,6 +89,9 @@ public class DriveCommands{
      * @return
      */
     public static Command moveToTargetPose(Supplier<Pose2d> targetPoseSupplier) {
+    /** deferを使うことでコマンドが実行される瞬間にコマンドを作成するようにする
+     *  こうすることでターゲットをコマンドが実行された瞬間の物に固定できる
+     */
     return Commands.defer(() -> {
         Pose2d target = targetPoseSupplier.get(); // ←ここで1回だけ取得
         Logger.recordOutput("curent target", target);
