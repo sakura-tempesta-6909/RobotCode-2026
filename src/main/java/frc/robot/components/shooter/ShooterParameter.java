@@ -23,7 +23,10 @@ public final class ShooterParameter {
      */
     public static final double[][] ShooterRPMTable = {
         {2.5, 2850.0},
+        {2.6, 2900.0},
+        {2.7, 2950.0},
         {3.0, 3000.0},
+        {3.1, 3100.0},
         {3.5, 3400.0},
         {4.0, 3800.0}
     };
