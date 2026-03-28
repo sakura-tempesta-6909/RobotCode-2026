@@ -2,6 +2,7 @@ package frc.robot.domain.state;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.components.drive.DriveParameter;
+import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 

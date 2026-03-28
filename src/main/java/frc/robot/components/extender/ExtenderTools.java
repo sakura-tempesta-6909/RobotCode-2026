@@ -1,5 +1,7 @@
 package frc.robot.components.extender;
 
+import frc.robot.domain.state.ExtenderState;
+
 public class ExtenderTools {
     /** extenderの角度に対応するモーターの軸の回転数を求める
      * @param targetAngle 目標の回転角度[degree]

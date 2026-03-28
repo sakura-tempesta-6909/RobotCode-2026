@@ -25,6 +25,7 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 
 import java.lang.reflect.Field;
@@ -74,12 +75,7 @@ public class BasicDrive implements DriveRepository {
 
     public void buildAuto() {
         RobotConfig config;
-        try{
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-            config = new RobotConfig(0, 0, null, 0);
-        }
+        config = new RobotConfig(UsecaseConst.RobotStructure.RobotMass, UsecaseConst.RobotStructure.RobotMOI, UsecaseConst.PathPlannerConst.ModuleConfig, UsecaseConst.PathPlannerConst.ModuleOffset);
 
         AutoBuilder.configure(
         this::getPose,
