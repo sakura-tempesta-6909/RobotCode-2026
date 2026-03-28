@@ -9,9 +9,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "parallel",
                 "data": {
-                  "pathName": "StartToDepot"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "intakePreload"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "StartToDepot"
+                      }
+                    }
+                  ]
                 }
               },
               {
