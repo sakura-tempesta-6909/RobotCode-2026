@@ -121,5 +121,14 @@ public class SwerveModule {
         turningMotor.set(0);
     }
 
+    // ドライブモーター情報
+    public double getDriveOutputCurrent() { return driveMotor.getOutputCurrent(); }
+    public double getDriveAppliedOutput() { return driveMotor.getAppliedOutput(); }
+    public double getDriveBusVoltage() { return driveMotor.getBusVoltage(); }
+
+    // ターニングモーター情報
+    public double getTurningOutputCurrent() { return turningMotor.getOutputCurrent(); }
+    public double getTurningAppliedOutput() { return turningMotor.getAppliedOutput(); }
+    public double getTurningBusVoltage() { return turningMotor.getBusVoltage(); }
 }
 

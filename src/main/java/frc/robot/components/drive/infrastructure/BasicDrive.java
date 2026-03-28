@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.components.drive.DriveConst;
@@ -24,8 +25,10 @@ import frc.robot.components.drive.DriveParameter;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.domain.repository.DriveRepository;
 import frc.robot.domain.state.DriveState;
+import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 
@@ -41,6 +44,8 @@ public class BasicDrive implements DriveRepository {
     private final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
     public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
+    
+    public final Field2d field = new Field2d();
 
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0),
     new SwerveModulePosition[]{
@@ -70,12 +75,7 @@ public class BasicDrive implements DriveRepository {
 
     public void buildAuto() {
         RobotConfig config;
-        try{
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-            config = new RobotConfig(0, 0, null, 0);
-        }
+        config = new RobotConfig(UsecaseConst.RobotStructure.RobotMass, UsecaseConst.RobotStructure.RobotMOI, UsecaseConst.PathPlannerConst.ModuleConfig, UsecaseConst.PathPlannerConst.ModuleOffset);
 
         AutoBuilder.configure(
         this::getPose,
@@ -165,10 +165,33 @@ public class BasicDrive implements DriveRepository {
         });
 
         DriveState.drivePosition = getPose();
-
-        DriveState.isShootPosition = DriveTools.isShootPosition(DriveState.targetPosition, DriveState.drivePosition); 
         
+
         DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose(),DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(getPose(),DriveState.driveXYOmegaSpeed));
+
+        // Swerveモーター情報 [FL, FR, BL, BR]
+        SwerveModule[] modules = {frontLeft, frontRight, backLeft, backRight};
+        for (int i = 0; i < 4; i++) {
+            DriveState.SwerveMotors.driveOutputCurrent[i] = modules[i].getDriveOutputCurrent();
+            DriveState.SwerveMotors.driveAppliedOutput[i] = modules[i].getDriveAppliedOutput();
+            DriveState.SwerveMotors.driveBusVoltage[i] = modules[i].getDriveBusVoltage();
+            DriveState.SwerveMotors.turningOutputCurrent[i] = modules[i].getTurningOutputCurrent();
+            DriveState.SwerveMotors.turningAppliedOutput[i] = modules[i].getTurningAppliedOutput();
+            DriveState.SwerveMotors.turningBusVoltage[i] = modules[i].getTurningBusVoltage();
+        }
+
+        DriveState.heading = getRotation2d();
+        SwerveModuleState[] state = {
+            frontLeft.getState(),
+            frontRight.getState(),
+            backLeft.getState(),
+            backRight.getState()
+        };
+        DriveState.swerveModuleState = state;
+
+
+        field.setRobotPose(DriveState.drivePosition);
+        SmartDashboard.putData("field", field);
     }
 
     private double getHeading(){

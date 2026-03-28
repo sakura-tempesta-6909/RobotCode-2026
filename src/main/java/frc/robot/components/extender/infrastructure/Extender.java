@@ -14,6 +14,14 @@ import frc.robot.components.extender.ExtenderParameter;
 import frc.robot.components.extender.ExtenderTools;
 import frc.robot.domain.repository.ExtenderRepository;
 import frc.robot.domain.state.ExtenderState;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.LimitSwitchConfig.Type;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Extender implements ExtenderRepository {
     private final SparkMax extenderMotor;
@@ -29,6 +37,7 @@ public class Extender implements ExtenderRepository {
         /** エンコーダーとpidControllerを読み込む */
         extenderEncoder = extenderMotor.getEncoder();
         extenderPID = extenderMotor.getClosedLoopController();
+        extenderMotorConfig.closedLoop.allowedClosedLoopError(ExtenderTools.getRotationsOfMotorShaft(ExtenderParameter.allowableError), ExtenderConst.Slot.ExtenderRaisingSlot);
         /** 回転方向を指定 */
         extenderMotorConfig.inverted(true);
         /** Brakeモードに設定 */
