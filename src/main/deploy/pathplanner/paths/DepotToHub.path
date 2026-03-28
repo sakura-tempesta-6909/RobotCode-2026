@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.653666956018519,
-        "y": 5.962899884259259
+        "x": 1.2083807248642287,
+        "y": 5.12289434616237
       },
       "isLocked": false,
       "linkedName": "Depot"
     },
     {
       "anchor": {
-        "x": 3.7827644675925924,
-        "y": 7.52410250289352
+        "x": 1.9048598090277782,
+        "y": 4.95768091724537
       },
       "prevControl": {
-        "x": 2.7827644675925924,
-        "y": 7.52410250289352
+        "x": 1.2541242295757136,
+        "y": 5.648396109824153
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "DepotSideHub"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -71.6237483310991
+    "rotation": -35.6970443669893
   },
   "reversed": false,
   "folder": null,
