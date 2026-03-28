@@ -19,16 +19,25 @@ public class Util {
         DomainUtil.allSendConsole();
 
         SmartDashboard.putString("Controller Mode",  RobotContainer.mode.toString());
-        SmartDashboard.putString("Command/Drive", RobotContainer.getDriveInstance().getCurrentCommand().toString());
-        SmartDashboard.putString("Command/Extender", RobotContainer.getExtenderInstance().getCurrentCommand().toString());
-        SmartDashboard.putString("Command/Shooter", RobotContainer.getShooterInstance().getCurrentCommand().toString());
-        SmartDashboard.putString("Command/Indexer", RobotContainer.getIndexerInstance().getCurrentCommand().toString());
-        SmartDashboard.putString("Command/Intake", RobotContainer.getIntakeInstance().getCurrentCommand().toString());
+        SmartDashboard.putString("Command/Drive", getCommandName(RobotContainer.getDriveInstance().getCurrentCommand()));
+        SmartDashboard.putString("Command/Extender", getCommandName(RobotContainer.getExtenderInstance().getCurrentCommand()));
+        SmartDashboard.putString("Command/Shooter", getCommandName(RobotContainer.getShooterInstance().getCurrentCommand()));
+        SmartDashboard.putString("Command/Indexer", getCommandName(RobotContainer.getIndexerInstance().getCurrentCommand()));
+        SmartDashboard.putString("Command/Intake", getCommandName(RobotContainer.getIntakeInstance().getCurrentCommand()));
 
-        Logger.recordOutput("Command/Drive", RobotContainer.getDriveInstance().getCurrentCommand().toString());
-        Logger.recordOutput("Command/Extender", RobotContainer.getExtenderInstance().getCurrentCommand().toString());
-        Logger.recordOutput("Command/Shooter", RobotContainer.getShooterInstance().getCurrentCommand().toString());
-        Logger.recordOutput("Command/Indexer", RobotContainer.getIndexerInstance().getCurrentCommand().toString());
-        Logger.recordOutput("Command/Intake", RobotContainer.getIntakeInstance().getCurrentCommand().toString());
+        Logger.recordOutput("Command/Drive", getCommandName(RobotContainer.getDriveInstance().getCurrentCommand()));
+        Logger.recordOutput("Command/Extender", getCommandName(RobotContainer.getExtenderInstance().getCurrentCommand()));
+        Logger.recordOutput("Command/Shooter", getCommandName(RobotContainer.getShooterInstance().getCurrentCommand()));
+        Logger.recordOutput("Command/Indexer", getCommandName(RobotContainer.getIndexerInstance().getCurrentCommand()));
+        Logger.recordOutput("Command/Intake", getCommandName(RobotContainer.getIntakeInstance().getCurrentCommand()));
+    }
+
+    /**
+     * 今実行されているCommand名を取得する(ぬるぽ対策)
+     * @param command 名前を取得したいCommand
+     * @return 実行中のCommand名。実行されていないときは"None"を返す
+     */
+    public static String getCommandName(Command command) {
+        return command != null ? command.getName() : "None";
     }
 }
