@@ -1,12 +1,10 @@
 package frc.robot.util;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.domain.DomainUtil;
-import frc.robot.domain.state.ExtenderState;
-import frc.robot.usecase.commands.DriveCommands;
+import org.littletonrobotics.junction.Logger;
 
 public class Util {
     public static double deadband(double input){
@@ -21,16 +19,16 @@ public class Util {
         DomainUtil.allSendConsole();
 
         SmartDashboard.putString("Controller Mode",  RobotContainer.mode.toString());
-        // SmartDashboard.putString("Command/Drive", RobotContainer.getDriveInstance().getCurrentCommand().toString());
-        // SmartDashboard.putString("Command/Extender", RobotContainer.getExtenderInstance().getCurrentCommand().toString());
-        // SmartDashboard.putString("Command/Shooter", RobotContainer.getShooterInstance().getCurrentCommand().toString());
-        // SmartDashboard.putString("Command/Indexer", RobotContainer.getIndexerInstance().getCurrentCommand().toString());
-        // SmartDashboard.putString("Command/Intake", RobotContainer.getIntakeInstance().getCurrentCommand().toString());
+        SmartDashboard.putString("Command/Drive", RobotContainer.getDriveInstance().getCurrentCommand().toString());
+        SmartDashboard.putString("Command/Extender", RobotContainer.getExtenderInstance().getCurrentCommand().toString());
+        SmartDashboard.putString("Command/Shooter", RobotContainer.getShooterInstance().getCurrentCommand().toString());
+        SmartDashboard.putString("Command/Indexer", RobotContainer.getIndexerInstance().getCurrentCommand().toString());
+        SmartDashboard.putString("Command/Intake", RobotContainer.getIntakeInstance().getCurrentCommand().toString());
 
-        // Logger.recordOutput("Command/Drive", RobotContainer.getDriveInstance().getCurrentCommand().toString());
-        // Logger.recordOutput("Command/Extender", RobotContainer.getExtenderInstance().getCurrentCommand().toString());
-        // Logger.recordOutput("Command/Shooter", RobotContainer.getShooterInstance().getCurrentCommand().toString());
-        // Logger.recordOutput("Command/Indexer", RobotContainer.getIndexerInstance().getCurrentCommand().toString());
-        // Logger.recordOutput("Command/Intake", RobotContainer.getIntakeInstance().getCurrentCommand().toString());
+        Logger.recordOutput("Command/Drive", RobotContainer.getDriveInstance().getCurrentCommand().toString());
+        Logger.recordOutput("Command/Extender", RobotContainer.getExtenderInstance().getCurrentCommand().toString());
+        Logger.recordOutput("Command/Shooter", RobotContainer.getShooterInstance().getCurrentCommand().toString());
+        Logger.recordOutput("Command/Indexer", RobotContainer.getIndexerInstance().getCurrentCommand().toString());
+        Logger.recordOutput("Command/Intake", RobotContainer.getIntakeInstance().getCurrentCommand().toString());
     }
 }

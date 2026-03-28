@@ -97,11 +97,29 @@ public class CommandsGroup {
         );
     }
 
+    public static Command intakePreload() {
+        return Commands.sequence(
+            ExtenderCommands.moveToIntakeAngle(),
+            (new ParallelCommandGroup(
+                IntakeCommands.intakeFuel(),
+            ShooterCommands.reverseShooter(),
+            IndexerCommands.reverseIndexer()                
+            )
+        ));
+    }
+
 
     public static Command score() {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(DriveCommands.FollowGoToGoal(), ExampleCommands.moveToGoal()).withTimeout(10),
             TemplateCommands.templateCommand()
+        );
+    }
+
+    public static Command shakeExtender(){
+        return Commands.parallel(
+            IntakeCommands.intakeFuel(),
+            ExtenderCommands.shakeExtender()
         );
     }
 
