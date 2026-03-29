@@ -146,7 +146,7 @@ public class DriveCommands{
                 Yspeed.getAsDouble()
             );
         }
-    );
+    ).until(() -> DriveState.isAtTarget);
 }
 
     /** Hubに向かった角度まで回転する
