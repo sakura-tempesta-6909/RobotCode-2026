@@ -75,8 +75,12 @@ public class BasicDrive implements DriveRepository {
 
     public void buildAuto() {
         RobotConfig config;
-        config = new RobotConfig(UsecaseConst.RobotStructure.RobotMass, UsecaseConst.RobotStructure.RobotMOI, UsecaseConst.PathPlannerConst.ModuleConfig, UsecaseConst.PathPlannerConst.ModuleOffset);
-
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+            config = new RobotConfig(UsecaseConst.RobotStructure.RobotMass, UsecaseConst.RobotStructure.RobotMOI, UsecaseConst.PathPlannerConst.ModuleConfig, UsecaseConst.PathPlannerConst.ModuleOffset);
+        }
         AutoBuilder.configure(
         this::getPose,
         this::resetOdometry,

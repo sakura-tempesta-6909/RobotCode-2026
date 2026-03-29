@@ -64,6 +64,7 @@ public class DriveMode extends Mode {
             () -> -driveController.getLeftX()));
         //gyroリセット
         driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
+        driveController.rightBumper().whileTrue(CommandsGroup.intakePreload());
         
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
