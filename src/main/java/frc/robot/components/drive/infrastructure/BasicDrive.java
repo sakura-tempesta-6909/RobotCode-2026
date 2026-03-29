@@ -212,7 +212,7 @@ public class BasicDrive implements DriveRepository {
     }
 
     private double getHeading(){
-        return Math.IEEEremainder(gyro.getAngle(), 360);
+        return -Math.IEEEremainder(gyro.getAngle(), 360);
     }
     private Rotation2d getRotation2d(){
         return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
