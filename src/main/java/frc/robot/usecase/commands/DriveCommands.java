@@ -94,7 +94,7 @@ public class DriveCommands{
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
+        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(), DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
     }
 
     /** 目標の角度まで回転する
@@ -123,7 +123,20 @@ public class DriveCommands{
         double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
             
                     
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition,DriveState.driveXYOmegaSpeed), ()->xInput, ()->yInput);
+        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(), DriveState.drivePosition,DriveState.driveXYOmegaSpeed), ()->xInput, ()->yInput);
+    }
+
+    /** Feedしたい位置に向かった角度まで回転する
+     * 目標値まで到達したら終了
+     * 初期化処理:PIDのリセット
+     * @param xSpeedPercentSupplier x軸のコントローラーの入力[-1~1]
+     * @param ySpeedPercentSupplier x軸のコントローラーの入力[-1~1]
+     */
+    public static Command faceToFeedPosition(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier) {
+        double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
+        double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond; 
+
+        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getFeedPosition(), DriveState.drivePosition, DriveState.driveXYOmegaSpeed), () -> xInput, () -> yInput);
     }
 
     /** 実験用

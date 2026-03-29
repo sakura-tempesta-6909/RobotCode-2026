@@ -60,7 +60,12 @@ public class ShooterCommands {
      *  自アライアンス側エリアにボールを投げ入れる
      */
     public static Command feed() {
-    return moveShooterSpecifiedSpeed(() -> ShooterParameter.feedMps);
+    return moveShooterSpecifiedSpeed(() -> {
+        double distance = StateGroup.getDistanceToFeedPosition();
+        double power = ShooterTools.distanceToMps(distance, DriveState.driveXYOmegaSpeed);
+        double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToRPM(power));
+        return surfaceSpeed;
+    });
     }
 
     /** 
