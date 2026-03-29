@@ -6,6 +6,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -48,7 +50,12 @@ public class BasicDrive implements DriveRepository {
     private double linearLastVelocity = 0.0;
     private double linearAcceleration = 0.0;
 
-    public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
+    public final ProfiledPIDController anglePID = new ProfiledPIDController(
+        DriveParameter.Speeds.kP, 
+        DriveParameter.Speeds.kI, 
+        DriveParameter.Speeds.kD, 
+        new TrapezoidProfile.Constraints(DriveParameter.Speeds.maxV, DriveParameter.Speeds.maxA)
+    );
     
     public final Field2d field = new Field2d();
 
@@ -75,7 +82,7 @@ public class BasicDrive implements DriveRepository {
 
     public final Vision vision = new Vision();
     public BasicDrive() {
-        anglePID.enableContinuousInput(-180, 180);
+        anglePID.enableContinuousInput(-Math.PI, Math.PI);
     }
 
     public void buildAuto() {
