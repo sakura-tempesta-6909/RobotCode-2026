@@ -251,7 +251,7 @@ public class BasicDrive implements DriveRepository {
      * @param YSpeed Y軸方向のスピード[m/s] */
      
     public void setAngle(double setAngle, double XSpeed, double YSpeed) {
-        double output = anglePID.calculate(getHeading(),setAngle);
+        double output = anglePID.calculate(getRotation2d().getDegrees(),setAngle);
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
         setChassisSpeedsFieldOriented(speed);
