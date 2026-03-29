@@ -28,20 +28,25 @@ import frc.robot.domain.state.DriveState;
 import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 
 public class BasicDrive implements DriveRepository {
     public final SwerveModule frontLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontLeft);
-    
+
     public final SwerveModule frontRight = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.frontRight);
 
     public final SwerveModule backLeft = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.backLeft);
 
     public final SwerveModule backRight = new SwerveModule(DriveConst.ModuleConstants.SwerveModuleConsts.backRight);
-        
+
     private final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+
+    // 加速度測定用
+    private double angularLastVelocity = 0.0;
+    private double angularAcceleration = 0.0;
+    private double linearLastVelocity = 0.0;
+    private double linearAcceleration = 0.0;
 
     public final PIDController anglePID = new PIDController(DriveParameter.Speeds.kP, DriveParameter.Speeds.kI, DriveParameter.Speeds.kD);
     
@@ -134,6 +139,18 @@ public class BasicDrive implements DriveRepository {
         });
         DriveState.driveXYOmegaSpeed = getChassisSpeeds();
 
+        // 角加速度計算 a = Δω / Δt [deg/s^2]
+        double currentAngularVelocity = Math.toDegrees(DriveState.driveXYOmegaSpeed.omegaRadiansPerSecond);
+        angularAcceleration = (currentAngularVelocity - angularLastVelocity) / DriveConst.LoopPeriod;
+        angularLastVelocity = currentAngularVelocity;
+
+        // 加速度計算 a = Δv / Δt [m/s^2]
+        double currentLinearVelocity = Math.hypot(DriveState.driveXYOmegaSpeed.vxMetersPerSecond, DriveState.driveXYOmegaSpeed.vyMetersPerSecond);
+        linearAcceleration = (currentLinearVelocity - linearLastVelocity) / DriveConst.LoopPeriod;
+        linearLastVelocity = currentLinearVelocity;
+        SmartDashboard.putNumber("Drive/AngularAcceleration", angularAcceleration);
+        SmartDashboard.putNumber("Drive/LinearAcceleration", linearAcceleration);
+
         m_poseEstimator.update(getRotation2d(),
                 new SwerveModulePosition[]{
                         frontLeft.getPosition(),
@@ -195,7 +212,7 @@ public class BasicDrive implements DriveRepository {
     }
 
     private double getHeading(){
-        return Math.IEEEremainder(gyro.getAngle(), 360);
+        return -Math.IEEEremainder(gyro.getAngle(), 360);
     }
     private Rotation2d getRotation2d(){
         return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
@@ -251,7 +268,7 @@ public class BasicDrive implements DriveRepository {
      * @param YSpeed Y軸方向のスピード[m/s] */
      
     public void setAngle(double setAngle, double XSpeed, double YSpeed) {
-        double output = anglePID.calculate(getHeading(),setAngle);
+        double output = anglePID.calculate(getRotation2d().getDegrees(),setAngle);
         double targetAngularSpeed = MathUtil.clamp(output, -DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond, DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond);
         ChassisSpeeds speed = new ChassisSpeeds(XSpeed,YSpeed,targetAngularSpeed);
         setChassisSpeedsFieldOriented(speed);

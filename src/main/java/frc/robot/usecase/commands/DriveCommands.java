@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,11 +21,14 @@ import frc.robot.usecase.UsecaseConst;
 import frc.robot.usecase.UsecaseUtil;
 import frc.robot.util.Util;
 
+import org.littletonrobotics.junction.Logger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 public class DriveCommands{
     private static DriveRepository driveRepository;
 
@@ -85,17 +89,43 @@ public class DriveCommands{
      * ただし、WaypointはGUIの方で設定したものを利用できないので、注意は必要
      * @return
      */
-    public static Command moveToTargetPose(Pose2d targetPose) {
-        return AutoBuilder.pathfindToPose(targetPose, UsecaseConst.PathPlannerConst.Unlimited);
-    }
+    public static Command moveToTargetPose(Supplier<Pose2d> targetPoseSupplier) {
+    /** deferを使うことでコマンドが実行される瞬間にコマンドを作成するようにする
+     *  こうすることでターゲットをコマンドが実行された瞬間の物に固定できる
+     */
+    return Commands.defer(() -> {
+        Pose2d target = targetPoseSupplier.get(); // ←ここで1回だけ取得
+        Logger.recordOutput("curent target", target);
+        return AutoBuilder.pathfindToPose(
+            target,
+            UsecaseConst.PathPlannerConst.Unlimited
+        );
+    }, Set.of());
+}
 
     /** Hubまで移動する
      * 目標値まで到達したら終了
      * 初期化処理:PIDのリセット
      */
     public static Command moveToHub(){
-        return moveToTargetPose(new Pose2d(DriveTools.calculateTargetPosition(DriveState.drivePosition,DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(), DriveState.drivePosition,DriveState.driveXYOmegaSpeed)));
-    }
+    return Commands.defer(() -> {
+        // 現在位置から計算した目標の座標（Translation2d）を求める
+        Translation2d targetTrans = DriveTools.calculateTargetPosition(DriveState.drivePosition, DriveParameter.targetdistanceToShoot);
+        
+        // 【重要】現在位置と目標位置の「距離のズレ」を計算
+        double translationError = DriveState.drivePosition.getTranslation().getDistance(targetTrans);
+        if (translationError < DriveParameter.Differences.allowedDifference) {
+            // ① すでに到着していれば、その場で回転し続ける（faceToHub）
+            return faceToHub(() -> 0.0, () -> 0.0);
+        } else {
+            // ② まだ遠ければ、移動のためのPathPlannerを生成する（移動＋角度）
+            Rotation2d targetRot = UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(),DriveState.drivePosition, DriveState.driveXYOmegaSpeed);
+            Pose2d target = new Pose2d(targetTrans, targetRot);
+            return AutoBuilder.pathfindToPose(target, UsecaseConst.PathPlannerConst.Unlimited).andThen(faceToHub(() -> 0.0, () -> 0.0));
+        }
+    }, Set.of());
+}
+
 
     /** 目標の角度まで回転する
      * 目標値まで到達したら終了
@@ -104,13 +134,20 @@ public class DriveCommands{
      * @param Xspeed x軸方向の速度[m/s]
      * @param Yspeed y軸方向の速度[m/s]
      */
-    public static Command setAngle(Rotation2d targetAngle, DoubleSupplier Xspeed, DoubleSupplier Yspeed) {
-        return driveRepository.startRun(()->{
+    public static Command setAngle(Supplier<Rotation2d> targetAngleSupplier,DoubleSupplier Xspeed,DoubleSupplier Yspeed) {
+        return driveRepository.startRun(() -> {
             driveRepository.resetPID();
-        },()->{
-            driveRepository.setAngle(targetAngle.getDegrees(),Xspeed.getAsDouble() , Yspeed.getAsDouble());
-        });
-    }
+        },
+        () -> {
+            Rotation2d targetAngle = targetAngleSupplier.get();
+            driveRepository.setAngle(
+                targetAngle.getDegrees(),
+                Xspeed.getAsDouble(),
+                Yspeed.getAsDouble()
+            );
+        }
+    );
+}
 
     /** Hubに向かった角度まで回転する
      * 目標値まで到達したら終了
@@ -118,13 +155,21 @@ public class DriveCommands{
      * @param xSpeedPercentSupplier x軸のコントローラーの入力[-1~1]
      * @param ySpeedPercentSupplier x軸のコントローラーの入力[-1~1]
      */
-    public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
-        double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
-        double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
-            
-                    
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(), DriveState.drivePosition,DriveState.driveXYOmegaSpeed), ()->xInput, ()->yInput);
-    }
+    // DriveCommands.java 内の faceToHub を以下のように修正
+public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
+    // startRun を使っている場合の例
+    return setAngle(
+        () -> UsecaseUtil.calcurateTargetAngleToShoot(
+            UsecaseUtil.getHubPosition().getTranslation(),
+            DriveState.drivePosition,
+            DriveState.driveXYOmegaSpeed
+        ),
+        () -> Util.deadband(xSpeedPercentSupplier.getAsDouble()) 
+            * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond,
+        () -> Util.deadband(ySpeedPercentSupplier.getAsDouble()) 
+            * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond
+    ).beforeStarting(() -> driveRepository.resetPID());
+}
 
     /** Feedしたい位置に向かった角度まで回転する
      * 目標値まで到達したら終了
@@ -136,7 +181,7 @@ public class DriveCommands{
         double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
         double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond; 
 
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getFeedPosition(), DriveState.drivePosition, DriveState.driveXYOmegaSpeed), () -> xInput, () -> yInput);
+        return setAngle(()-> UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getFeedPosition(), DriveState.drivePosition, DriveState.driveXYOmegaSpeed), () -> xInput, () -> yInput);
     }
 
     /** 実験用

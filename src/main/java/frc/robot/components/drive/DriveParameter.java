@@ -25,11 +25,11 @@ public class DriveParameter {
         public static final double SlowThetaDrive = 0.1875;
 
         /** gyroのPID制御　Pの値 */
-        public static final double kP = 0.008;
+        public static final double kP = 0.015;
         /** gyroのPID制御　Iの値 */
-        public static final double kI = 0.0005;
+        public static final double kI = 0.00001;
         /** gyroのPID制御　Dの値 */
-        public static final double kD = 0;
+        public static final double kD = 0.0001;
     }
 
     public static final class Module {
@@ -67,7 +67,7 @@ public class DriveParameter {
          * 必要になったら使う
          *許容される誤差[m]
          */
-        public static final double arrowedDifference = 0.10;
+        public static final double allowedDifference = 0.10;
         /** シュートできる最も近い距離 | 単位m */
         public static final double MinShootableRange = 2.5;
         /** シュートできる最も遠い距離 | 単位m */
