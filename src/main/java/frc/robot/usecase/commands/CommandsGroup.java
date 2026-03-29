@@ -13,6 +13,7 @@ import frc.robot.domain.state.ShooterState;
 import frc.robot.Robot;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
+import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
@@ -53,6 +54,13 @@ public class CommandsGroup {
         Robot::isSimulation
     );
 }
+    public static Command shoot3000RPM() {
+        return Commands.parallel(
+            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterParameter.DefalutMPS),
+            Commands.waitUntil(() -> ShooterState.isReadyToShoot)
+                .andThen(IndexerCommands.feedToShooter())
+            );
+    }
 
     /**
      * シュートできる位置まで移動する
