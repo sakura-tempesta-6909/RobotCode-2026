@@ -18,7 +18,7 @@ public final class ShooterParameter {
     public static double errorToleranceMps = 0.3;
 
     /** ロボットのPoseがずれた時に使うシュートの速度　[m/s] */
-    public static double DefalutMPS = ShooterTools.rpmToSurfaceSpeed(3000);
+    public static double DefalutRPM = 3000;
 
     /**
      * シューターのRPMマップ

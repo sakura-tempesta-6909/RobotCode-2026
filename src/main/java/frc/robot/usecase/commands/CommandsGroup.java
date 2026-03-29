@@ -56,7 +56,7 @@ public class CommandsGroup {
 }
     public static Command shoot3000RPM() {
         return Commands.parallel(
-            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterParameter.DefalutMPS),
+            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterTools.rpmToSurfaceSpeed(ShooterParameter.DefalutRPM)),
             Commands.waitUntil(() -> ShooterState.isReadyToShoot)
                 .andThen(IndexerCommands.feedToShooter())
             );
