@@ -2,6 +2,7 @@ package frc.robot.components.shooter.infrastructure;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -29,6 +30,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.d(ShooterParameter.dGain).iZone(ShooterParameter.IZone);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
+        config.closedLoop.allowedClosedLoopError(ShooterTools.rpmToSurfaceSpeed(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
         followerConfig.follow(motor, true);
         config.inverted(true);
 
@@ -87,8 +89,8 @@ public class Shooter implements ShooterRepository {
         /** 現在の目標値 */
         ShooterState.targetMotorSpeed = ShooterTools.rpmToSurfaceSpeed(pid.getSetpoint());
         /** 目標値に達しているか */
-        if (ShooterState.shooterSurfaceSpeedMps > 3.0) {
-            ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < ShooterParameter.errorToleranceMps;
+        if (pid.getSetpoint() != ShooterParameter.Neutral) {
+            ShooterState.isReadyToShoot = pid.isAtSetpoint();
         } else {
             ShooterState.isReadyToShoot = false;
         }
