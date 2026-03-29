@@ -56,7 +56,7 @@ public class CommandsGroup {
     );
 }
     /**
-     * Poseが事故ったときよう
+     * Poseが事故ったときよう　3000RPM固定で打つ
      * @return ↑をするコマンドを返す
      */
     public static Command shoot3000RPM() {
