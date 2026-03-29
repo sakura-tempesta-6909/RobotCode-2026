@@ -2,9 +2,8 @@ package frc.robot.components.shooter.infrastructure;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 import org.littletonrobotics.junction.Logger;
-
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -34,6 +33,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.d(ShooterParameter.dGain).iZone(ShooterParameter.IZone);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
+        config.closedLoop.allowedClosedLoopError(ShooterTools.rpmToSurfaceSpeed(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
         followerConfig.follow(motor, true);
         config.inverted(true);
 
@@ -64,7 +64,7 @@ public class Shooter implements ShooterRepository {
     */
     public void moveShooterSpecifiedSpeed(double targetMps) {
         pid.setReference(ShooterTools.mpsToRpm(targetMps), SparkMax.ControlType.kVelocity);
-        ShooterState.targetMotorSpeed = targetMps;
+
     }
 
     @Override
@@ -87,14 +87,19 @@ public class Shooter implements ShooterRepository {
         // 現在の表面速度 [m/s] を State に書き込む
         ShooterState.shooterSurfaceSpeedMps = ShooterTools.rpmToSurfaceSpeed(motorRPM);
 
-        // モーターが動いているか
+        /** モーターが動いているか */
         ShooterState.isMotorActive = Math.abs(ShooterState.shooterSurfaceSpeedMps) > ShooterParameter.errorToleranceMps;
-        
-        //目標値に達しているか
-        ShooterState.isReadyToShoot = Math.abs(ShooterState.shooterSurfaceSpeedMps - ShooterState.targetMotorSpeed) < ShooterParameter.errorToleranceMps;
+        /** 現在の目標値 */
+        ShooterState.targetMotorSpeed = ShooterTools.rpmToSurfaceSpeed(pid.getSetpoint());
+        /** 目標値に達しているか */
+        if (pid.getSetpoint() != ShooterParameter.Neutral) {
+            ShooterState.isReadyToShoot = pid.isAtSetpoint();
+        } else {
+            ShooterState.isReadyToShoot = false;
+        }
 
-        // モーター情報
-        ShooterState.outputCurrent = motor.getOutputCurrent();
+        /** モーター情報 */
+        ShooterState.outputCurrent = motor.getOutputCurrent();  
         ShooterState.appliedOutput = motor.getAppliedOutput();
         ShooterState.busVoltage = motor.getBusVoltage();
         Logger.recordOutput("Shooter/feed", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToFeedPosition(), DriveState.driveXYOmegaSpeed)));
