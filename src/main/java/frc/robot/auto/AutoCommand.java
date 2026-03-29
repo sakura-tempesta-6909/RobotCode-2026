@@ -10,7 +10,7 @@ public class AutoCommand {
     private static SendableChooser<Command> autoChooser;
 
     public static void buildAutoChooser() {
-        autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser("LeftTrench");
         autoChooser.addOption("feedforward characterization", DriveCommands.feedforwardCharacterization());
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
