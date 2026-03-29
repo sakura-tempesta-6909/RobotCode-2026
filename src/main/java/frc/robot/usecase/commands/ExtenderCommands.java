@@ -106,6 +106,6 @@ public class ExtenderCommands {
     }
 
     public static Command keepSeemsToBeGoodAngle(){
-        return moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.seemsToBeGoodAngleAngle));
+        return moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.seemsToBeGoodAngle));
     }
 }
