@@ -25,11 +25,11 @@ public class DriveParameter {
         public static final double SlowThetaDrive = 0.1875;
 
         /** gyroのPID制御　Pの値 */
-        public static final double kP = 0.008;
+        public static final double kP = 0.015;
         /** gyroのPID制御　Iの値 */
-        public static final double kI = 0.0005;
+        public static final double kI = 0.00001;
         /** gyroのPID制御　Dの値 */
-        public static final double kD = 0;
+        public static final double kD = 0.0001;
     }
 
     public static final class Module {
