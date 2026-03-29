@@ -54,6 +54,10 @@ public class CommandsGroup {
         Robot::isSimulation
     );
 }
+    /**
+     * Poseが事故ったときよう
+     * @return ↑をするコマンドを返す
+     */
     public static Command shoot3000RPM() {
         return Commands.parallel(
             ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterTools.rpmToSurfaceSpeed(ShooterParameter.DefalutRPM)),
