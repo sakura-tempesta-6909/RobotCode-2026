@@ -104,4 +104,8 @@ public class ExtenderCommands {
             moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeDownAngle)).withTimeout(UsecaseConst.Shake.shakeDownTimeout)
         ));
     }
+
+    public static Command keepSeemsToBeGoodAngle(){
+        return moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.seemsToBeGoodAngleAngle));
+    }
 }
