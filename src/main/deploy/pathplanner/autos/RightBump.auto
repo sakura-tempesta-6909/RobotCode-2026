@@ -17,13 +17,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "TrenchToNeutralZone"
+                  "pathName": "StartNeutralZone"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "intakePreload"
                 }
               }
             ]
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralZoneToHUB"
+            "pathName": "NeutralZoneToRightBump"
           }
         },
         {
