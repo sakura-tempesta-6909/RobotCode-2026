@@ -114,7 +114,7 @@ public class DriveCommands{
         
         // 【重要】現在位置と目標位置の「距離のズレ」を計算
         double translationError = DriveState.drivePosition.getTranslation().getDistance(targetTrans);
-        if (translationError < DriveParameter.Differences.arrowedDifference) {
+        if (translationError < DriveParameter.Differences.allowedDifference) {
             // ① すでに到着していれば、その場で回転し続ける（faceToHub）
             return faceToHub(() -> 0.0, () -> 0.0);
         } else {
