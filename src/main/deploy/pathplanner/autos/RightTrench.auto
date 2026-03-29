@@ -11,19 +11,19 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "intakePreload"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "StartNeutralZone"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakePreload"
                 }
               }
             ]
