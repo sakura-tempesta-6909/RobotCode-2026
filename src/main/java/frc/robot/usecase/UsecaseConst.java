@@ -93,9 +93,9 @@ public class UsecaseConst {
 
     public static final class Hubs{
         /** Hubの中心の座標(red) */
-        public static final Pose2d HubPositionForRed = new Pose2d(new Translation2d(11.9,4.61),new Rotation2d(0));
+        public static final Pose2d HubPositionForRed = new Pose2d(new Translation2d(11.9,4.05),new Rotation2d(0));
         /** Hubの中心の座標(blue) */
-        public static final Pose2d HubPositionForBlue = new Pose2d(new Translation2d(4.02,4.61),new Rotation2d(0));
+        public static final Pose2d HubPositionForBlue = new Pose2d(new Translation2d(4.02,4.05),new Rotation2d(0));
     
     }
 
