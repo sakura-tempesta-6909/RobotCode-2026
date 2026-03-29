@@ -119,7 +119,7 @@ public class DriveCommands{
             return faceToHub(() -> 0.0, () -> 0.0);
         } else {
             // ② まだ遠ければ、移動のためのPathPlannerを生成する（移動＋角度）
-            Rotation2d targetRot = UsecaseUtil.calcurateTargetAngleToShoot(DriveState.drivePosition, DriveState.driveXYOmegaSpeed);
+            Rotation2d targetRot = UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(),DriveState.drivePosition, DriveState.driveXYOmegaSpeed);
             Pose2d target = new Pose2d(targetTrans, targetRot);
             return AutoBuilder.pathfindToPose(target, UsecaseConst.PathPlannerConst.Unlimited).andThen(faceToHub(() -> 0.0, () -> 0.0));
         }
@@ -158,15 +158,18 @@ public class DriveCommands{
     // DriveCommands.java 内の faceToHub を以下のように修正
 public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupplier ySpeedPercentSupplier){
     // startRun を使っている場合の例
-    return Commands.startRun(() -> {
-        driveRepository.resetPID(); // 実行開始時にPIDをリセット
-    }, () -> {
-        double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
-        double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
-            
-                    
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(), DriveState.drivePosition,DriveState.driveXYOmegaSpeed), ()->xInput, ()->yInput);
-    }
+    return setAngle(
+        () -> UsecaseUtil.calcurateTargetAngleToShoot(
+            UsecaseUtil.getHubPosition().getTranslation(),
+            DriveState.drivePosition,
+            DriveState.driveXYOmegaSpeed
+        ),
+        () -> Util.deadband(xSpeedPercentSupplier.getAsDouble()) 
+            * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond,
+        () -> Util.deadband(ySpeedPercentSupplier.getAsDouble()) 
+            * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond
+    ).beforeStarting(() -> driveRepository.resetPID());
+}
 
     /** Feedしたい位置に向かった角度まで回転する
      * 目標値まで到達したら終了
@@ -178,7 +181,7 @@ public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupp
         double xInput = Util.deadband(xSpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond;
         double yInput = Util.deadband(ySpeedPercentSupplier.getAsDouble()) * DriveConst.DriveConstants.kPhysicalMaxSpeedMetersPerSecond; 
 
-        return setAngle(UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getFeedPosition(), DriveState.drivePosition, DriveState.driveXYOmegaSpeed), () -> xInput, () -> yInput);
+        return setAngle(()-> UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getFeedPosition(), DriveState.drivePosition, DriveState.driveXYOmegaSpeed), () -> xInput, () -> yInput);
     }
 
     /** 実験用

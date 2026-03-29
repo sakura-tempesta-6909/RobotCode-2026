@@ -117,6 +117,6 @@ public class UsecaseUtil {
         // HUBに向く角度＋動いてることによる誤差の修正のための角度を目標値とする
         Rotation2d targetTheta = theta.plus(fuelTheta);
 
-        return targetTheta.plus(current.getRotation());
+        return targetTheta;
     }
 }
