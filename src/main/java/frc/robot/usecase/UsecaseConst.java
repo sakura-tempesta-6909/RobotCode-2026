@@ -105,7 +105,7 @@ public class UsecaseConst {
         /** Extenderを揺らす際下ろす時の角度[degree] */
         public static final double shakeDownAngle = 15;
         /** Extenderを揺らす際下ろす時の角度[degree] */
-        public static final double seemsToBeGoodAngle = 25;
+        public static final double preferredAngle = 25;
         /** Extenderを揺らす際上げる時のtimeoutの時間[s] */
         public static final double shakeUpTimeout = 1.5;
         /** Extenderを揺らす際下げる時のtimeoutの時間1個目[s] */
