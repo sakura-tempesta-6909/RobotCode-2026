@@ -167,7 +167,7 @@ public class BasicDrive implements DriveRepository {
         DriveState.drivePosition = getPose();
         
 
-        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose(),DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(getPose(),DriveState.driveXYOmegaSpeed));
+        DriveState.targetPosition = new Pose2d(DriveTools.calculateTargetPosition(getPose(),DriveParameter.targetdistanceToShoot),UsecaseUtil.calcurateTargetAngleToShoot(UsecaseUtil.getHubPosition().getTranslation(), getPose(),DriveState.driveXYOmegaSpeed));
 
         // Swerveモーター情報 [FL, FR, BL, BR]
         SwerveModule[] modules = {frontLeft, frontRight, backLeft, backRight};
