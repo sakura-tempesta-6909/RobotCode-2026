@@ -33,4 +33,7 @@ public final class ShooterParameter {
         {3.5, 3400.0},
         {4.0, 3800.0}
     };
+
+    /** ゼロ */
+    public static double Neutral = 0.0;
 }
