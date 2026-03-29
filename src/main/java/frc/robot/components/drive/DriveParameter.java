@@ -30,6 +30,10 @@ public class DriveParameter {
         public static final double kI = 0.00001;
         /** gyroのPID制御　Dの値 */
         public static final double kD = 0.0001;
+        /** 回転時の最大速度 */
+        public static final double maxV = 0;
+        /** 回転時の最大加速度 */
+        public static final double maxA = 0;
     }
 
     public static final class Module {
