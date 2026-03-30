@@ -54,7 +54,7 @@ public class BasicDrive implements DriveRepository {
         DriveParameter.Speeds.kP, 
         DriveParameter.Speeds.kI, 
         DriveParameter.Speeds.kD, 
-        new TrapezoidProfile.Constraints(DriveParameter.Speeds.maxV, DriveParameter.Speeds.maxA)
+        new TrapezoidProfile.Constraints(DriveParameter.Speeds.maxAngularVelocity, DriveParameter.Speeds.maxAngularAcceleration)
     );
     
     public final Field2d field = new Field2d();
