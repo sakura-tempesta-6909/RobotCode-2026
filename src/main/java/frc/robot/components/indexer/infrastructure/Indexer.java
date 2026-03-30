@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.components.indexer.IndexerConst;
+import frc.robot.components.indexer.IndexerParameter;
 import frc.robot.domain.repository.IndexerRepository;
 import frc.robot.domain.state.IndexerState;
 
@@ -27,6 +28,8 @@ public class Indexer implements IndexerRepository {
 
         LongRollerIndexerConfig.inverted(true);
         LongRollerIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        LongRollerIndexerConfig.smartCurrentLimit(IndexerParameter.LongRollerIndexer.SmartCurrentLimit);
+        LongRollerIndexerConfig.secondaryCurrentLimit(IndexerParameter.LongRollerIndexer.SecondaryCurrentLimit);
 
 
         StarWheelIndexer = new SparkMax(IndexerConst.Ports.StarWheelIndexer, SparkLowLevel.MotorType.kBrushless);
@@ -35,6 +38,8 @@ public class Indexer implements IndexerRepository {
 
         StarWheelIndexerConfig.inverted(false);
         StarWheelIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
+        StarWheelIndexerConfig.smartCurrentLimit(IndexerParameter.StarWheelIndexer.SmartCurrentLimit);
+        StarWheelIndexerConfig.secondaryCurrentLimit(IndexerParameter.StarWheelIndexer.SecondaryCurrentLimit);
 
         StarWheelIndexer.configure(StarWheelIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         LongRollerIndexer.configure(LongRollerIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);

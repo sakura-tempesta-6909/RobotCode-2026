@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.42022468171296334,
-        "y": 0.646347222222222
+        "x": 0.7633677662037042,
+        "y": 0.6395893373842592
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9383863372428777,
-        "y": 0.31725580184625757
+        "x": 0.9129323541904284,
+        "y": 0.84609141489472
       },
       "isLocked": false,
       "linkedName": "Outpost"
     },
     {
       "anchor": {
-        "x": 2.5240305397727276,
-        "y": 2.2487492108585854
+        "x": 2.171172960069445,
+        "y": 1.8768071469907408
       },
       "prevControl": {
-        "x": 2.7992358995666793,
-        "y": 2.63623146524402
+        "x": 2.346312138994337,
+        "y": 2.0612852959756682
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "OutpostSideHub"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 39.93375779050585
+    "rotation": 39.279899859975295
   },
   "reversed": false,
   "folder": null,
