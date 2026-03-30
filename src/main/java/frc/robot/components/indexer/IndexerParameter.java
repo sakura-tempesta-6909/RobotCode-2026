@@ -8,6 +8,8 @@ public final class IndexerParameter {
         public static final double ReverseSpeed = -1.0;
         /** 停止時のモーターのスピード | 停止なので0 | [0, 1] */
         public static final double Neutral = 0;
+        /** インデクサーの電流制限 | 単位[A] */
+        public static int CurrentLimit = 80;
     }
     public static final class StarWheelIndexer{
         /** Shooterに送る時のスピード | 送る方に回す方向が正 | [0, 1]*/
@@ -16,5 +18,7 @@ public final class IndexerParameter {
         public static final double ReverseSpeed = -1.0;
         /** 停止時のモーターのスピード | 停止なので0 | [0, 1] */
         public static final double Neutral = 0;
+        /** インデクサーの電流制限 | 単位[A] */
+        public static int CurrentLimit = 80;
     }
 }
