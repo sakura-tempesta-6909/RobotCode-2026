@@ -105,7 +105,10 @@ public class ExtenderCommands {
         ));
     }
 
-    public static Command keepSeemsToBeGoodAngle(){
+    /** いい感じの角度に上げて固定する
+     * 固定はmoveExtenderSpecifiedAngleに入ってる
+     */
+    public static Command keeppreferedAngle(){
         return moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.preferredAngle));
     }
 }
