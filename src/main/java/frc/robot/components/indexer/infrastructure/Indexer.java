@@ -28,7 +28,8 @@ public class Indexer implements IndexerRepository {
 
         LongRollerIndexerConfig.inverted(true);
         LongRollerIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
-        LongRollerIndexerConfig.smartCurrentLimit(IndexerParameter.LongRollerIndexer.CurrentLimit);
+        LongRollerIndexerConfig.smartCurrentLimit(IndexerParameter.LongRollerIndexer.SmartCurrentLimit);
+        LongRollerIndexerConfig.secondaryCurrentLimit(IndexerParameter.LongRollerIndexer.SecondaryCurrentLimit);
 
 
         StarWheelIndexer = new SparkMax(IndexerConst.Ports.StarWheelIndexer, SparkLowLevel.MotorType.kBrushless);
@@ -37,7 +38,8 @@ public class Indexer implements IndexerRepository {
 
         StarWheelIndexerConfig.inverted(false);
         StarWheelIndexerConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
-        StarWheelIndexerConfig.smartCurrentLimit(IndexerParameter.StarWheelIndexer.CurrentLimit);
+        StarWheelIndexerConfig.smartCurrentLimit(IndexerParameter.StarWheelIndexer.SmartCurrentLimit);
+        StarWheelIndexerConfig.secondaryCurrentLimit(IndexerParameter.StarWheelIndexer.SecondaryCurrentLimit);
 
         StarWheelIndexer.configure(StarWheelIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         LongRollerIndexer.configure(LongRollerIndexerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
