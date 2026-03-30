@@ -13,6 +13,7 @@ import frc.robot.domain.state.ShooterState;
 import frc.robot.Robot;
 import frc.robot.components.drive.DriveTools;
 import frc.robot.components.drive.infrastructure.SimulationModule.BasicDriveSim;
+import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
 import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.StateGroup;
@@ -46,13 +47,25 @@ public class CommandsGroup {
         // --- 実機（RoboRIO）での動作 ---
         Commands.parallel(
             ShooterCommands.shootToHub(),
-            IndexerCommands.feedToShooter()
-        ),
+            Commands.waitUntil(() -> ShooterState.isReadyToShoot)
+                .andThen(IndexerCommands.feedToShooter())
+            ),
 
         // どっちを使うかの判定条件
         Robot::isSimulation
     );
 }
+    /**
+     * Poseが事故ったときよう　3000RPM固定で打つ
+     * @return ↑をするコマンドを返す
+     */
+    public static Command shoot3000RPM() {
+        return Commands.parallel(
+            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterTools.rpmToSurfaceSpeed(ShooterParameter.DefalutRPM)),
+            Commands.waitUntil(() -> ShooterState.isReadyToShoot)
+                .andThen(IndexerCommands.feedToShooter())
+            );
+    }
 
     /**
      * シュートできる位置まで移動する
@@ -98,9 +111,9 @@ public class CommandsGroup {
 
     public static Command intakePreload() {
         return Commands.sequence(
-            ExtenderCommands.moveToIntakeAngle(),
+            ExtenderCommands.moveToIntakeAngle().until(() -> ExtenderState.isIntakePosition),
             (new ParallelCommandGroup(
-                IntakeCommands.intakeFuel(),
+            IntakeCommands.intakeFuel(),
             ShooterCommands.reverseShooter(),
             IndexerCommands.reverseIndexer()                
             )

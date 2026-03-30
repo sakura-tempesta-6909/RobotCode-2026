@@ -76,12 +76,17 @@ public class BasicDrive implements DriveRepository {
     public final Vision vision = new Vision();
     public BasicDrive() {
         anglePID.enableContinuousInput(-180, 180);
+        anglePID.setTolerance(DriveParameter.Differences.ToleranceAngle);
     }
 
     public void buildAuto() {
         RobotConfig config;
-        config = new RobotConfig(UsecaseConst.RobotStructure.RobotMass, UsecaseConst.RobotStructure.RobotMOI, UsecaseConst.PathPlannerConst.ModuleConfig, UsecaseConst.PathPlannerConst.ModuleOffset);
-
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+            config = new RobotConfig(UsecaseConst.RobotStructure.RobotMass, UsecaseConst.RobotStructure.RobotMOI, UsecaseConst.PathPlannerConst.ModuleConfig, UsecaseConst.PathPlannerConst.ModuleOffset);
+        }
         AutoBuilder.configure(
         this::getPose,
         this::resetOdometry,
@@ -209,6 +214,8 @@ public class BasicDrive implements DriveRepository {
 
         field.setRobotPose(DriveState.drivePosition);
         SmartDashboard.putData("field", field);
+
+        DriveState.isAtTarget = anglePID.atSetpoint();
     }
 
     private double getHeading(){

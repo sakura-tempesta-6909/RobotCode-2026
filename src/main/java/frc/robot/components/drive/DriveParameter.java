@@ -72,6 +72,8 @@ public class DriveParameter {
         public static final double MinShootableRange = 2.5;
         /** シュートできる最も遠い距離 | 単位m */
         public static final double MaxShootableRange = 4.0;
+        /** 許容される誤差 [deg] */
+        public static final double ToleranceAngle = 3.0;
     }
 
     public static final class Vision{

@@ -76,5 +76,7 @@ public class DriveMode extends Mode {
         operateController.leftBumper().onTrue(ExtenderCommands.moveToInitialAngle());
         // Extenderをシャカシャカする
         operateController.a().whileTrue(CommandsGroup.shakeExtender());
+        // ロボットのPoseがズレた時用　Shooterを3000RPMで動かす
+        operateController.b().whileTrue(CommandsGroup.shoot3000RPM());
     }
 }

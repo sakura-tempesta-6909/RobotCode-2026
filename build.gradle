@@ -33,7 +33,9 @@ deploy {
                 frcStaticFileDeploy(getArtifactTypeClass('FileTreeArtifact')) {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
-                    deleteOldFiles = false // Change to true to delete files on roboRIO that no
+                    // falseだと削除済みのAutoのファイルも読み込まれる
+                    // This method will load all autos in the deploy directory. Make sure you have the line deleteOldFiles = true in your build.gradle file or the deploy directory will not be cleared and you will see deleted autos.
+                    deleteOldFiles = true // Change to true to delete files on roboRIO that no
                                            // longer exist in deploy directory of this project
                 }
             }

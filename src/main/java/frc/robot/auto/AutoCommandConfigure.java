@@ -12,5 +12,6 @@ public class AutoCommandConfigure {
         NamedCommands.registerCommand("Intake", CommandsGroup.intake());
         NamedCommands.registerCommand("shoot", CommandsGroup.shoot());
         NamedCommands.registerCommand("move to intake angle", ExtenderCommands.moveToIntakeAngle().until(() -> ExtenderState.isIntakePosition || Robot.isSimulation()));
+        NamedCommands.registerCommand("intakePreload", CommandsGroup.intakePreload());
     }
 }

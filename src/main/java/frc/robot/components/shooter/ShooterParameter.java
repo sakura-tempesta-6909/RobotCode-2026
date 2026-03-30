@@ -17,6 +17,9 @@ public final class ShooterParameter {
     //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
     public static double errorToleranceMps = 0.3;
 
+    /** ロボットのPoseがずれた時に使うシュートの速度　[m/s] */
+    public static double DefalutRPM = 3000;
+
     /**
      * シューターのRPMマップ
      * [距離(m), RPM] で設定
@@ -30,4 +33,7 @@ public final class ShooterParameter {
         {3.5, 3400.0},
         {4.0, 3800.0}
     };
+
+    /** ゼロ */
+    public static double Neutral = 0.0;
 }
