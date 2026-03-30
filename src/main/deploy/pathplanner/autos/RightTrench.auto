@@ -5,13 +5,19 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "move to intake angle"
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StartToOutpost"
+                  "pathName": "StartNeutralZone"
                 }
               },
               {
@@ -26,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OutpostToHub"
+            "pathName": "NeutralZoneToHub(OutpostSide)"
           }
         },
         {

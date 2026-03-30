@@ -20,6 +20,7 @@ public class DomainUtil {
 
         // Drive
         Logger.recordOutput("Drive/DistanceToHub", StateGroup.getDistanceToHub());
+        Logger.recordOutput("Drive/DistanceToFeedPotiion", StateGroup.getDistanceToFeedPosition());
         Logger.recordOutput("Drive/ChassisSpeed", DriveState.driveXYOmegaSpeed);
         Logger.recordOutput("Drive/CombinedPose", DriveState.drivePosition);
         Logger.recordOutput("Drive/Speed", DriveOption.driveSpeed.toString());

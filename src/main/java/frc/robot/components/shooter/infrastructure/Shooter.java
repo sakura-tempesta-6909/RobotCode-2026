@@ -2,13 +2,16 @@ package frc.robot.components.shooter.infrastructure;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import org.littletonrobotics.junction.Logger;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
+import frc.robot.domain.state.DriveState;
 import frc.robot.domain.state.ShooterState;
+import frc.robot.domain.state.StateGroup;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
 
@@ -99,5 +102,7 @@ public class Shooter implements ShooterRepository {
         ShooterState.outputCurrent = motor.getOutputCurrent();  
         ShooterState.appliedOutput = motor.getAppliedOutput();
         ShooterState.busVoltage = motor.getBusVoltage();
+        Logger.recordOutput("Shooter/feed", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToFeedPosition(), DriveState.driveXYOmegaSpeed)));
+        Logger.recordOutput("Shooter/shoot", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToHub(), DriveState.driveXYOmegaSpeed)));
     }
 }
