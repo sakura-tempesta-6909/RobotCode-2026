@@ -76,6 +76,7 @@ public class BasicDrive implements DriveRepository {
     public final Vision vision = new Vision();
     public BasicDrive() {
         anglePID.enableContinuousInput(-180, 180);
+        anglePID.setTolerance(DriveParameter.Differences.ToleranceAngle);
     }
 
     public void buildAuto() {
@@ -213,6 +214,8 @@ public class BasicDrive implements DriveRepository {
 
         field.setRobotPose(DriveState.drivePosition);
         SmartDashboard.putData("field", field);
+
+        DriveState.isAtTarget = anglePID.atSetpoint();
     }
 
     private double getHeading(){
