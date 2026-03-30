@@ -54,7 +54,7 @@ public class BasicDrive implements DriveRepository {
         DriveParameter.Speeds.kP, 
         DriveParameter.Speeds.kI, 
         DriveParameter.Speeds.kD, 
-        new TrapezoidProfile.Constraints(DriveParameter.Speeds.maxAngularVelocity, DriveParameter.Speeds.maxAngularAcceleration)
+        new TrapezoidProfile.Constraints(DriveParameter.Speeds.MaxAngularVelocity, DriveParameter.Speeds.MaxAngularAcceleration)
     );
     
     public final Field2d field = new Field2d();
@@ -82,7 +82,7 @@ public class BasicDrive implements DriveRepository {
 
     public final Vision vision = new Vision();
     public BasicDrive() {
-        anglePID.enableContinuousInput(-Math.PI, Math.PI);
+        anglePID.enableContinuousInput(-180, 180);
     }
 
     public void buildAuto() {
