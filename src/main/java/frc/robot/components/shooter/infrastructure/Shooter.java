@@ -33,7 +33,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.d(ShooterParameter.dGain).iZone(ShooterParameter.IZone);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
-        config.closedLoop.allowedClosedLoopError(ShooterTools.rpmToSurfaceSpeed(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
+        config.closedLoop.allowedClosedLoopError(ShooterTools.mpsToRpm(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
         followerConfig.follow(motor, true);
         config.inverted(true);
 
