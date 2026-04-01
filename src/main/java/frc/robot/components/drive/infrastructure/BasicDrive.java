@@ -130,6 +130,15 @@ public class BasicDrive implements DriveRepository {
         gyro.reset();
     }
 
+    @Override
+    public void toggleVisionEnabled(){
+        if (DriveState.isUsingVisionEstimate) {
+            DriveState.isUsingVisionEstimate = false;
+        } else {
+            DriveState.isUsingVisionEstimate = true;
+        }
+    }
+
 
     @Override
     public void periodic(){
@@ -228,8 +237,11 @@ public class BasicDrive implements DriveRepository {
     }
 
     private Pose2d getPose(){
-        //return odometer.getPoseMeters();
-        return m_poseEstimator.getEstimatedPosition();
+        if (DriveState.isUsingVisionEstimate) {
+            return m_poseEstimator.getEstimatedPosition();
+        }else {
+            return odometer.getPoseMeters();
+        }
     }
 
     private ChassisSpeeds getChassisSpeeds() {
