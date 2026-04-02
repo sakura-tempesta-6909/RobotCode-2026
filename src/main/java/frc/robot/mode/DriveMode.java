@@ -80,9 +80,10 @@ public class DriveMode extends Mode {
         
         // Extenderを初期位置に戻す(バックアップ): Operatorが押していない時のみ
         driveController.leftBumper().and(operateController.leftBumper().negate()).onTrue(ExtenderCommands.moveToInitialAngle());
-        // Extenderをシャカシャカする
         // Operatorが押していない時のみDriverからも実行できる
-        driveController.a().and(operateController.a().negate()).whileTrue(CommandsGroup.keepExtenderPreferedAngle());
+        driveController.a().whileTrue(DriveCommands.faceToFeedPosition(
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX()));
         //HubへShoot: shootToHub,feedToShooter
         driveController.rightTrigger(0.6).and(operateController.rightTrigger(0.6).negate()).whileTrue(CommandsGroup.shoot());
         //Intake: moveToIntakeAngle,intakeFuel
