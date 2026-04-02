@@ -50,9 +50,14 @@ public class ShooterCommands {
     public static Command shootToHub() {
         return moveShooterSpecifiedSpeed(() -> {
             double distance = StateGroup.getDistanceToHub(); //ここで距離を取得する
-            double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
-            double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToRPM(power)); // wheelの表面速度
-            return surfaceSpeed;
+            if (distance < 4){
+                double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
+                double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToRPM(power)); // wheelの表面速度
+                return surfaceSpeed;
+            } else {
+                double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(3000);
+                return surfaceSpeed;
+            }
         });
     }
 
