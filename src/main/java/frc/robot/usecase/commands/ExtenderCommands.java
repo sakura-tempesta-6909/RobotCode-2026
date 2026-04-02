@@ -104,4 +104,11 @@ public class ExtenderCommands {
             moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeDownAngle)).withTimeout(UsecaseConst.Shake.shakeDownTimeout)
         ));
     }
+
+    /** いい感じの角度に上げて固定する
+     * 固定はmoveExtenderSpecifiedAngleに入ってる
+     */
+    public static Command keeppreferedAngle(){
+        return moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.preferredAngle));
+    }
 }

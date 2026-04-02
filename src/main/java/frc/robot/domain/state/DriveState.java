@@ -22,6 +22,8 @@ public class DriveState {
 
     public static SwerveModuleState[] swerveModuleState;
 
+    public static boolean isAtTarget;
+
     /** 各モーターの情報 */
     public static class SwerveMotors {
         /** Drive Motorの電流 [A] */
