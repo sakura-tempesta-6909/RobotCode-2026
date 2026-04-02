@@ -58,12 +58,18 @@ public class DriveMode extends Mode {
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX()));
         //ロボットを180度に向ける
-        driveController.a().whileTrue(DriveCommands.setAngle(
-            () -> Rotation2d.k180deg,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX()));
+        // driveController.a().whileTrue(DriveCommands.setAngle(
+        //     () -> Rotation2d.k180deg,
+        //     () -> -driveController.getLeftY(),
+        //     () -> -driveController.getLeftX()));
         //gyroリセット
         driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
+        //HubへShoot: shootToHub,feedToShooter
+        driveController.rightTrigger(0.6).whileTrue(CommandsGroup.shoot());
+        //Intake: moveToIntakeAngle,intakeFuel
+        driveController.leftTrigger(0.6).whileTrue(CommandsGroup.intake());
+        // Extenderをシャカシャカする
+        driveController.a().whileTrue(CommandsGroup.shakeExtender());
         
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
