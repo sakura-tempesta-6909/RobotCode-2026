@@ -2,11 +2,15 @@ package frc.robot.components.shooter.infrastructure;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import java.io.ObjectInputFilter.Config;
+
 import org.littletonrobotics.junction.Logger;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.domain.state.DriveState;
@@ -36,7 +40,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.allowedClosedLoopError(ShooterTools.mpsToRpm(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
         followerConfig.follow(motor, true);
         config.inverted(true);
-        config.smartCurrentLimit(20);
+        //config.smartCurrentLimit(40);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);

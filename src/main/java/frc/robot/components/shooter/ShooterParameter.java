@@ -1,10 +1,10 @@
 package frc.robot.components.shooter;
 
 public final class ShooterParameter {
-    public static double pGain = 0.0002;
-    public static double iGain = 0.0000002;
-    public static double dGain = 0.02;
-    public static double kSGain = 0.22738;
+    public static double pGain = 0.00000001;
+    public static double iGain = 0.000000;
+    public static double dGain = 0.0;
+    public static double kSGain = 0.152738;
     public static double kVGain = 0.002;
     public static double IZone = 3000;
 
@@ -12,10 +12,10 @@ public final class ShooterParameter {
     public static double feedMps = 20;
 
     /** 詰まり解消用の逆回転出力（PercentOutput） 範囲: [-1.0 -> 0.0] */
-    public static double reverseOutput = -0.3;
+    public static double reverseOutput = -0.5;
 
     //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
-    public static double errorToleranceMps = 3;
+    public static double errorToleranceMps = 0.1;
 
     /** ロボットのPoseがずれた時に使うシュートの速度　[m/s] */
     public static double DefalutRPM = 3000;
