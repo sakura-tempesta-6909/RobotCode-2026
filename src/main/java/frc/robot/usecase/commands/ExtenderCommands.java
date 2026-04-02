@@ -100,7 +100,8 @@ public class ExtenderCommands {
     public static Command shakeExtender(){
         return new RepeatCommand(
         new SequentialCommandGroup(
-            moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeUpAngle)).withTimeout(UsecaseConst.Shake.shakeUpTimeout)
+            moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeUpAngle)).withTimeout(UsecaseConst.Shake.shakeUpTimeout),
+            moveExtenderSpecifiedAngle(()->(UsecaseConst.Shake.shakeDownAngle)).withTimeout(UsecaseConst.Shake.shakeDownTimeout)
         ));
     }
 
