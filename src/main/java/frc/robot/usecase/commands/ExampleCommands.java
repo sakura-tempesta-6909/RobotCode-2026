@@ -105,7 +105,7 @@ public class ExampleCommands{
     /*
      * こういうSequentialCommandGroupとかいうものを使えば、10cm上げた後にその位置をキープとかも書けたりします
      */
-    public static Command move10cmUpAndKeep() {
+    public static Command moveUpAndKeep() {
         return new SequentialCommandGroup(
             move10cmUp(),
             keepCurrentPosition()
