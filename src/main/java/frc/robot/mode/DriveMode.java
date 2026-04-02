@@ -69,7 +69,7 @@ public class DriveMode extends Mode {
         //Intake: moveToIntakeAngle,intakeFuel
         driveController.leftTrigger(0.6).whileTrue(CommandsGroup.intake());
         // Extenderをシャカシャカする
-        driveController.a().whileTrue(CommandsGroup.shakeExtender());
+        driveController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // visionを使うか使わないかを切り替える(デフォルトは使う)
         driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
         
@@ -83,7 +83,7 @@ public class DriveMode extends Mode {
         //Extenderを初期位置に戻す
         operateController.leftBumper().onTrue(ExtenderCommands.moveToInitialAngle());
         // Extenderをシャカシャカする
-        operateController.a().whileTrue(CommandsGroup.shakeExtender());
+        operateController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // ロボットのPoseがズレた時用　Shooterを3000RPMで動かす
         operateController.b().whileTrue(CommandsGroup.shoot3000RPM());
     }
