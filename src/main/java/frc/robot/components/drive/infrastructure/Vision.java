@@ -44,8 +44,8 @@ public class Vision {
         leftEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout, DriveConst.Vision.kRobotToLeftCamera);
         rightEstimator = new PhotonPoseEstimator(DriveConst.Vision.kTagLayout, DriveConst.Vision.kRobotToRightCamera);
 
-        leftCamera = new PhotonCamera("leftCamera");
-        rightCamera = new PhotonCamera("rightCamera");
+        leftCamera = new PhotonCamera("BackCenterCamera");
+        rightCamera = new PhotonCamera("FrontRightCamera");
     }
 
 
