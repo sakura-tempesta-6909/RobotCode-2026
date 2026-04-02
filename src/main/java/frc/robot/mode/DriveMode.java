@@ -68,8 +68,18 @@ public class DriveMode extends Mode {
         driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
 
 
-        // outtake
-        driveController.pov(45).whileTrue(CommandsGroup.outtake());
+        // --- Driver Backup Commands (Operator Priority) ---
+        // outtake: Operatorが何もしていない時のみ
+        driveController.pov(45)
+            .and(operateController.rightTrigger(0.6).negate())
+            .and(operateController.leftTrigger(0.6).negate())
+            .and(operateController.rightBumper().negate())
+            .and(operateController.b().negate())
+            .and(operateController.x().negate())
+            .whileTrue(CommandsGroup.outtake());
+        
+        // Extenderを初期位置に戻す(バックアップ): Operatorが押していない時のみ
+        driveController.leftBumper().and(operateController.leftBumper().negate()).onTrue(ExtenderCommands.moveToInitialAngle());
         // Extenderをシャカシャカする
         // Operatorが押していない時のみDriverからも実行できる
         driveController.a().and(operateController.a().negate()).whileTrue(CommandsGroup.keepExtenderPreferedAngle());
