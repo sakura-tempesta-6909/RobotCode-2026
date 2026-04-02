@@ -59,7 +59,7 @@ public final class DriveConst {
                 .velocityConversionFactor(DriveConst.ModuleConstants.kDriveEncoderRPM2MeterPerSec);
             driveConfig
                 .inverted(true)
-                .idleMode(IdleMode.kCoast)
+                .idleMode(IdleMode.kBrake)
                 ;
             driveConfig.closedLoop
                 .pid(DriveParameter.Module.kPDrive, 0, 0)
