@@ -135,6 +135,13 @@ public class CommandsGroup {
         );
     }
 
+    public static Command keepExtenderPreferedAngle(){
+        return Commands.parallel(
+            IntakeCommands.intakeFuel(),
+            ExtenderCommands.keeppreferedAngle()
+        );
+    }
+
     public static Command readytoScore() {
         return new ConditionalCommand(CommandsGroup.score(), new InstantCommand(), StateGroup::readyToScore);
     }
