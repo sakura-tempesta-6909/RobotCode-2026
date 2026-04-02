@@ -4,18 +4,24 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.components.led.LEDConst;
+import frc.robot.components.led.LEDParameter;
 import frc.robot.domain.repository.LEDRepository;
 
 public class LED implements LEDRepository {
     private final AddressableLED led;
+    private final AddressableLED led2;
     private final AddressableLEDBuffer ledBuffer;
     private final Timer timer;
     public LED() {
         led =  new AddressableLED(LEDConst.Ports.LED);
+        led2 = new AddressableLED(LEDConst.Ports.LED2);
         ledBuffer = new AddressableLEDBuffer(LEDConst.LEDLength);
         led.setLength(ledBuffer.getLength());
         led.setData(ledBuffer);
         led.start();
+        led2.setLength(ledBuffer.getLength());
+        led2.setData(ledBuffer);
+        led2.start();
         timer = new Timer();
         timer.start();
     }
@@ -33,6 +39,7 @@ public class LED implements LEDRepository {
             ledBuffer.setRGB(i, red, green, blue);
         }
         led.setData(ledBuffer);
+        led2.setData(ledBuffer);
     }
 
     @Override
@@ -48,6 +55,7 @@ public class LED implements LEDRepository {
             }
         }
         led.setData(ledBuffer);
+        led2.setData(ledBuffer);
     }
 
     
