@@ -72,6 +72,8 @@ public class DriveMode extends Mode {
         driveController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // visionを使うか使わないかを切り替える(デフォルトは使う)
         driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
+        // outtake
+        driveController.pov(45).whileTrue(CommandsGroup.outtake());
         
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
@@ -86,5 +88,6 @@ public class DriveMode extends Mode {
         operateController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // ロボットのPoseがズレた時用　Shooterを3000RPMで動かす
         operateController.b().whileTrue(CommandsGroup.shoot3000RPM());
+        operateController.x().whileTrue(CommandsGroup.shakeExtender());
     }
 }
