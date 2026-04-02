@@ -70,6 +70,8 @@ public class DriveMode extends Mode {
         driveController.leftTrigger(0.6).whileTrue(CommandsGroup.intake());
         // Extenderをシャカシャカする
         driveController.a().whileTrue(CommandsGroup.shakeExtender());
+        // visionを使うか使わないかを切り替える(デフォルトは使う)
+        driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
         
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
