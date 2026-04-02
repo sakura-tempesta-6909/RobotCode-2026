@@ -64,6 +64,8 @@ public class DriveMode extends Mode {
             () -> -driveController.getLeftX()));
         //gyroリセット
         driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
+        // visionを使うか使わないかを切り替える(デフォルトは使う)
+        driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
         
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
