@@ -244,6 +244,10 @@ public static Command faceToHub(DoubleSupplier xSpeedPercentSupplier, DoubleSupp
                                 }));
     }
 
+    public static Command toggleVisionEnabled(){
+        return Commands.runOnce(() -> {driveRepository.toggleVisionEnabled();});
+    }
+
 }
 
 

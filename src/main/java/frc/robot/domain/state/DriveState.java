@@ -24,6 +24,8 @@ public class DriveState {
 
     public static boolean isAtTarget;
 
+    public static boolean isUsingVisionEstimate = true;
+
     /** 各モーターの情報 */
     public static class SwerveMotors {
         /** Drive Motorの電流 [A] */
