@@ -64,17 +64,20 @@ public class DriveMode extends Mode {
         //     () -> -driveController.getLeftX()));
         //gyroリセット
         driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
-        //HubへShoot: shootToHub,feedToShooter
-        driveController.rightTrigger(0.6).whileTrue(CommandsGroup.shoot());
-        //Intake: moveToIntakeAngle,intakeFuel
-        driveController.leftTrigger(0.6).whileTrue(CommandsGroup.intake());
-        // Extenderをシャカシャカする
-        driveController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // visionを使うか使わないかを切り替える(デフォルトは使う)
         driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
+
+
         // outtake
         driveController.pov(45).whileTrue(CommandsGroup.outtake());
-        
+        // Extenderをシャカシャカする
+        // Operatorが押していない時のみDriverからも実行できる
+        driveController.a().and(operateController.a().negate()).whileTrue(CommandsGroup.keepExtenderPreferedAngle());
+        //HubへShoot: shootToHub,feedToShooter
+        driveController.rightTrigger(0.6).and(operateController.rightTrigger(0.6).negate()).whileTrue(CommandsGroup.shoot());
+        //Intake: moveToIntakeAngle,intakeFuel
+        driveController.leftTrigger(0.6).and(operateController.leftTrigger(0.6).negate()).whileTrue(CommandsGroup.intake());
+
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
         operateController.rightTrigger(0.6).whileTrue(CommandsGroup.shoot());
@@ -84,10 +87,11 @@ public class DriveMode extends Mode {
         operateController.rightBumper().whileTrue(CommandsGroup.feed());
         //Extenderを初期位置に戻す
         operateController.leftBumper().onTrue(ExtenderCommands.moveToInitialAngle());
-        // Extenderをシャカシャカする
+        // Extenderを固定
         operateController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // ロボットのPoseがズレた時用　Shooterを3000RPMで動かす
         operateController.b().whileTrue(CommandsGroup.shoot3000RPM());
+        // Extenderをシャカシャカする
         operateController.x().whileTrue(CommandsGroup.shakeExtender());
     }
 }
