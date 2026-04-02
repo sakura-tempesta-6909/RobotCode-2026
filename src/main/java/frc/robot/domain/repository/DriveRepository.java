@@ -46,4 +46,7 @@ public interface DriveRepository extends Subsystem{
      * @param output モーターへの出力電圧 [V]
      */
     void runCharacterization(double output);
+
+    /* visionを使うか使わないかを切り替える */
+    void toggleVisionEnabled();
 }
