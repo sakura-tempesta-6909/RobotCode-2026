@@ -15,7 +15,7 @@ public final class ShooterParameter {
     public static double reverseOutput = -0.5;
 
     //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
-    public static double errorToleranceMps = 0.1;
+    public static double errorToleranceMps = 0.3;
 
     /** ロボットのPoseがずれた時に使うシュートの速度　[m/s] */
     public static double DefalutRPM = 3000;
