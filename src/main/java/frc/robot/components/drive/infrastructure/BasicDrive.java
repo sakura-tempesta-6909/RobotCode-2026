@@ -232,6 +232,8 @@ public class BasicDrive implements DriveRepository {
         SmartDashboard.putData("field", field);
 
         DriveState.isAtTarget = anglePID.atSetpoint();
+        SmartDashboard.putData("anglePID",anglePID);
+        SmartDashboard.putNumber("Drive/error", anglePID.getPositionError());
     }
 
     private double getHeading(){
