@@ -19,7 +19,7 @@ public class Util {
         if(input < 0.15 && input > -0.15){
             return 0.0;
         } else {
-            return limiter.calculate(input);
+            return input;
         }
     }
 

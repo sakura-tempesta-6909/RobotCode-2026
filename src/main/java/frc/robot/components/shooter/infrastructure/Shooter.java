@@ -109,5 +109,6 @@ public class Shooter implements ShooterRepository {
         ShooterState.busVoltage = motor.getBusVoltage();
         Logger.recordOutput("Shooter/feed", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToFeedPosition(), DriveState.driveXYOmegaSpeed)));
         Logger.recordOutput("Shooter/shoot", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToHub(), DriveState.driveXYOmegaSpeed)));
+        SmartDashboard.putNumber("Shooter/rpm", motorRPM);
     }
 }

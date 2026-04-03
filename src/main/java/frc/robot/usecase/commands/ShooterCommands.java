@@ -11,6 +11,7 @@ import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.domain.state.ShooterState;
 import frc.robot.domain.state.StateGroup;
+import frc.robot.components.extender.ExtenderParameter.Power;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
@@ -40,6 +41,15 @@ public class ShooterCommands {
             () -> ShooterRepository.resetPID(),
             () -> {
                 ShooterRepository.moveShooterSpecifiedSpeed(supplier.getAsDouble());
+            }
+        );
+    }
+
+    public static Command moveShooterSpecifiedPower(){
+        return ShooterRepository.startRun(
+            () -> ShooterRepository.resetPID(),
+            () -> {
+                ShooterRepository.moveShooterSpecifiedPower(0.6);
             }
         );
     }

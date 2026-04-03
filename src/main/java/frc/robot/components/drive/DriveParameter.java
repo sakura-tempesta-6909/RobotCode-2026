@@ -52,7 +52,7 @@ public class DriveParameter {
         /** 左右方向のPID制御のPの値 */
         public static final double kPXYController = 3.0;
         /** 回転のPID制御のPの値 */
-        public static final double kPThetaController = 1;
+        public static final double kPThetaController = 0.1;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
                 new TrapezoidProfile.Constraints(
