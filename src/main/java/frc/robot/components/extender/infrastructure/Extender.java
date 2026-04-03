@@ -36,7 +36,7 @@ public class Extender implements ExtenderRepository {
         /** Brakeモードに設定 */
         extenderMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         extenderMotorConfig.limitSwitch.reverseLimitSwitchType(Type.kNormallyOpen).forwardLimitSwitchType(Type.kNormallyOpen);
-        extenderMotorConfig.smartCurrentLimit(50);
+        extenderMotorConfig.smartCurrentLimit(ExtenderParameter.SoftLimit.currentLimit);
  
 
         /** PIDの設定 */

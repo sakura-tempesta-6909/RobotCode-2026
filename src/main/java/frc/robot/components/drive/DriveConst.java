@@ -61,7 +61,7 @@ public final class DriveConst {
                 .inverted(true)
                 .idleMode(IdleMode.kBrake)
                 ;
-            driveConfig.smartCurrentLimit(50);
+            driveConfig.smartCurrentLimit(DriveParameter.limit.DriveCurrentLimit);
             driveConfig.closedLoop
                 .pid(DriveParameter.Module.kPDrive, 0, 0)
                 .outputRange(-1, 1)
@@ -78,7 +78,7 @@ public final class DriveConst {
                 .positionConversionFactor(DriveConst.ModuleConstants.kTurningEncoderRot2Rad)
                 .velocityConversionFactor(DriveConst.ModuleConstants.kTurningEncoderRPM2RadPerSec);
             turningConfig.inverted(true);
-            turningConfig.smartCurrentLimit(20);
+            turningConfig.smartCurrentLimit(DriveParameter.limit.turningCurrentLimit);
     
             turningConfig.closedLoop
                 .pid(DriveParameter.Module.kPTurning, 0, 0)

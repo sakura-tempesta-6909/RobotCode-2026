@@ -40,7 +40,7 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.allowedClosedLoopError(ShooterTools.mpsToRpm(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
         followerConfig.follow(motor, true);
         config.inverted(true);
-        config.smartCurrentLimit(40);
+        config.smartCurrentLimit(ShooterParameter.CurrnetLimit);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);

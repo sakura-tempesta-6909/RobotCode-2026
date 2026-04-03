@@ -11,14 +11,14 @@ public class DriveParameter {
         public static final double Neutral = 0;
 
         /** ロボットが速いときの進む速度 */
-        public static final double FastDrive = 1.0;
+        public static final double FastDrive = 0.8;
         /** ロボットが普通の速さのときの進む速度 */
         public static final double MidDrive = 0.6;
         /** ロボットが遅いときの進む速度 */
         public static final double SlowDrive = 0.25;
 
         /** ロボットが速いときの回転速度 */
-        public static final double FastThetaDrive = 0.8;
+        public static final double FastThetaDrive = 0.6;
         /** ロボットが普通の速さときの回転速度 */
         public static final double MidThetaDrive = 0.6;
         /** ロボットが遅いときの回転速度 */
@@ -83,6 +83,12 @@ public class DriveParameter {
     public static final class Vision{
         /** Visionの測定値を採用する最大距離 | 単位:m*/
         public static final double kMaxVisionPoseErrorMeters = 1.5;
+    }
+
+    public static final class limit{
+        public static final int DriveCurrentLimit = 50;
+        public static final int turningCurrentLimit = 20;
+        public static final double RateLimit = 0.6;
     }
 
     /** Shootの目標地点のHubからの距離[m] */
