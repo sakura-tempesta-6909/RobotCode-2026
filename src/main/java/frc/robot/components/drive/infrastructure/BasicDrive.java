@@ -123,12 +123,12 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void setChassisSpeedsFieldOriented(ChassisSpeeds speeds) {
-        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-            speeds = new ChassisSpeeds(
-            -speeds.vxMetersPerSecond,
-            -speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond);
-        }
+        // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        //     speeds = new ChassisSpeeds(
+        //     -speeds.vxMetersPerSecond,
+        //     -speeds.vyMetersPerSecond,
+        //     speeds.omegaRadiansPerSecond);
+        // }
         this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getRotation2d()));
     }
 

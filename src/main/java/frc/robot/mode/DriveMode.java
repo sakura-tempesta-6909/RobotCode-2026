@@ -63,7 +63,7 @@ public class DriveMode extends Mode {
         //     () -> -driveController.getLeftY(),
         //     () -> -driveController.getLeftX()));
         //gyroリセット
-        driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
+        driveController.leftBumper().onTrue(DriveCommands.resetGyroSensor());
         // visionを使うか使わないかを切り替える(デフォルトは使う)
         driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
 
@@ -79,7 +79,7 @@ public class DriveMode extends Mode {
             .whileTrue(CommandsGroup.outtake());
         
         // Extenderを初期位置に戻す(バックアップ): Operatorが押していない時のみ
-        driveController.leftBumper().and(operateController.leftBumper().negate()).onTrue(ExtenderCommands.moveToInitialAngle());
+        //driveController.leftBumper().and(operateController.leftBumper().negate()).onTrue(ExtenderCommands.moveToInitialAngle());
         // Operatorが押していない時のみDriverからも実行できる
         driveController.a().whileTrue(DriveCommands.faceToFeedPosition(
             () -> -driveController.getLeftY(),
@@ -102,6 +102,7 @@ public class DriveMode extends Mode {
         operateController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // ロボットのPoseがズレた時用　Shooterを3000RPMで動かす
         operateController.b().whileTrue(CommandsGroup.shoot3000RPM());
+        operateController.y().whileTrue(CommandsGroup.shoot3500RPM());
         // Extenderをシャカシャカする
         operateController.x().whileTrue(CommandsGroup.shakeExtender());
     }

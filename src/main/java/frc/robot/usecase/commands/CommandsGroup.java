@@ -59,9 +59,16 @@ public class CommandsGroup {
      * Poseが事故ったときよう　3000RPM固定で打つ
      * @return ↑をするコマンドを返す
      */
+    public static Command shoot3500RPM() {
+        return Commands.parallel(
+            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterTools.rpmToSurfaceSpeed(ShooterParameter.StrongRPM)),
+            IndexerCommands.feedToShooter()
+        );
+    }
+
     public static Command shoot3000RPM() {
         return Commands.parallel(
-            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterTools.rpmToSurfaceSpeed(ShooterParameter.DefalutRPM)),
+            ShooterCommands.moveShooterSpecifiedSpeed(() -> ShooterTools.rpmToSurfaceSpeed(ShooterParameter.WeekRPM)),
             IndexerCommands.feedToShooter()
         );
     }
