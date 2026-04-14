@@ -44,8 +44,11 @@ public class ShooterCommands {
             }
         );
     }
-
-    public static Command moveShooterSpecifiedPower(){
+    
+    /**
+     * パーセントアウトプット0.6でシューターを回す
+     */
+    public static Command moveShooterFixedPower(){
         return ShooterRepository.startRun(
             () -> ShooterRepository.resetPID(),
             () -> {
