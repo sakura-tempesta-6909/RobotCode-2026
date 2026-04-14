@@ -17,7 +17,11 @@ public final class ShooterParameter {
     //目標速度への許容誤差・モーターが動作中とみなす最小速度[m/s]
     public static double errorToleranceMps = 1.0;
 
-    /** ロボットのPoseがずれた時に使うシュートの速度　[m/s] */
+    /** 
+     *  ロボットのPoseがずれた時に使うシュートの速度　[m/s] 
+     *  pidの調整がうまくいってなくて定常偏差がちょうど500出るのでその分多く設定してます
+     *  気が向いたら直します
+    */
     public static double StrongRPM = 4000;
     public static double WeekRPM = 3500;
 
