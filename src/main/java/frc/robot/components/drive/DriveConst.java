@@ -79,7 +79,7 @@ public final class DriveConst {
                 .velocityConversionFactor(DriveConst.ModuleConstants.kTurningEncoderRPM2RadPerSec);
             turningConfig.inverted(true);
             turningConfig.smartCurrentLimit(DriveParameter.limit.turningCurrentLimit);
-            turningConfig.secondaryCurrentLimit(30);
+            turningConfig.secondaryCurrentLimit(DriveParameter.limit.secondaryCurrentLimit);
     
             turningConfig.closedLoop
                 .pid(DriveParameter.Module.kPTurning, 0, 0)
