@@ -38,5 +38,6 @@ public final class ShooterParameter {
     /** ゼロ */
     public static double Neutral = 0.0;
 
-    public static int CurrnetLimit = 40;
+    /** Shooterの電流制限| 常にこの値を超えないようにする | 単位[A] */
+    public static int SmartCurrnetLimit = 40;
 }

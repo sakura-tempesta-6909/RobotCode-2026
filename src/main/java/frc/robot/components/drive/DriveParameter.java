@@ -88,6 +88,7 @@ public class DriveParameter {
     public static final class limit{
         public static final int DriveCurrentLimit = 50;
         public static final int turningCurrentLimit = 20;
+        public static final int secondaryCurrentLimit = 30;
         public static final double RateLimit = 0.6;
     }
 
