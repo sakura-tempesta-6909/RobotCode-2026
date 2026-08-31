@@ -1,6 +1,6 @@
 # RobotCode-2026
 
-FRC チーム 6909 Sakura Tempesta の 2026 シーズン（REBUILT）用ロボットコード。
+FRC チーム 6909 SAKURA Tempesta の 2026 シーズン（REBUILT）用ロボットコード。
 スワーブドライブの機体を Java と WPILib のコマンドベースで制御する。
 
 ## 開発環境
