@@ -5,18 +5,14 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  pull_request_target:
-    branches: [ main ]
-
+    
 jobs:
   simulate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+        uses: actions/checkout@v7
 
       - name: Cache .gradle folder
         uses: actions/cache@v3
