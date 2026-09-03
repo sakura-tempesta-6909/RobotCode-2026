@@ -16,6 +16,8 @@ public class DomainUtil {
         SmartDashboard.putBoolean("Shooter/ReadyToShoot", ShooterState.isReadyToShoot);
         SmartDashboard.putNumber("Shooter/TargetSpeed", ShooterState.targetMotorSpeed);
         SmartDashboard.putNumber("Drive/DistanceToHub", StateGroup.getDistanceToHub());
+        SmartDashboard.putBoolean("Drive/isUseVision", DriveState.isUsingVisionEstimate);
+        SmartDashboard.putNumber("Drive/heading", DriveState.heading.getDegrees());
 
 
         // Drive

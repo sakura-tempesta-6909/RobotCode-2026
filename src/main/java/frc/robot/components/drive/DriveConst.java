@@ -59,8 +59,9 @@ public final class DriveConst {
                 .velocityConversionFactor(DriveConst.ModuleConstants.kDriveEncoderRPM2MeterPerSec);
             driveConfig
                 .inverted(true)
-                .idleMode(IdleMode.kCoast)
+                .idleMode(IdleMode.kBrake)
                 ;
+            driveConfig.smartCurrentLimit(DriveParameter.limit.DriveCurrentLimit);
             driveConfig.closedLoop
                 .pid(DriveParameter.Module.kPDrive, 0, 0)
                 .outputRange(-1, 1)
@@ -77,6 +78,8 @@ public final class DriveConst {
                 .positionConversionFactor(DriveConst.ModuleConstants.kTurningEncoderRot2Rad)
                 .velocityConversionFactor(DriveConst.ModuleConstants.kTurningEncoderRPM2RadPerSec);
             turningConfig.inverted(true);
+            turningConfig.smartCurrentLimit(DriveParameter.limit.turningCurrentLimit);
+            turningConfig.secondaryCurrentLimit(DriveParameter.limit.secondaryCurrentLimit);
     
             turningConfig.closedLoop
                 .pid(DriveParameter.Module.kPTurning, 0, 0)
@@ -136,12 +139,12 @@ public final class DriveConst {
         /** フィールドにあるAprilTagのレイアウト */
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-        /** ロボットの中心から見た左カメラの位置 */
+        /** ロボットの中心から見た後ろ真ん中カメラの位置 */
         public static final Transform3d kRobotToLeftCamera =
-                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-        /** ロボットの中心から見た右カメラの位置 */
+                new Transform3d(new Translation3d(0, -0.25, 0.15), new Rotation3d(180,30, 0));
+        /** ロボットの中心から見た前右カメラの位置 */
         public static final Transform3d kRobotToRightCamera =
-                new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+                new Transform3d(new Translation3d(0, 0.25, 0.52), new Rotation3d(0, 0, 180));
 
         /** * ロボットの内部センサー（エンコーダ・ジャイロ）による推測航法の信頼度（標準偏差）。数値が小さいほどその値を強く反映する
          * @param [0] X方向の推定誤差の標準偏差 | 前後方向 | [メートル]

@@ -25,22 +25,22 @@ public class Robot extends LoggedRobot {
   public static Runnable modeResetter = null;
 
   public Robot() {
-    Logger.recordMetadata("ProjectName", "RobotCode-2026");
-    DataLogManager.start();
-    DriverStation.startDataLog(DataLogManager.getLog(), true);
-    if (isReal()) {
-      Logger.addDataReceiver(new WPILOGWriter());
-      Logger.addDataReceiver(new NT4Publisher());
-    } else if (RobotBase.isSimulation()) {
-      Logger.addDataReceiver(new NT4Publisher());
-    } else {
-      setUseTiming(false);
-      String logPath = LogFileUtil.findReplayLog();
-      Logger.setReplaySource(new WPILOGReader(logPath));
-      Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
-    }
+    // Logger.recordMetadata("ProjectName", "RobotCode-2026");
+    // DataLogManager.start();
+    // DriverStation.startDataLog(DataLogManager.getLog(), true);
+    // if (isReal()) {
+    //   Logger.addDataReceiver(new WPILOGWriter());
+    //   Logger.addDataReceiver(new NT4Publisher());
+    // } else if (RobotBase.isSimulation()) {
+    //   Logger.addDataReceiver(new NT4Publisher());
+    // } else {
+    //   setUseTiming(false);
+    //   String logPath = LogFileUtil.findReplayLog();
+    //   Logger.setReplaySource(new WPILOGReader(logPath));
+    //   Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+    // }
 
-    Logger.start();
+    // Logger.start();
     
     m_robotContainer = new RobotContainer();
   }

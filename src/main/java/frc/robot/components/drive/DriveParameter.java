@@ -11,29 +11,29 @@ public class DriveParameter {
         public static final double Neutral = 0;
 
         /** ロボットが速いときの進む速度 */
-        public static final double FastDrive = 1.0;
+        public static final double FastDrive = 0.8;
         /** ロボットが普通の速さのときの進む速度 */
         public static final double MidDrive = 0.6;
         /** ロボットが遅いときの進む速度 */
         public static final double SlowDrive = 0.25;
 
         /** ロボットが速いときの回転速度 */
-        public static final double FastThetaDrive = 0.8;
+        public static final double FastThetaDrive = 0.4;
         /** ロボットが普通の速さときの回転速度 */
         public static final double MidThetaDrive = 0.6;
         /** ロボットが遅いときの回転速度 */
         public static final double SlowThetaDrive = 0.1875;
 
         /** gyroのPID制御　Pの値 */
-        public static final double kP = 0.015;
+        public static final double kP = 0.1;
         /** gyroのPID制御　Iの値 */
         public static final double kI = 0.00001;
         /** gyroのPID制御　Dの値 */
         public static final double kD = 0.0001;
         /** 回転時の最大速度 | 単位[degree/s] */
-        public static final double MaxAngularVelocity = 0;
+        public static final double MaxAngularVelocity = 720;
         /** 回転時の最大加速度 | 単位[degree/s**2]*/
-        public static final double MaxAngularAcceleration = 0;
+        public static final double MaxAngularAcceleration = 720;
     }
 
     public static final class Module {
@@ -52,7 +52,7 @@ public class DriveParameter {
         /** 左右方向のPID制御のPの値 */
         public static final double kPXYController = 3.0;
         /** 回転のPID制御のPの値 */
-        public static final double kPThetaController = 1;
+        public static final double kPThetaController = 0.1;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
                 new TrapezoidProfile.Constraints(
@@ -83,6 +83,13 @@ public class DriveParameter {
     public static final class Vision{
         /** Visionの測定値を採用する最大距離 | 単位:m*/
         public static final double kMaxVisionPoseErrorMeters = 1.5;
+    }
+
+    public static final class limit{
+        public static final int DriveCurrentLimit = 50;
+        public static final int turningCurrentLimit = 20;
+        public static final int secondaryCurrentLimit = 30;
+        public static final double RateLimit = 0.6;
     }
 
     /** Shootの目標地点のHubからの距離[m] */

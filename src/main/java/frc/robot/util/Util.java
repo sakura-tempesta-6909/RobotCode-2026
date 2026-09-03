@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -13,6 +14,7 @@ import frc.robot.usecase.commands.DriveCommands;
 import org.littletonrobotics.junction.Logger;
 
 public class Util {
+    static SlewRateLimiter limiter = new SlewRateLimiter(0.6);
     public static double deadband(double input){
         if(input < 0.15 && input > -0.15){
             return 0.0;

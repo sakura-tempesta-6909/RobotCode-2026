@@ -2,11 +2,15 @@ package frc.robot.components.shooter.infrastructure;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import java.io.ObjectInputFilter.Config;
+
 import org.littletonrobotics.junction.Logger;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.domain.state.DriveState;
@@ -33,9 +37,10 @@ public class Shooter implements ShooterRepository {
         config.closedLoop.d(ShooterParameter.dGain).iZone(ShooterParameter.IZone);
         config.closedLoop.feedForward.kS(ShooterParameter.kSGain);
         config.closedLoop.feedForward.kV(ShooterParameter.kVGain);
-        config.closedLoop.allowedClosedLoopError(ShooterTools.rpmToSurfaceSpeed(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
+        config.closedLoop.allowedClosedLoopError(ShooterTools.mpsToRpm(ShooterParameter.errorToleranceMps),ClosedLoopSlot.kSlot0);
         followerConfig.follow(motor, true);
         config.inverted(true);
+        config.smartCurrentLimit(ShooterParameter.SmartCurrnetLimit);
 
         motor.configure(config, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, SparkMax.ResetMode.kResetSafeParameters, SparkMax.PersistMode.kPersistParameters);
@@ -104,5 +109,6 @@ public class Shooter implements ShooterRepository {
         ShooterState.busVoltage = motor.getBusVoltage();
         Logger.recordOutput("Shooter/feed", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToFeedPosition(), DriveState.driveXYOmegaSpeed)));
         Logger.recordOutput("Shooter/shoot", ShooterTools.fuelVelocityToRPM(ShooterTools.distanceToMps(StateGroup.getDistanceToHub(), DriveState.driveXYOmegaSpeed)));
+        SmartDashboard.putNumber("Shooter/rpm", motorRPM);
     }
 }

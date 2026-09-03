@@ -11,6 +11,7 @@ import frc.robot.components.shooter.infrastructure.Shooter;
 import frc.robot.domain.repository.ShooterRepository;
 import frc.robot.domain.state.ShooterState;
 import frc.robot.domain.state.StateGroup;
+import frc.robot.components.extender.ExtenderParameter.Power;
 import frc.robot.components.shooter.ShooterConst;
 import frc.robot.components.shooter.ShooterParameter;
 import frc.robot.components.shooter.ShooterTools;
@@ -43,6 +44,18 @@ public class ShooterCommands {
             }
         );
     }
+    
+    /**
+     * パーセントアウトプット0.6でシューターを回す
+     */
+    public static Command moveShooterFixedPower(){
+        return ShooterRepository.startRun(
+            () -> ShooterRepository.resetPID(),
+            () -> {
+                ShooterRepository.moveShooterSpecifiedPower(0.6);
+            }
+        );
+    }
 
     /**
      * ハブへシュート
@@ -50,9 +63,14 @@ public class ShooterCommands {
     public static Command shootToHub() {
         return moveShooterSpecifiedSpeed(() -> {
             double distance = StateGroup.getDistanceToHub(); //ここで距離を取得する
-            double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
-            double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToRPM(power)); // wheelの表面速度
-            return surfaceSpeed;
+            if (distance < 4){
+                double power = ShooterTools.distanceToMps(distance,DriveState.driveXYOmegaSpeed); // Fuelの初速度
+                double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(ShooterTools.fuelVelocityToRPM(power)); // wheelの表面速度
+                return surfaceSpeed;
+            } else {
+                double surfaceSpeed = ShooterTools.rpmToSurfaceSpeed(3000);
+                return surfaceSpeed;
+            }
         });
     }
 

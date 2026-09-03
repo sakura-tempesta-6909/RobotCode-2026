@@ -9,5 +9,7 @@ public final class IntakeParameter {
         /** Fuelを吐き出すときのスピード | Fuelを吐き出す方向なので負 | [-1,0]*/
         public static final double OuttakeRollerSpeed = -1.0;
     }
+    /** Intakeの電流制限| 常にこの値を超えないようにする | 単位[A] */
+    public static final int smartCurrentLimit = 40;
     
 }

@@ -24,6 +24,7 @@ public class Intake implements IntakeRepository {
 
         IntakeMotorConfig.inverted(false);
         IntakeMotorConfig.idleMode(IdleMode.kCoast);
+        IntakeMotorConfig.smartCurrentLimit(40);
 
         IntakeMotor.configure(IntakeMotorConfig,ResetMode.kNoResetSafeParameters,PersistMode.kNoPersistParameters);
     }

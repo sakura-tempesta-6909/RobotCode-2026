@@ -84,6 +84,7 @@ public class SwerveModule {
      * @param state
      */
     public void setDesiredState(SwerveModuleState state){
+        turningEncoder.setPosition(getAbsoluteEncoderRad());
         if(Math.abs(state.speedMetersPerSecond) < 0.001){
            stop();
             return;

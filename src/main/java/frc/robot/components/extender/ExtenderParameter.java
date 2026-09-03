@@ -10,6 +10,7 @@ public final class ExtenderParameter {
         /** Extenderのソフトリミット(リミットスイッチが壊れるかもしれないからね！)[degree] */
         public static final double ForwardSoftLimit = 90;
         public static final double ReverseSoftLimit = 0;
+        public static final int currentLimit = 50;
     }
 
     public  static final class PID{

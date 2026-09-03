@@ -58,15 +58,37 @@ public class DriveMode extends Mode {
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX()));
         //ロボットを180度に向ける
-        driveController.a().whileTrue(DriveCommands.setAngle(
-            () -> Rotation2d.k180deg,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX()));
+        // driveController.a().whileTrue(DriveCommands.setAngle(
+        //     () -> Rotation2d.k180deg,
+        //     () -> -driveController.getLeftY(),
+        //     () -> -driveController.getLeftX()));
         //gyroリセット
-        driveController.pov(0).onTrue(DriveCommands.resetGyroSensor());
+        driveController.leftBumper().onTrue(DriveCommands.resetGyroSensor());
         // visionを使うか使わないかを切り替える(デフォルトは使う)
         driveController.pov(180).onTrue(DriveCommands.toggleVisionEnabled());
+
+
+        // --- Driver Backup Commands (Operator Priority) ---
+        // outtake: Operatorが何もしていない時のみ
+        driveController.pov(45)
+            .and(operateController.rightTrigger(0.6).negate())
+            .and(operateController.leftTrigger(0.6).negate())
+            .and(operateController.rightBumper().negate())
+            .and(operateController.b().negate())
+            .and(operateController.x().negate())
+            .whileTrue(CommandsGroup.outtake());
         
+        // Extenderを初期位置に戻す(バックアップ): Operatorが押していない時のみ
+        //driveController.leftBumper().and(operateController.leftBumper().negate()).onTrue(ExtenderCommands.moveToInitialAngle());
+        // Operatorが押していない時のみDriverからも実行できる
+        driveController.a().whileTrue(DriveCommands.faceToFeedPosition(
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX()));
+        //HubへShoot: shootToHub,feedToShooter
+        driveController.rightTrigger(0.6).and(operateController.rightTrigger(0.6).negate()).whileTrue(CommandsGroup.shoot());
+        //Intake: moveToIntakeAngle,intakeFuel
+        driveController.leftTrigger(0.6).and(operateController.leftTrigger(0.6).negate()).whileTrue(CommandsGroup.intake());
+
         //コントローラー1: operateController
         //HubへShoot: shootToHub,feedToShooter
         operateController.rightTrigger(0.6).whileTrue(CommandsGroup.shoot());
@@ -76,9 +98,12 @@ public class DriveMode extends Mode {
         operateController.rightBumper().whileTrue(CommandsGroup.feed());
         //Extenderを初期位置に戻す
         operateController.leftBumper().onTrue(ExtenderCommands.moveToInitialAngle());
-        // Extenderをシャカシャカする
-        operateController.a().whileTrue(CommandsGroup.shakeExtender());
+        // Extenderを固定
+        operateController.a().whileTrue(CommandsGroup.keepExtenderPreferedAngle());
         // ロボットのPoseがズレた時用　Shooterを3000RPMで動かす
         operateController.b().whileTrue(CommandsGroup.shoot3000RPM());
+        operateController.y().whileTrue(CommandsGroup.shoot3500RPM());
+        // Extenderをシャカシャカする
+        operateController.x().whileTrue(CommandsGroup.shakeExtender());
     }
 }

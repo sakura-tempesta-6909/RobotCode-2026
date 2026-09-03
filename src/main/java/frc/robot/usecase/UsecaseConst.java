@@ -101,7 +101,7 @@ public class UsecaseConst {
 
     public static final class Shake{
         /** Extenderを揺らすときの角度[degree] */
-        public static final double shakeUpAngle = 45;
+        public static final double shakeUpAngle = 25;
         /** Extenderを揺らす際下ろす時の角度[degree] */
         public static final double shakeDownAngle = 15;
         /** Extenderをいい感じに固定する時の角度[degree] */

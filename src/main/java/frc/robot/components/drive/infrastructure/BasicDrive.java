@@ -123,12 +123,12 @@ public class BasicDrive implements DriveRepository {
 
     @Override
     public void setChassisSpeedsFieldOriented(ChassisSpeeds speeds) {
-        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-            speeds = new ChassisSpeeds(
-            -speeds.vxMetersPerSecond,
-            -speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond);
-        }
+        // if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        //     speeds = new ChassisSpeeds(
+        //     -speeds.vxMetersPerSecond,
+        //     -speeds.vyMetersPerSecond,
+        //     speeds.omegaRadiansPerSecond);
+        // }
         this.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getRotation2d()));
     }
 
@@ -232,15 +232,16 @@ public class BasicDrive implements DriveRepository {
         SmartDashboard.putData("field", field);
 
         DriveState.isAtTarget = anglePID.atSetpoint();
+        SmartDashboard.putData("anglePID",anglePID);
+        SmartDashboard.putNumber("Drive/error", anglePID.getPositionError());
+        SmartDashboard.putNumber("Drive/Gyro", getHeading());
     }
 
     private double getHeading(){
-        return -Math.IEEEremainder(gyro.getAngle(), 360);
+        return Math.IEEEremainder(gyro.getAngle(), 360);
     }
     private Rotation2d getRotation2d(){
-        return DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
-                        ? Rotation2d.fromDegrees(getHeading()).plus(Rotation2d.kPi)
-                        : Rotation2d.fromDegrees(getHeading());
+        return Rotation2d.fromDegrees(getHeading());
     }
 
     private Pose2d getPose(){
